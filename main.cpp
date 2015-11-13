@@ -3,6 +3,7 @@
 #include "character/base_unit.h"
 #include "enviroment/base_tile.h"
 #include "enviroment/tile_ocean.h"
+#include "GameMaster.h"
 
 using namespace wumpus_game;
 
@@ -26,6 +27,12 @@ int main() {
     oceanTileSP = std::dynamic_pointer_cast<tile_ocean>(tilePointer);
     oceanTileSP->outputStuff();
     oceanTileSP->outputNonVirtStuff();
+
+
+
+    GameMaster gameEvent;
+    gameEvent.GameStart();
+
 
 
 
