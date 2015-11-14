@@ -3,3 +3,7 @@
 //
 
 #include "turtle.h"
+
+void wumpus_game::Turtle::PerformAction() {
+
+}

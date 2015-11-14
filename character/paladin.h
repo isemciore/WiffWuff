@@ -13,6 +13,8 @@ namespace wumpus_game {
     public:
         using player_ctrl::player_ctrl;
         Paladin(std::string name, std::weak_ptr<BaseTile> init_pos) : player_ctrl(name, init_pos){}
+
+
     };
 }
 

@@ -9,9 +9,12 @@
 
 namespace wumpus_game {
     class Npc : public BaseUnit {
+    protected:
+        bool aggresive_unit = false;
     public:
         using BaseUnit::BaseUnit;
 
+        virtual void PerformAction() = 0;
     };
 }
 

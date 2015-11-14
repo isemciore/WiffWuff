@@ -5,15 +5,13 @@
 #include <iostream>
 #include "TileOcean.h"
 
-void wumpus_game::TileOcean::OutputStuff() {
-    std::cout << "writing stuff from ocean \n";
-}
 
-void wumpus_game::TileOcean::outputNonVirtStuff() {
-    std::cout <<"writing ocean non virtual \n";
-
-}
 
 wumpus_game::TileOcean::TileOcean(std::size_t tile_id)
     : BaseTile(tile_id){
+    DirectionFeasable[0] = true;
+    DirectionFeasable[1] = true;
+    DirectionFeasable[2] = true;
+    DirectionFeasable[3] = true;
+
 }

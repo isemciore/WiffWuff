@@ -22,7 +22,7 @@ namespace wumpus_game {
         std::map<std::string,std::weak_ptr<BaseUnit>> map_str_to_unitptr_;
         std::vector<std::shared_ptr<BaseTile>> vector_of_tileptr_;
         std::shared_ptr<player_ctrl> player_ptr_;
-        std::weak_ptr<Wumpus> wumpus_ptr_;
+        std::pair<bool,std::weak_ptr<Wumpus>> wumpus_ptr_;  //trigger dead wumpus event once
         std::size_t turn_number_;
         std::size_t tile_counter_ = 0;
         std::size_t unit_counter_ = 0;
@@ -58,6 +58,7 @@ namespace wumpus_game {
         void InitTurnMessages(std::size_t turn_no);
         void EndGameMessage();
 
+        void EventSwapGoalTile();
     };//
 
 }

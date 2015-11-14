@@ -14,8 +14,6 @@ namespace wumpus_game {
     public:
         using BaseTile::BaseTile;
         TileOcean(std::size_t tile_id);
-        virtual void OutputStuff() override ;
-        void outputNonVirtStuff();
     };
 
 }

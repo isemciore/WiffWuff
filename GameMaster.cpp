@@ -46,6 +46,11 @@ void wumpus_game::GameMaster::GameStart() {
         if (!player_ptr_->game_continue.first){
             break;
         }
+
+        if(wumpus_ptr_.second.expired() && wumpus_ptr_.first== true){
+            wumpus_ptr_.first = false;
+            EventSwapGoalTile();
+        }
     }
     EndGameMessage();
 
@@ -63,6 +68,8 @@ void wumpus_game::GameMaster::EventDay0() {
                 break;
         }
     }
+    SetMapSquare(5);
+
     //std::shared_ptr<player_ctrl> player_ptr;
     player_ptr_.reset(new Paladin("Meep",(std::weak_ptr<BaseTile>) vector_of_tileptr_[0]));
     vector_of_tileptr_[0]->AddCharToTile(player_ptr_);
@@ -74,6 +81,11 @@ void wumpus_game::GameMaster::EventDay0() {
     AddUnit("turtle", 20);
     InitPrintStoryAndQuestion();
 
+    std::shared_ptr<Wumpus> wumpus_sp_ptr;
+    wumpus_ptr_ = std::make_pair(true, wumpus_sp_ptr);
+    wumpus_sp_ptr.reset(new Wumpus("Wumpus",(std::weak_ptr<BaseTile>) vector_of_tileptr_[7]));
+    vector_of_tileptr_[7]->AddCharToTile(wumpus_sp_ptr);
+    map_str_to_unitptr_.insert(std::make_pair("Wumpus",wumpus_sp_ptr));
 
 }
 
@@ -121,4 +133,42 @@ void wumpus_game::GameMaster::AddUnit(const std::string &unit_type_name, const s
 
     vector_of_tileptr_[location_id]->AddCharToTile(unit_sp);
     map_str_to_unitptr_.insert(std::make_pair(unit_name,unit_sp));
+}
+
+void wumpus_game::GameMaster::EventSwapGoalTile() {
+
+}
+
+void wumpus_game::GameMaster::SetMapSquare(const std::size_t &num_tile_width) {
+    std::size_t tile_id_num;
+
+
+    for(std::shared_ptr<BaseTile>& tile: vector_of_tileptr_){
+        //adding tile id, with certain reference name dir attached to tile.
+        //
+        auto AttachRoom = [&tile, this](int roomID,std::string dir){
+            tile->map_of_neighbour_tile_.insert(
+                    std::make_pair(dir,(std::weak_ptr<BaseTile>)vector_of_tileptr_[roomID]));
+        };
+
+        tile_id_num = tile->tile_id_;
+
+        //Attach north room
+        if((tile_id_num+1)%num_tile_width && tile->DirectionFeasable[0]){
+            AttachRoom(tile_id_num+1,"north");
+        }
+        //Attach room to east
+        if(tile_id_num < 20 && tile->DirectionFeasable[1]){
+            AttachRoom(tile_id_num+num_tile_width,"east");
+        }
+        //Attach to south
+        if(tile_id_num%num_tile_width && tile->DirectionFeasable[2]){
+            AttachRoom(tile_id_num-1,"south");
+        }
+        if(tile_id_num > (num_tile_width-1) && tile->DirectionFeasable[3]){
+            AttachRoom(tile_id_num-num_tile_width,"west");
+        }
+
+    }
+
 }
