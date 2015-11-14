@@ -12,7 +12,7 @@ int main() {
     std::cout << "Hello, World!" << std::endl;
 
     std::shared_ptr<BaseTile> tilePointer;
-    tilePointer.reset(new TileOcean());
+    tilePointer.reset(new TileOcean(1));
 
     std::shared_ptr<BaseUnit> unitPointer;
     unitPointer.reset(new BaseUnit());

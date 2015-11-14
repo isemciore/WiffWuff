@@ -14,10 +14,6 @@ void wumpus_game::TileOcean::outputNonVirtStuff() {
 
 }
 
-wumpus_game::TileOcean::TileOcean(std::size_t tile_id) {
-    tile_id_ = tile_id;
-}
-
-wumpus_game::TileOcean::TileOcean() {
-
+wumpus_game::TileOcean::TileOcean(std::size_t tile_id)
+    : BaseTile(tile_id){
 }

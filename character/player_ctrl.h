@@ -10,6 +10,8 @@
 namespace wumpus_game {
     class player_ctrl : public BaseUnit {
     public:
+        using BaseUnit::BaseUnit;
+        player_ctrl(std::string name, std::weak_ptr<BaseTile> bstile):BaseUnit(name,bstile){};
         std::pair<bool,std::string> game_continue = std::make_pair(true,"empty");
     };
 }

@@ -14,16 +14,20 @@ namespace wumpus_game {
 
     class BaseUnit {
     protected:
-        std::weak_ptr<BaseTile> _baseTp;
-
+        std::weak_ptr<BaseTile> location_tile_pointer_;
+        std::string unit_name_;
     public:
         BaseUnit();
+        BaseUnit(std::string name, std::weak_ptr<BaseTile> initPosition);
         BaseUnit(const BaseUnit &);
         ~BaseUnit();
 
         void SetTilePointer(std::weak_ptr<BaseTile> baseTp);
-        void PerformAction(){};
-
+        void PerformAction();
+        std::weak_ptr<BaseTile> GetUnitLocation() {
+            return location_tile_pointer_;
+        }
+        std::string get_unit_name(){return unit_name_;};
 
         void outputStuff();
         void callOther();

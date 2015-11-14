@@ -8,7 +8,9 @@
 #include "BaseUnit.h"
 
 namespace wumpus_game {
-    class npc : public BaseUnit {
+    class Npc : public BaseUnit {
+    public:
+        using BaseUnit::BaseUnit;
 
     };
 }

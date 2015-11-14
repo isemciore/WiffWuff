@@ -11,24 +11,27 @@
 #include <map>
 #include <vector>
 #include "character/player_ctrl.h"
+#include "character/wumpus.h"
+
 namespace wumpus_game {
 
     class GameMaster {
         //typedef std::pair<bool ,std::string>(player_ctrl::* player_member_function_ptr)(std::vector<std::string>);
         //std::map<std::size_t,player_member_function_ptr> map_player_member_function_ptr;
-        typedef std::map<std::string,std::weak_ptr<BaseUnit>>::iterator unit_iterator_type;
-        typedef std::pair<std::string,std::weak_ptr<BaseUnit>> string_tile_pair;
-
     private:
         std::map<std::string,std::weak_ptr<BaseUnit>> map_str_to_unitptr_;
-        std::map<std::size_t,std::shared_ptr<BaseTile>> map_tile_id_to_tileptr_;
-        std::shared_ptr<player_ctrl> player_ptr;
+        std::vector<std::shared_ptr<BaseTile>> vector_of_tileptr_;
+        std::shared_ptr<player_ctrl> player_ptr_;
+        std::weak_ptr<Wumpus> wumpus_ptr_;
         std::size_t turn_number_;
         std::size_t tile_counter_ = 0;
         std::size_t unit_counter_ = 0;
 
 
     public:
+        typedef std::map<std::string,std::weak_ptr<BaseUnit>>::iterator unit_iterator_type;
+        typedef std::pair<std::string,std::weak_ptr<BaseUnit>> string_tile_pair;
+
         GameMaster();
         GameMaster(const gameSave & saveFile);
         ~GameMaster();
@@ -47,8 +50,7 @@ namespace wumpus_game {
 
         void SetMapSquare(const std::size_t & num_tile_width);
 
-        void AddUnit(const std::shared_ptr<BaseUnit> &, const std::size_t & tile_id);
-        void AddUnit(const std::string& unit_type_name);
+        void AddUnit(const std::string& unit_type_name, const std::size_t location_id);
         void AddTile(const std::string& tile_type_name);
         void RemoveTile(const std::size_t& tile_id);
 

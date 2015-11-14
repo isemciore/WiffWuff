@@ -11,11 +11,8 @@ namespace wumpus_game {
 
     class TileOcean : public BaseTile {
 
-    private:
-        std::size_t tile_id_;
     public:
         using BaseTile::BaseTile;
-        TileOcean();
         TileOcean(std::size_t tile_id);
         virtual void OutputStuff() override ;
         void outputNonVirtStuff();

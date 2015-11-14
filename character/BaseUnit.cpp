@@ -24,9 +24,20 @@ void wumpus_game::BaseUnit::outputStuff() {
 }
 
 void wumpus_game::BaseUnit::callOther() {
-    _baseTp.lock()->OutputStuff();
+    location_tile_pointer_.lock()->OutputStuff();
 }
 
 void wumpus_game::BaseUnit::SetTilePointer(std::weak_ptr<BaseTile> baseTp) {
-    _baseTp = baseTp;
+    location_tile_pointer_ = baseTp;
+}
+
+wumpus_game::BaseUnit::BaseUnit(std::string name, std::weak_ptr<BaseTile> initPosition)
+    : location_tile_pointer_(initPosition)
+    , unit_name_(name){
+
+}
+
+void wumpus_game::BaseUnit::PerformAction() {
+    std::cout << "I am character "<< unit_name_ << "\n";
+
 }
