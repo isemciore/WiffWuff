@@ -16,7 +16,8 @@ namespace wumpus_game {
         player_ctrl(std::string name, std::weak_ptr<BaseTile> bstile):BaseUnit(name,bstile){};
         std::pair<bool,std::string> game_continue = std::make_pair(true,"empty");
 
-        virtual void PerformAction() override;
+
+        virtual void PerformAction() = 0;
     };
 }
 

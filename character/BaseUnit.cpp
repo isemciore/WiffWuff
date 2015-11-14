@@ -26,7 +26,26 @@ void wumpus_game::BaseUnit::PerformAction() {
 
 }
 
-bool wumpus_game::BaseUnit::travel(std::string direction) {
-    return location_tile_pointer_.lock()->move_char(unit_name_,direction);
+bool wumpus_game::BaseUnit::Travel(std::vector<std::string> direction) {
+    return location_tile_pointer_.lock()->move_char(unit_name_,direction[1]);
 
+}
+
+bool wumpus_game::BaseUnit::Attack(std::vector<std::string> vec_command_argument) {
+    //attack turtle1, ie target in elt 1
+    location_tile_pointer_.lock()->attack_action(unit_name_,vec_command_argument[1]);
+    return false;
+}
+
+bool wumpus_game::BaseUnit::attack_in_water() {
+    return can_attack_in_water_;
+}
+
+bool wumpus_game::BaseUnit::RecieveDamage(int damage_taken_b4_reduction) {
+    current_health-=damage_taken_b4_reduction;
+    std::cout << unit_name_ << " recieves "<< damage_taken_b4_reduction << " after armor red\n";
+    if(current_health<1){
+        return false;
+    }
+    return true;
 }

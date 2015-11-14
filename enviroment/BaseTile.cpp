@@ -62,3 +62,4 @@ bool wumpus_game::BaseTile::enter(std::shared_ptr<wumpus_game::BaseUnit> ptr) {
     AddCharToTile(ptr);
     return true;
 }
+

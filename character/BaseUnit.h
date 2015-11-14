@@ -16,9 +16,12 @@ namespace wumpus_game {
     protected:
         std::weak_ptr<BaseTile> location_tile_pointer_;
         std::string unit_name_;
+        bool can_attack_in_water_ = false;
 
-        typedef bool(BaseUnit::* string_to_member_function_ptr)(std::vector<std::string> user_input_argument);
-        std::map<std::string, string_to_member_function_ptr> map_of_member_action;
+        int attack_damage = 20;
+
+        int current_health = 100;
+        int current_mana = 80;
         /*
         typedef bool ()
         typedef std::pair<bool,std::string> (game_map::* MFP)(std::shared_ptr<unit> src, std::vector<std::string> argsCmd);
@@ -35,12 +38,14 @@ namespace wumpus_game {
             return location_tile_pointer_;
         }
 
+        int get_attack_damage(){return attack_damage;};
+        virtual bool RecieveDamage(int damage_taken_b4_reduction);
 
-        bool travel(std::string direction);
-
+        bool Travel(std::vector<std::string> vec_direction);
+        bool Attack(std::vector<std::string> vec_command_argument);
         std::string get_unit_name(){return unit_name_;};
 
-
+        bool attack_in_water();
 
     };
 

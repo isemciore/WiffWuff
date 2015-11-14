@@ -13,6 +13,7 @@ namespace wumpus_game {
     
     class BaseTile {
     protected:
+
         std::size_t tile_id_;
         std::map<std::string,std::shared_ptr<BaseUnit>> map_of_char_in_tile_;
 
@@ -38,6 +39,7 @@ namespace wumpus_game {
         std::size_t get_tile_id();
         std::map<std::string,std::weak_ptr<BaseTile>> get_neigbour_map() {return map_of_neighbour_tile_;}
 
+        virtual bool attack_action(std::string attacker, std::string attacked) = 0;
         virtual bool enter(std::shared_ptr<BaseUnit>);//Check if unit is sallowed
         bool move_char(std::string name, std::string direction);
         bool exit(const std::string & name);

@@ -11,10 +11,14 @@
 namespace wumpus_game {
     class Paladin : public player_ctrl{
     public:
+        typedef bool(Paladin::* string_to_member_function_ptr)(std::vector<std::string> user_input_argument);
+        std::map<std::string, string_to_member_function_ptr> map_of_member_action;
+
         using player_ctrl::player_ctrl;
-        Paladin(std::string name, std::weak_ptr<BaseTile> init_pos) : player_ctrl(name, init_pos){}
+        Paladin(std::string name, std::weak_ptr<BaseTile> init_pos);
 
 
+        virtual void PerformAction();
     };
 }
 
