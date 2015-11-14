@@ -5,10 +5,10 @@
 #ifndef WIFFWUFF_NPC_H
 #define WIFFWUFF_NPC_H
 
-#include "base_unit.h"
+#include "BaseUnit.h"
 
 namespace wumpus_game {
-    class npc : public base_unit {
+    class npc : public BaseUnit {
 
     };
 }

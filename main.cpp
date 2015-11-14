@@ -1,8 +1,8 @@
 #include <iostream>
 #include <memory>
-#include "character/base_unit.h"
-#include "enviroment/base_tile.h"
-#include "enviroment/tile_ocean.h"
+#include "character/BaseUnit.h"
+#include "enviroment/BaseTile.h"
+#include "enviroment/TileOcean.h"
 #include "GameMaster.h"
 
 using namespace wumpus_game;
@@ -11,21 +11,21 @@ using namespace wumpus_game;
 int main() {
     std::cout << "Hello, World!" << std::endl;
 
-    std::shared_ptr<base_tile> tilePointer;
-    tilePointer.reset(new tile_ocean());
+    std::shared_ptr<BaseTile> tilePointer;
+    tilePointer.reset(new TileOcean());
 
-    std::shared_ptr<base_unit> unitPointer;
-    unitPointer.reset(new base_unit());
+    std::shared_ptr<BaseUnit> unitPointer;
+    unitPointer.reset(new BaseUnit());
 
-    tilePointer->setUnitPointer(unitPointer);
-    unitPointer->setTilePointer(tilePointer);
+    tilePointer->SetUnitPointer(unitPointer);
+    unitPointer->SetTilePointer(tilePointer);
 
     tilePointer->callOther();
     unitPointer->callOther();
 
-    std::shared_ptr<tile_ocean> oceanTileSP;
-    oceanTileSP = std::dynamic_pointer_cast<tile_ocean>(tilePointer);
-    oceanTileSP->outputStuff();
+    std::shared_ptr<TileOcean> oceanTileSP;
+    oceanTileSP = std::dynamic_pointer_cast<TileOcean>(tilePointer);
+    oceanTileSP->OutputStuff();
     oceanTileSP->outputNonVirtStuff();
 
 

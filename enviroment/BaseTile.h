@@ -7,19 +7,19 @@
 #include <memory>
 
 namespace wumpus_game {
-    class base_unit;
+    class BaseUnit;
     
-    class base_tile {
+    class BaseTile {
     protected:
-        std::weak_ptr<base_unit> _baseUp;
+        std::weak_ptr<BaseUnit> _baseUp;
 
     public:
-        base_tile();
-        base_tile(const base_tile&);
-        ~base_tile();
+        BaseTile();
+        BaseTile(const BaseTile &);
+        ~BaseTile();
 
-        void setUnitPointer(std::weak_ptr<base_unit> baseUp);
-        virtual void outputStuff();
+        void SetUnitPointer(std::weak_ptr<BaseUnit> baseUp);
+        virtual void OutputStuff();
         void outputNonVirtStuff();
         void callOther();
 

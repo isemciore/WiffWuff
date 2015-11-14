@@ -5,14 +5,14 @@ CC = clang++
 
 FLAGS = -std=c++11 -g -Wall
 
-main.out: main.cpp obj/base_unit.o obj/base_tile.o character/base_unit.cpp enviroment/base_tile.cpp
-	$(CC) $(FLAGS) -o main.out main.cpp obj/base_tile.o obj/base_unit.o 
+main.out: main.cpp obj/BaseUnit.o obj/BaseTile.o character/BaseUnit.cpp enviroment/BaseTile.cpp
+	$(CC) $(FLAGS) -o main.out main.cpp obj/BaseTile.o obj/BaseUnit.o
 
-obj/base_unit.o : character/base_unit.cpp
-	$(CC) $(FLAGS) -c character/base_unit.cpp -o obj/base_unit.o
+obj/BaseUnit.o : character/BaseUnit.cpp
+	$(CC) $(FLAGS) -c character/BaseUnit.cpp -o obj/BaseUnit.o
 
-obj/base_tile.o : enviroment/base_tile.cpp
-	$(CC) $(FLAGS) -c enviroment/base_tile.cpp -o obj/base_tile.o
+obj/BaseTile.o : enviroment/BaseTile.cpp
+	$(CC) $(FLAGS) -c enviroment/BaseTile.cpp -o obj/BaseTile.o
 
 
 

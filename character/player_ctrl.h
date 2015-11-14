@@ -5,11 +5,12 @@
 #ifndef WIFFWUFF_PLAYER_CTRL_H
 #define WIFFWUFF_PLAYER_CTRL_H
 
-#include "base_unit.h"
+#include "BaseUnit.h"
 
 namespace wumpus_game {
-    class player_ctrl : public base_unit{
-
+    class player_ctrl : public BaseUnit {
+    public:
+        std::pair<bool,std::string> game_continue = std::make_pair(true,"empty");
     };
 }
 
