@@ -19,11 +19,9 @@ namespace wumpus_game {
 
         std::map<std::string,std::weak_ptr<BaseTile>> map_of_neighbour_tile_;
         //debugging purp
-        std::weak_ptr<BaseUnit> _baseUp_;
         //NORTH EAST SOUTH WEST ORDER
         bool DirectionFeasable[4] = {false};
-
-
+        bool wumpus_is_here = false;
         bool AddCharToTile(std::shared_ptr<BaseUnit>);//"Force add unit"
 
     public:
@@ -39,6 +37,7 @@ namespace wumpus_game {
         std::size_t get_tile_id();
         std::map<std::string,std::weak_ptr<BaseTile>> get_neigbour_map() {return map_of_neighbour_tile_;}
 
+        bool is_wumpus_here(){ return wumpus_is_here;}
         virtual bool attack_action(std::string attacker, std::string attacked) = 0;
         virtual bool enter(std::shared_ptr<BaseUnit>);//Check if unit is sallowed
         bool move_char(std::string name, std::string direction);

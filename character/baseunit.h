@@ -19,7 +19,6 @@ namespace wumpus_game {
         bool can_attack_in_water_ = false;
 
         int attack_damage = 20;
-
         int current_health = 100;
         int current_mana = 80;
         /*

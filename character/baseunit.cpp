@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include "baseunit.h"
-#include "../enviroment/basetile.h"
 
 
 
@@ -44,7 +43,7 @@ bool wumpus_game::BaseUnit::attack_in_water() {
 bool wumpus_game::BaseUnit::RecieveDamage(int damage_taken_b4_reduction) {
     current_health-=damage_taken_b4_reduction;
     std::cout << unit_name_ << " recieves "<< damage_taken_b4_reduction << " after armor red\n";
-    if(current_health<1){
+    if(current_health<1){ //get erased later
         return false;
     }
     return true;
