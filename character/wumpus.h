@@ -6,7 +6,7 @@
 #define WIFFWUFF_WUMPUS_H
 
 
-#include "Npc.h"
+#include "npc.h"
 
 namespace wumpus_game {
     class Wumpus : public Npc {

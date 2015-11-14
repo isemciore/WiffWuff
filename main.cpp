@@ -1,9 +1,9 @@
 #include <iostream>
 #include <memory>
-#include "character/BaseUnit.h"
-#include "enviroment/BaseTile.h"
-#include "enviroment/TileOcean.h"
-#include "GameMaster.h"
+#include "character/baseunit.h"
+#include "enviroment/basetile.h"
+#include "enviroment/tileocean.h"
+#include "gamemaster.h"
 
 using namespace wumpus_game;
 

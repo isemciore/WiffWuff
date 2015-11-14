@@ -3,5 +3,10 @@ project(WiffWuff)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp GameMaster.cpp GameMaster.h character/BaseUnit.cpp character/BaseUnit.h enviroment/BaseTile.cpp enviroment/BaseTile.h enviroment/TileOcean.cpp enviroment/TileOcean.h stuff/item.cpp stuff/item.h character/Npc.cpp character/Npc.h character/player_ctrl.cpp character/player_ctrl.h stuff/consumable.cpp stuff/consumable.h stuff/container.cpp stuff/container.h gameSave.cpp gameSave.h character/paladin.cpp character/paladin.h character/turtle.cpp character/turtle.h character/wumpus.cpp character/wumpus.h)
+set(SOURCE_FILES main.cpp gamemaster.cpp gamemaster.h character/baseunit.cpp character/baseunit.h
+        enviroment/basetile.cpp enviroment/basetile.h enviroment/tileocean.cpp enviroment/tileocean.h
+        stuff/item.cpp stuff/item.h character/npc.cpp character/npc.h character/player_ctrl.cpp
+        character/player_ctrl.h stuff/consumable.cpp stuff/consumable.h stuff/container.cpp
+        stuff/container.h gamesave.cpp gamesave.h character/paladin.cpp character/paladin.h
+        character/turtle.cpp character/turtle.h character/wumpus.cpp character/wumpus.h)
 add_executable(WiffWuff ${SOURCE_FILES})

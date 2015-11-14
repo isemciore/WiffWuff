@@ -6,7 +6,7 @@
 #define WIFFWUFF_TURTLE_H
 
 
-#include "Npc.h"
+#include "npc.h"
 
 namespace wumpus_game {
     class Turtle :public Npc {

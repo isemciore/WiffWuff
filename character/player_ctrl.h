@@ -5,7 +5,7 @@
 #ifndef WIFFWUFF_PLAYER_CTRL_H
 #define WIFFWUFF_PLAYER_CTRL_H
 
-#include "BaseUnit.h"
+#include "baseunit.h"
 
 namespace wumpus_game {
     class player_ctrl : public BaseUnit {
