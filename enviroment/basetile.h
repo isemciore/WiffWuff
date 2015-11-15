@@ -39,10 +39,10 @@ namespace wumpus_game {
         character_map_type get_character_in_room(){return map_of_char_in_tile_;}
 
         void PrintPlayerOptionAndInformation();
-
+        virtual void PrintTileDependentInformation() = 0;
 
         bool is_wumpus_here(){ return wumpus_is_here;}
-        virtual bool attack_action(std::string attacker, std::string attacked) = 0;
+        virtual bool attack_action(std::string attacker, std::string defendent);
         virtual bool enter(std::shared_ptr<BaseUnit>);//Check if unit is sallowed
         bool move_char(std::string name, std::string direction);
         bool exit(const std::string & name);

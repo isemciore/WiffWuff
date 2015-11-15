@@ -15,6 +15,8 @@ namespace wumpus_game {
         using BaseTile::BaseTile;
         TileOcean(std::size_t tile_id);
 
+        virtual void PrintTileDependentInformation();
+
         virtual bool attack_action(std::string attacker, std::string attacked) override;
     };
 

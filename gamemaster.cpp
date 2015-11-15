@@ -4,9 +4,11 @@
 
 #include <iostream>
 #include "gamemaster.h"
-#include "enviroment/tileocean.h"
+#include "enviroment/tile_ocean.h"
 #include "character/paladin.h"
 #include "character/turtle.h"
+#include "enviroment/tile_mountain_ridge.h"
+#include "enviroment/tile_dark_room.h"
 
 wumpus_game::GameMaster::GameMaster() {
     turn_number_ = 0;
@@ -37,10 +39,10 @@ void wumpus_game::GameMaster::GameStart() {
         }
         while((unit_it_begin != unit_it_end) && (player_ptr_->game_continue.first)){
             unit_it_begin->second.lock()->PerformAction();
+            unit_it_begin++;
             while (unit_it_begin->second.expired()){
                 unit_it_begin = map_str_to_unitptr_.erase(unit_it_begin);
             }
-            unit_it_begin++;
         }
 
         if (!player_ptr_->game_continue.first){
@@ -62,10 +64,17 @@ wumpus_game::GameMaster::~GameMaster() {
 
 void wumpus_game::GameMaster::EventDay0() {
     for(int num = 0 ; num <25; num++){
-        switch (num%1){
-            case 0:
+        if(num == 0){
+            AddTile("ocean_tile");
+        } else if(num == 12){
+            AddTile("dark_tile");
+        } else{
+            if(num%5 == 0 || num%5==2 || num%5==4){
+                AddTile("mountain_ridge");
+            }
+            else{
                 AddTile("ocean_tile");
-                break;
+            }
         }
     }
     SetMapSquare(5);
@@ -102,6 +111,13 @@ void wumpus_game::GameMaster::AddTile(const std::string &tile_type_name) {
     std::shared_ptr<BaseTile> tile_sp;
     if (tile_type_name == "ocean_tile"){
         tile_sp.reset(new TileOcean(tile_counter_));
+    } else if(tile_type_name == "mountain_ridge"){
+        tile_sp.reset(new TileMountainRidge(tile_counter_));
+    } else if(tile_type_name == "dark_tile"){
+        tile_sp.reset(new TileDarkRoom(tile_counter_));
+    }
+    else{
+        throw std::runtime_error("tile does not exist or something picnic\n");
     }
     vector_of_tileptr_.push_back(tile_sp);
     tile_counter_++;

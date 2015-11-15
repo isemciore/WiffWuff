@@ -47,7 +47,7 @@ void wumpus_game::Paladin::PerformAction() {
                 std::cout << "oh noo you walked into Wumpus\n";
                 game_continue = std::make_pair(false,"eaten");
             }
-
+            location_tile_pointer_.lock()->PrintTileDependentInformation();
             break;
         }
         if(event_success && vectorize_user_input[0]=="Climb"){

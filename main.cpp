@@ -2,7 +2,7 @@
 #include <memory>
 #include "character/baseunit.h"
 #include "enviroment/basetile.h"
-#include "enviroment/tileocean.h"
+#include "enviroment/tile_ocean.h"
 #include "gamemaster.h"
 
 using namespace wumpus_game;

@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "tileocean.h"
+#include "tile_ocean.h"
 
 
 
@@ -48,4 +48,8 @@ bool wumpus_game::TileOcean::attack_action(std::string attacker, std::string def
         map_of_char_in_tile_.erase(defendent_pair_iterator);
     }
     return true;
+}
+
+void wumpus_game::TileOcean::PrintTileDependentInformation() {
+    std::cout << "You enter a waterfilled room and cannot attack in this room\n";
 }
