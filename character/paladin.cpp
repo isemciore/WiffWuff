@@ -17,7 +17,7 @@ wumpus_game::Paladin::Paladin(std::string name, std::weak_ptr<BaseTile> init_pos
 void wumpus_game::Paladin::PerformAction() {
     std::string user_input_args;
 //http://stackoverflow.com/questions/5607589/right-way-to-split-an-stdstring-into-a-vectorstring
-    bool event_success;
+    bool event_success;//
 
     location_tile_pointer_.lock()->PrintPlayerOptionAndInformation();
     //INIT TEXT AVAILABLE ACTION
