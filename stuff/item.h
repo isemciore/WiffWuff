@@ -10,12 +10,16 @@ namespace wumpus_game {
     class item {
     protected:
         std::string item_name_;
-        int weight_;
-        int volume_;
+        double weight_;
+        double volume_;
     public:
-        item(std::string item_name, int weight, int volume);
+        item(std::string item_name, double weight, double volume);
         item(const item&) = delete;
         ~item();
+
+        std::string get_name();
+        int get_weight();
+        int get_volume();
     };
 }
 

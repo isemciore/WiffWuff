@@ -47,7 +47,10 @@ namespace wumpus_game {
         virtual bool attack_action(std::string attacker, std::string defendent);
         virtual bool enter(std::shared_ptr<BaseUnit>);//Check if unit is sallowed
         bool move_char(std::string name, std::string direction);
-        bool exit(const std::string & name);
+        virtual bool exit(const std::string & name);
+
+        item* GetItemPointer(const std::string & item_name);
+        virtual bool AddItem(item*);
 
     };
 

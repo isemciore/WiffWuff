@@ -53,3 +53,14 @@ bool wumpus_game::TileOcean::attack_action(std::string attacker, std::string def
 void wumpus_game::TileOcean::PrintTileDependentInformation() {
     std::cout << "You enter a waterfilled room and cannot attack in this room\n";
 }
+
+bool wumpus_game::TileOcean::AddItem(wumpus_game::item *item) {
+    double item_density = ((double) item->get_weight())/((double) item->get_volume());
+    if(item_density > 1){
+        std::cout << item->get_name()<<" sinks to the bottom (density > 1)\n";
+        delete item;
+        return false;
+    }
+    map_of_items_in_tile_.insert(std::make_pair(item->get_name(),item));
+    return true;
+}

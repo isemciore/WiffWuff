@@ -8,9 +8,11 @@
 #include <iterator>
 
 wumpus_game::Paladin::Paladin(std::string name, std::weak_ptr<BaseTile> init_pos)
-    : player_ctrl(name, init_pos){
+    : PlayerCtrl(name, init_pos){
     map_of_member_action_.insert(std::make_pair("Travel", &BaseUnit::Travel));
     map_of_member_action_.insert(std::make_pair("Attack", &BaseUnit::Attack));
+    map_of_member_action_.insert(std::make_pair("Pick"  , &PlayerCtrl::PickUpItem));
+
 
 }
 

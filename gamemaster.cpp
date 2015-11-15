@@ -79,7 +79,7 @@ void wumpus_game::GameMaster::EventDay0() {
     }
     SetMapSquare(5);
 
-    //std::shared_ptr<player_ctrl> player_ptr;
+    //std::shared_ptr<PlayerCtrl> player_ptr;
     player_ptr_.reset(new Paladin("Meep",(std::weak_ptr<BaseTile>) vector_of_tileptr_[0]));
     vector_of_tileptr_[0]->AddCharToTile(player_ptr_);
     map_str_to_unitptr_.insert(std::make_pair("Meep",player_ptr_));
@@ -95,6 +95,9 @@ void wumpus_game::GameMaster::EventDay0() {
     wumpus_sp_ptr.reset(new Wumpus("Wumpus",(std::weak_ptr<BaseTile>) vector_of_tileptr_[7]));
     vector_of_tileptr_[7]->AddCharToTile(wumpus_sp_ptr);
     map_str_to_unitptr_.insert(std::make_pair("Wumpus",wumpus_sp_ptr));
+
+
+    InitialItemDrop();
 
 }
 
@@ -187,4 +190,9 @@ void wumpus_game::GameMaster::SetMapSquare(const std::size_t &num_tile_width) {
 
     }
 
+}
+
+void wumpus_game::GameMaster::InitialItemDrop() {
+    item* item_ptr = new item("cardboard_box",0.1,1);
+    vector_of_tileptr_[0]->AddItem(item_ptr);
 }

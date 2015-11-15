@@ -38,7 +38,7 @@ bool wumpus_game::BaseTile::move_char(std::string name, std::string direction) {
     std::shared_ptr<BaseUnit> src_ptr = map_of_char_in_tile_.find(name)->second;
 
     neighbour_map_type::iterator target_pair_it = map_of_neighbour_tile_.find(direction);
-    if(target_pair_it == map_of_neighbour_tile_.end()){
+    if(target_pair_it == map_of_neighbour_tile_.end() || target_pair_it->second.expired() ){
         std::cout << "direction does not exist\n";
         return false;
     }
@@ -86,6 +86,14 @@ void wumpus_game::BaseTile::PrintPlayerOptionAndInformation() {
     for(auto neighbour_tile_pair: map_of_neighbour_tile_){
         std::cout << neighbour_tile_pair.first << " ";
     }
+    if(map_of_items_in_tile_.size()>0){
+        std::cout << "In this room you can find \n";
+        for(auto& item : map_of_items_in_tile_){
+            std::cout << item.first << ", ";
+        }
+        std::cout << "\n";
+    }
+
     std::cout << "\n";
 
 
@@ -118,5 +126,22 @@ bool wumpus_game::BaseTile::attack_action(std::string attacker, std::string defe
     } else{
         map_of_char_in_tile_.erase(defendent_pair_iterator);
     }
+    return true;
+}
+
+wumpus_game::item *wumpus_game::BaseTile::GetItemPointer(const std::string & item_name) {
+    auto item_it =  map_of_items_in_tile_.find(item_name);
+    if(item_it == map_of_items_in_tile_.end()){
+        std::cout << "Cannot find item \n";
+        return nullptr;
+    }
+    item* item_return = item_it->second;
+    map_of_items_in_tile_.erase(item_it);
+
+    return item_return;
+}
+
+bool wumpus_game::BaseTile::AddItem(wumpus_game::item* item) {
+    map_of_items_in_tile_.insert(std::make_pair(item->get_name(),item));
     return true;
 }

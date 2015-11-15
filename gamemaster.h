@@ -10,18 +10,18 @@
 #include "character/baseunit.h"
 #include <map>
 #include <vector>
-#include "character/player_ctrl.h"
+#include "character/PlayerCtrl.h"
 #include "character/wumpus.h"
 
 namespace wumpus_game {
 
     class GameMaster {
-        //typedef std::pair<bool ,std::string>(player_ctrl::* player_member_function_ptr)(std::vector<std::string>);
+        //typedef std::pair<bool ,std::string>(PlayerCtrl::* player_member_function_ptr)(std::vector<std::string>);
         //std::map<std::size_t,player_member_function_ptr> map_player_member_function_ptr;
     private:
         std::map<std::string,std::weak_ptr<BaseUnit>> map_str_to_unitptr_;
         std::vector<std::shared_ptr<BaseTile>> vector_of_tileptr_;
-        std::shared_ptr<player_ctrl> player_ptr_;
+        std::shared_ptr<PlayerCtrl> player_ptr_;
         std::pair<bool,std::weak_ptr<Wumpus>> wumpus_ptr_;  //trigger dead wumpus event once
         std::size_t turn_number_;
         std::size_t tile_counter_ = 0;
@@ -59,6 +59,9 @@ namespace wumpus_game {
         void EndGameMessage();
 
         void EventSwapGoalTile();
+
+
+        void InitialItemDrop();
     };//
 
 }

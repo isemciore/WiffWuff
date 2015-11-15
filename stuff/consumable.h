@@ -14,7 +14,7 @@ namespace wumpus_game {
         int hp_mod_;
         int mana_mod_;
     public:
-        consumable(std::string item_name, int weight, int volume, int delta_hp, int delta_mana);
+        consumable(std::string item_name, double weight, double volume, double delta_hp, double delta_mana);
         std::pair<int,int> consume();
     };
 }
