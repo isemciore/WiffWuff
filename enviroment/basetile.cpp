@@ -70,3 +70,23 @@ bool wumpus_game::BaseTile::enter(std::shared_ptr<wumpus_game::BaseUnit> ptr) {
     return true;
 }
 
+void wumpus_game::BaseTile::PrintPlayerOptionAndInformation() {
+    for(auto neighbour_tile_pair: map_of_neighbour_tile_){
+        if(neighbour_tile_pair.second.lock()->is_wumpus_here()){
+            std::cout << "You smell the scent of Wumpus nearby \n";
+            std::cout << "easy mode : he is located to the "<< neighbour_tile_pair.first << "\n";
+        }
+    }
+    for(auto &character : map_of_char_in_tile_){
+        if(character.first != "Meep"){
+            std::cout << character.first << " is here\n";
+        }
+    }
+    std::cout << "Direction you can move is:\n";
+    for(auto neighbour_tile_pair: map_of_neighbour_tile_){
+        std::cout << neighbour_tile_pair.first << " ";
+    }
+    std::cout << "\n";
+
+
+}

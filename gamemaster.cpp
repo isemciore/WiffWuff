@@ -27,7 +27,7 @@ void wumpus_game::GameMaster::GameStart() {
             EventNewSpawns();
         }
         if (turn_number_%4){
-            EventDestroyTile();
+            EventDestroyTile();//if player is in tile, break loop
         }
         unit_it_begin = map_str_to_unitptr_.begin();
         unit_it_end = map_str_to_unitptr_.end();
@@ -154,18 +154,18 @@ void wumpus_game::GameMaster::SetMapSquare(const std::size_t &num_tile_width) {
         tile_id_num = tile->tile_id_;
 
         //Attach north room
-        if((tile_id_num+1)%num_tile_width && tile->DirectionFeasable[0]){
+        if((tile_id_num+1)%num_tile_width && tile->feaseable_direction[0]){
             AttachRoom(tile_id_num+1,"north");
         }
         //Attach room to east
-        if(tile_id_num < 20 && tile->DirectionFeasable[1]){
+        if(tile_id_num < 20 && tile->feaseable_direction[1]){
             AttachRoom(tile_id_num+num_tile_width,"east");
         }
         //Attach to south
-        if(tile_id_num%num_tile_width && tile->DirectionFeasable[2]){
+        if(tile_id_num%num_tile_width && tile->feaseable_direction[2]){
             AttachRoom(tile_id_num-1,"south");
         }
-        if(tile_id_num > (num_tile_width-1) && tile->DirectionFeasable[3]){
+        if(tile_id_num > (num_tile_width-1) && tile->feaseable_direction[3]){
             AttachRoom(tile_id_num-num_tile_width,"west");
         }
 

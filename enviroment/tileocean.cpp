@@ -9,10 +9,10 @@
 
 wumpus_game::TileOcean::TileOcean(std::size_t tile_id)
     : BaseTile(tile_id){
-    DirectionFeasable[0] = true;
-    DirectionFeasable[1] = true;
-    DirectionFeasable[2] = true;
-    DirectionFeasable[3] = true;
+    feaseable_direction[0] = true;
+    feaseable_direction[1] = true;
+    feaseable_direction[2] = true;
+    feaseable_direction[3] = true;
 
 }
 
