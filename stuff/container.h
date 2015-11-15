@@ -6,8 +6,14 @@
 #define WIFFWUFF_CONTAINER_H
 
 
+#include "item.h"
+
 namespace wumpus_game {
-    class container {
+    class container : public item{
+        int holdWeight_;
+        int holdVolume_;
+    public:
+        container(std::string name, int weight, int volume, int holdWeight, int holdVolume);
 
     };
 }

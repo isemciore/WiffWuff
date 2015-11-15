@@ -7,6 +7,7 @@
 #include <memory>
 #include <map>
 #include "../character/baseunit.h"
+#include "../stuff/item.h"
 
 namespace wumpus_game {
     class BaseUnit;
@@ -16,8 +17,9 @@ namespace wumpus_game {
 
         std::size_t tile_id_;
         std::map<std::string,std::shared_ptr<BaseUnit>> map_of_char_in_tile_;
-
         std::map<std::string,std::weak_ptr<BaseTile>> map_of_neighbour_tile_;
+        std::map<std::string,item*> map_of_items_in_tile_;
+
         //debugging purp
         //NORTH EAST SOUTH WEST ORDER
         bool feaseable_direction[4] = {false};
@@ -28,7 +30,7 @@ namespace wumpus_game {
         friend class GameMaster;
         typedef std::map<std::string,std::weak_ptr<BaseTile>> neighbour_map_type;
         typedef std::map<std::string,std::shared_ptr<BaseUnit>> character_map_type;
-
+        typedef std::map<std::string,item*> item_map_type;
         BaseTile(std::size_t);
         BaseTile(const BaseTile &);
         ~BaseTile();
