@@ -16,9 +16,14 @@ namespace wumpus_game {
         item* left_hand_ = nullptr;
         container* back_ = nullptr;
 
+        typedef std::map<std::string, item**> map_of_item_slot_type;
+        map_of_item_slot_type map_of_item_slot_;
+
+
+
     public:
         using BaseUnit::BaseUnit;
-        PlayerCtrl(std::string name, std::weak_ptr<BaseTile> bstile): BaseUnit(name, bstile){};
+        PlayerCtrl(std::string name, std::weak_ptr<BaseTile> bstile);
         std::pair<bool,std::string> game_continue = std::make_pair(true,"empty");
         virtual void PerformAction() = 0;
 

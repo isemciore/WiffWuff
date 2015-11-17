@@ -26,3 +26,10 @@ std::string wumpus_game::item::get_name() {
 int wumpus_game::item::get_weight() {
     return weight_;
 }
+
+wumpus_game::item *wumpus_game::item::get_item(std::string item_name) {
+    if (!item_name_ .compare(item_name)){
+        return this;
+    }
+    return nullptr;
+}

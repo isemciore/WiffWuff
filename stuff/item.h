@@ -20,6 +20,8 @@ namespace wumpus_game {
         std::string get_name();
         int get_weight();
         int get_volume();
+
+        virtual item* get_item(std::string item_name);
     };
 }
 

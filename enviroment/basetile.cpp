@@ -86,6 +86,7 @@ void wumpus_game::BaseTile::PrintPlayerOptionAndInformation() {
     for(auto neighbour_tile_pair: map_of_neighbour_tile_){
         std::cout << neighbour_tile_pair.first << " ";
     }
+    std::cout << "\n";
     if(map_of_items_in_tile_.size()>0){
         std::cout << "In this room you can find \n";
         for(auto& item : map_of_items_in_tile_){
