@@ -20,6 +20,9 @@ namespace wumpus_game {
 
 
         virtual void PerformAction();
+
+        bool Shoot(std::vector<std::string> input_cmds);
+
     };
 }
 

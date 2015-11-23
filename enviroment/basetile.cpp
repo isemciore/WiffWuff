@@ -11,7 +11,14 @@ wumpus_game::BaseTile::BaseTile(const wumpus_game::BaseTile &tile) {
 }
 
 wumpus_game::BaseTile::~BaseTile() {
-
+    item_map_type::iterator begin_itr = map_of_items_in_tile_.begin();
+    item_map_type::iterator end_itr   = map_of_items_in_tile_.end();
+    while(begin_itr != end_itr){
+        if (begin_itr->second != nullptr){
+            delete begin_itr->second;
+        }
+        begin_itr = map_of_items_in_tile_.erase(begin_itr);
+    }
 }
 
 
@@ -61,7 +68,7 @@ bool wumpus_game::BaseTile::exit(const std::string & name) {
     if(name=="Wumpus"){
         wumpus_is_here = false;
     }
-    map_of_neighbour_tile_.erase(name);
+    map_of_char_in_tile_.erase(name);
     return true;
 }
 

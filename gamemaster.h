@@ -20,8 +20,10 @@ namespace wumpus_game {
         //std::map<std::size_t,player_member_function_ptr> map_player_member_function_ptr;
     private:
         std::map<std::string,std::weak_ptr<BaseUnit>> map_str_to_unitptr_;
-        std::vector<std::shared_ptr<BaseTile>> vector_of_tileptr_;
+        //std::vector<std::shared_ptr<BaseTile>> vector_of_tileptr_;
+        std::map<std::size_t, std::shared_ptr<BaseTile>> map_int_to_tileptr_;
         std::shared_ptr<PlayerCtrl> player_ptr_;
+        //else wumpus disapears?
         std::pair<bool,std::weak_ptr<Wumpus>> wumpus_ptr_;  //trigger dead wumpus event once
         std::size_t turn_number_;
         std::size_t tile_counter_ = 0;
@@ -29,6 +31,7 @@ namespace wumpus_game {
 
 
     public:
+        typedef std::map<std::size_t, std::shared_ptr<BaseTile>> map_tileptr_type;
         typedef std::map<std::string,std::weak_ptr<BaseUnit>>::iterator unit_iterator_type;
         typedef std::pair<std::string,std::weak_ptr<BaseUnit>> string_tile_pair;
 
@@ -54,6 +57,9 @@ namespace wumpus_game {
         void AddTile(const std::string& tile_type_name);
         void RemoveTile(const std::size_t& tile_id);
 
+        void AddItem(std::string new_item_name, double new_item_weight, double new_item_volume, int dest);
+        void AddContainer(std::string new_container_name, double new_cont_vol_cap, double new_cont_wei_cap, int dest);
+
         void InitPrintStoryAndQuestion();
         void InitTurnMessages(std::size_t turn_no);
         void EndGameMessage();
@@ -62,6 +68,8 @@ namespace wumpus_game {
 
 
         void InitialItemDrop();
+
+        void AddItem(item *item_type_ptr, int dest);
     };//
 
 }

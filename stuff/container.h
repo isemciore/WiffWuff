@@ -25,6 +25,8 @@ namespace wumpus_game {
 
         typedef std::map<std::string,item*>::iterator item_container_iterator;
     public:
+        virtual ~container();
+
         container(std::string name, double holdWeight, double holdVolume);
 
         bool AddItem(item*);//If false, backpack broke
@@ -32,6 +34,8 @@ namespace wumpus_game {
 
         void DropItemToTile(std::weak_ptr<BaseTile> tile_pointer);
         item* GetItem(std::string item_name);
+
+        void Display_contents();
     };
 }
 

@@ -1,5 +1,6 @@
-Drop item
-Move item
+done - Drop item
+done mayby - Move - item
+DESTRUCTOR for item
 
 
 
@@ -8,22 +9,26 @@ tile:
 winning tile
     linking
 commands climb ladder
-delete tile
-    -- move to
-EXPIRED CHECK
+delete tile // replace with "Sunken tile";
+must check neibourgs tiles. or set weak ptr
+ALL FIND TILES CHECK FOR EXPIRATION TOO
 
 
 mage class
-shoot
+shoot paladin
 cast
 
+event spawn
+event delete
 
 
-
-item:
+item: - SHOW LOCATION DISPLAYED
 apple
 mango
 bow
 staff
 arrow
 backpack
+
+
+

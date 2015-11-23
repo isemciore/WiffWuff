@@ -30,6 +30,9 @@ bool wumpus_game::container::AddItem(wumpus_game::item *item) {
 }
 
 wumpus_game::item *wumpus_game::container::GetItem(std::string item_name) {
+    if (item_name == item_name_){
+        return this;
+    }
     std::map<std::string,item*>::iterator item_iterator = item_container.find(item_name);
     if(item_iterator == item_container.end()){
         std::cout << "cannot find item in backpack \n";
@@ -48,5 +51,22 @@ void wumpus_game::container::DropItemToTile(std::weak_ptr<BaseTile> tile_pointer
     while(first_item != last_item){
         tile_pointer.lock()->AddItem(first_item->second);
         first_item = item_container.erase(first_item);
+    }
+}
+
+void wumpus_game::container::Display_contents() {
+    for(auto & item1 : item_container){
+        std::cout << item1.second->get_name()<< ", ";
+    }
+}
+
+wumpus_game::container::~container() {
+    std::map<std::string,item*>::iterator itr_begin = item_container.begin();
+    std::map<std::string,item*>::iterator itr_end = item_container.end();
+    while(itr_begin != itr_end){
+        if (itr_begin->second != nullptr) {
+            delete itr_begin->second;
+        }
+        itr_begin = item_container.erase(itr_begin);
     }
 }

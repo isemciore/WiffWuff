@@ -18,6 +18,7 @@ namespace wumpus_game {
         ~item();
 
         std::string get_name();
+
         int get_weight();
         int get_volume();
 

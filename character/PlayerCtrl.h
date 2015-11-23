@@ -14,7 +14,7 @@ namespace wumpus_game {
         item* head_slot_ = nullptr;
         item* right_hand_ = nullptr;
         item* left_hand_ = nullptr;
-        container* back_ = nullptr;
+        item* back_ = nullptr;
 
         typedef std::map<std::string, item**> map_of_item_slot_type;
         map_of_item_slot_type map_of_item_slot_;
@@ -22,15 +22,19 @@ namespace wumpus_game {
 
 
     public:
+        virtual ~PlayerCtrl();
+
         using BaseUnit::BaseUnit;
         PlayerCtrl(std::string name, std::weak_ptr<BaseTile> bstile);
         std::pair<bool,std::string> game_continue = std::make_pair(true,"empty");
         virtual void PerformAction() = 0;
 
         bool PickUpItem(std::vector<std::string> arguments);
-        bool DropItem(std::vector<std::string> arguments);//TD
+        bool DropItem(std::vector<std::string> arguments);
         bool MoveItem(std::vector<std::string> arguments);//Check han d is free
         bool ClimbLadder(std::vector<std::string> arguments);
+
+        bool DisplayWield(std::vector<std::string> arguments);
     };
 }
 

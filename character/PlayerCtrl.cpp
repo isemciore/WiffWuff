@@ -22,7 +22,6 @@ bool wumpus_game::PlayerCtrl::PickUpItem(std::vector<std::string> arguments) {
     }
     std::string item_name = arguments[1+shift_constant];
     if(!arguments[2+shift_constant].compare("with")){
-        std::cout << "not enough arguments\n";
         shift_constant++;
     }
     if(arguments.size()<(3+shift_constant)){
@@ -90,4 +89,69 @@ wumpus_game::PlayerCtrl::PlayerCtrl(std::string name, std::weak_ptr<BaseTile> bs
     map_of_item_slot_.insert(std::make_pair("left",&left_hand_));
     map_of_item_slot_.insert(std::make_pair("head",&head_slot_));
 
+}
+
+bool wumpus_game::PlayerCtrl::MoveItem(std::vector<std::string> arguments) {
+    //move item from backpack   to      right   hand
+    //move item from right      hand    to      backpack
+    //move item from right      hand    to      left     hand
+    if (arguments.size() < 7){
+        return false;
+    }
+    std::string item_name = arguments[1];
+    std::string from_loc  = arguments[3];
+    std::string to_loc    = arguments[6];
+    if (arguments[6].compare("hand")){
+        std::string to_loc    = arguments[5];
+    }
+
+    map_of_item_slot_type::iterator from_itr = map_of_item_slot_.find(from_loc);
+    map_of_item_slot_type::iterator to_itr   = map_of_item_slot_.find(to_loc);
+    if (from_itr == map_of_item_slot_.end() ||  to_itr == map_of_item_slot_.end()){
+        std::cout << "bad input, expect move $item from $position to $position \n";
+        return false;
+    }
+
+    if ( *(to_itr->second) != nullptr){
+        std::cout << "desitination is not empty \n";
+        return false;
+    }
+    item* item_ptr = (*(from_itr->second))->get_item(item_name);
+    if (item_ptr == nullptr){
+        std::cout << "cannot find item\n";
+        return false;
+    }
+    *(from_itr->second) = nullptr;
+    *(to_itr->second)  = item_ptr;
+    std::cout << "you move item "<< item_ptr->get_name() <<" \n";
+    return true;
+}
+
+bool wumpus_game::PlayerCtrl::DisplayWield(std::vector<std::string> arguments) {
+    for(auto & item_itr  : map_of_item_slot_){
+        container* container_ptr = dynamic_cast<container*>(*(item_itr.second));
+        if (nullptr ==container_ptr){
+            if (*(item_itr.second) != nullptr) {
+                std::cout << (*(item_itr.second))->get_name() << ", ";
+            }
+        }else{
+            if (container_ptr != nullptr) {
+                std::cout << container_ptr->get_name() << "containers the item";
+                container_ptr->Display_contents();
+            }
+        }
+    }
+    std::cout << "\n";
+
+
+    return false;
+}
+
+wumpus_game::PlayerCtrl::~PlayerCtrl() {
+    for(auto & item_pair : map_of_item_slot_){
+        if ( *item_pair.second != nullptr){
+            delete (*item_pair.second);
+            *item_pair.second = nullptr;
+        }
+    }
 }
