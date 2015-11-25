@@ -33,7 +33,7 @@ namespace wumpus_game {
 
 
         void DropItemToTile(std::weak_ptr<BaseTile> tile_pointer);
-        Item * GetItem(std::string item_name);
+        Item* get_item(std::string item_name) override;
 
         void Display_contents();
     };

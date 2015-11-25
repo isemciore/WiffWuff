@@ -43,8 +43,8 @@ void wumpus_game::Paladin::PerformAction() {
         std::istream_iterator<std::string> begin(ss);
         std::istream_iterator<std::string> end;
         std::vector<std::string> vectorize_user_input(begin,end);
-        vectorize_user_input.push_back("making sure this vector is non empty");
-
+        vectorize_user_input.push_back("filler");
+        vectorize_user_input.push_back("filler");
 
         map_of_member_action_type::iterator member_function_pair_iterator = map_of_member_action_.find(vectorize_user_input[0]);
         if(member_function_pair_iterator == map_of_member_action_.end()){
@@ -75,6 +75,19 @@ bool wumpus_game::Paladin::Shoot(std::vector<std::string> input_cmds) {
     if (input_cmds.size() < 4){
         std::cout << "no enough input\n";
     }
+    if(right_hand_ != nullptr && !right_hand_->get_name().compare("bow")){
+        std::cout << "cannot shoot, no bow in your right hand" << "\n";
+        return false;
+    }
+    std::vector<std::string> dummy;
+    dummy.push_back("dummy");
+    dummy.push_back("arrow");
+    bool haveArrow = this->ConsumeItem(dummy);
+    if(!haveArrow){
+        std::cout << "there is no arrow in your left hand cannot shoot";
+        return false;
+    }
+
     std::weak_ptr<BaseTile> current_inspected_tile = location_tile_pointer_.lock();
     BaseTile::neighbour_map_type neighbour_map;
     BaseTile::neighbour_map_type::iterator neib_itr;

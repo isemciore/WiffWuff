@@ -15,20 +15,20 @@ ALL FIND TILES CHECK FOR EXPIRATION TOO
 
 
 mage class
-shoot paladin
+-done-shoot paladin
 cast
 
 event spawn
 event delete
 
 
-Item: - SHOW LOCATION DISPLAYED
+--Item: - SHOW LOCATION DISPLAYED
 apple
 mango
-bow
+-bow
 staff
-arrow
-backpack
+-arrow
+-backpack
 
 
 

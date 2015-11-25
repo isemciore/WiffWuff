@@ -29,7 +29,7 @@ bool wumpus_game::container::AddItem(wumpus_game::Item *item) {
     return true;
 }
 
-wumpus_game::Item *wumpus_game::container::GetItem(std::string item_name) {
+wumpus_game::Item *wumpus_game::container::get_item(std::string item_name) {
     if (item_name == item_name_){
         return this;
     }

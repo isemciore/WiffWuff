@@ -33,7 +33,7 @@ namespace wumpus_game {
         bool DropItem(std::vector<std::string> arguments);
         bool MoveItem(std::vector<std::string> arguments);//Check han d is free
         bool ClimbLadder(std::vector<std::string> arguments);
-
+        bool ConsumeItem(std::vector<std::string> arguments);
         bool DisplayWield(std::vector<std::string> arguments);
     };
 }

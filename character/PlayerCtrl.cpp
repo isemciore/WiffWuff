@@ -5,6 +5,7 @@
 #include "PlayerCtrl.h"
 #include <algorithm>
 #include <iostream>
+#include "../stuff/Consumable.h"
 
 bool wumpus_game::PlayerCtrl::PickUpItem(std::vector<std::string> arguments) {
     //expect: pick -/up %Item -/with %pos
@@ -59,7 +60,7 @@ bool wumpus_game::PlayerCtrl::DropItem(std::vector<std::string> arguments) {
     if (arguments.size()<3) {
         return false;
     }
-    if (arguments[2].compare("from")){
+    if (!arguments[2].compare("from")){
         if (arguments.size()<4){
             return false;
         }
@@ -79,7 +80,7 @@ bool wumpus_game::PlayerCtrl::DropItem(std::vector<std::string> arguments) {
     }
     *(mem_value_itr->second) = nullptr;
     location_tile_pointer_.lock()->AddItem(item_ptr);
-    return false;
+    return true;
 }
 
 wumpus_game::PlayerCtrl::PlayerCtrl(std::string name, std::weak_ptr<BaseTile> bstile)
@@ -92,17 +93,20 @@ wumpus_game::PlayerCtrl::PlayerCtrl(std::string name, std::weak_ptr<BaseTile> bs
 }
 
 bool wumpus_game::PlayerCtrl::MoveItem(std::vector<std::string> arguments) {
-    //move Item from backpack   to      right   hand
-    //move Item from right      hand    to      backpack
-    //move Item from right      hand    to      left     hand
+    //move item from backpack   to      right   hand
+    //move item from right      hand    to      backpack
+    //move item from right      hand    to      left     hand
     if (arguments.size() < 7){
+        std::cout << "to few arguments \n";
         return false;
     }
     std::string item_name = arguments[1];
     std::string from_loc  = arguments[3];
-    std::string to_loc    = arguments[6];
-    if (arguments[6].compare("hand")){
-        std::string to_loc    = arguments[5];
+    std::string to_loc    = "dummy";
+    if(!arguments[4].compare("to")){
+        to_loc = arguments[5];
+    } else if(!arguments[5].compare("to")){
+        to_loc = arguments[6];
     }
 
     map_of_item_slot_type::iterator from_itr = map_of_item_slot_.find(from_loc);
@@ -112,37 +116,100 @@ bool wumpus_game::PlayerCtrl::MoveItem(std::vector<std::string> arguments) {
         return false;
     }
 
-    if ( *(to_itr->second) != nullptr){
+    container* container_ptr = dynamic_cast<container*>(*(to_itr->second));
+    //pointerpointer points to some item that is not a backpack
+    if ( *(to_itr->second) != nullptr && container_ptr== nullptr){
         std::cout << "desitination is not empty \n";
         return false;
     }
+
     Item * item_ptr = (*(from_itr->second))->get_item(item_name);
+    /*
+    container* from_fest_cont_ptr = dynamic_cast<container*>(*(from_itr->second));
+    if(from_fest_cont_ptr!= nullptr) {
+        from_fest_cont_ptr->Display_contents();
+    }*/
+
     if (item_ptr == nullptr){
         std::cout << "cannot find Item\n";
         return false;
     }
     *(from_itr->second) = nullptr;
-    *(to_itr->second)  = item_ptr;
+
+    //if destination is a cointer
     std::cout << "you move Item "<< item_ptr->get_name() <<" \n";
+    if(container_ptr!= nullptr){
+        container_ptr->AddItem(item_ptr);
+        std::cout << "into a container\n";
+    }else {
+        *(to_itr->second) = item_ptr;
+    }
     return true;
 }
 
 bool wumpus_game::PlayerCtrl::DisplayWield(std::vector<std::string> arguments) {
+    if(right_hand_ != nullptr){
+        container* container_ptr = dynamic_cast<container*>(right_hand_);
+        std::cout << "In your right hand you have a ";
+        if(container_ptr!= nullptr){
+            std::cout << container_ptr->get_name() << " which contains the item";
+            container_ptr->Display_contents();
+        }else{
+            std::cout << right_hand_->get_name();
+        }
+        std::cout << "\n";
+    }
+    if(left_hand_ != nullptr){
+        container* container_ptr = dynamic_cast<container*>(left_hand_);
+        std::cout << "In your left hand you have a ";
+        if(container_ptr!= nullptr){
+            std::cout << container_ptr->get_name() << " which contains the item";
+            container_ptr->Display_contents();
+        }else{
+            std::cout << left_hand_->get_name();
+        }
+        std::cout << "\n";
+    }
+    if(head_slot_ != nullptr){
+        container* container_ptr = dynamic_cast<container*>(head_slot_);
+        std::cout << "On your head you have a ";
+        if(container_ptr!= nullptr){
+            std::cout << head_slot_->get_name() << " which contains the item";
+            container_ptr->Display_contents();
+        }else{
+            std::cout << head_slot_->get_name();
+        }
+        std::cout << "\n";
+    }
+
+    if(back_ != nullptr){
+        container* container_ptr = dynamic_cast<container*>(back_);
+        std::cout << "On your back you have a ";
+        if(container_ptr!= nullptr){
+            std::cout << container_ptr->get_name() << " which contains the item";
+            container_ptr->Display_contents();
+        }else{
+            std::cout << back_->get_name();
+        }
+        std::cout << "\n";
+    }
+/*
     for(auto & item_itr  : map_of_item_slot_){
         container* container_ptr = dynamic_cast<container*>(*(item_itr.second));
         if (nullptr ==container_ptr){
             if (*(item_itr.second) != nullptr) {
+
                 std::cout << (*(item_itr.second))->get_name() << ", ";
             }
         }else{
             if (container_ptr != nullptr) {
-                std::cout << container_ptr->get_name() << "containers the Item";
+                std::cout << container_ptr->get_name() << " contains the item";
                 container_ptr->Display_contents();
             }
         }
     }
     std::cout << "\n";
-
+*/
 
     return false;
 }
@@ -154,4 +221,39 @@ wumpus_game::PlayerCtrl::~PlayerCtrl() {
             *item_pair.second = nullptr;
         }
     }
+}
+
+bool wumpus_game::PlayerCtrl::ConsumeItem(std::vector<std::string> arguments) {
+    if(arguments.size()<2){
+        return false;
+    }
+    std::string item_name_to_be_consumed = arguments[1];
+    if(left_hand_!= nullptr && left_hand_->get_name() == item_name_to_be_consumed){
+        Consumable* item_to_be_constumed = dynamic_cast<Consumable*> (left_hand_);
+        if(item_to_be_constumed != nullptr){
+            right_hand_ = nullptr;
+            if(item_to_be_constumed->get_delta_hp() != 0){
+                current_health += item_to_be_constumed->get_delta_hp();
+                std::cout << "you gain health\n";
+            }
+            if(item_to_be_constumed->get_delta_mana() != 0){
+                current_mana += item_to_be_constumed->get_delta_mana();
+                std::cout << "you gain mana\n";
+            }
+            std::cout << "you used up "<< item_name_to_be_consumed << "\n";
+            delete item_to_be_constumed;
+            return true;
+        }
+        else{
+            std::cout << "cannot eat that\n";
+        }
+    }else{
+        std::cout << item_name_to_be_consumed << " is not in your left hand\n";
+    }
+    if(current_health <= 0){
+        game_continue = std::make_pair(false,"poison");
+        //Continue game false
+    }
+
+    return false;
 }

@@ -256,14 +256,32 @@ void wumpus_game::GameMaster::SetMapSquare(const std::size_t &num_tile_width) {
 void wumpus_game::GameMaster::InitialItemDrop() {
     //Item* item_ptr = new Item("cardboard_box",0.1,1);
     //vector_of_tileptr_[0]->AddItem(item_ptr);
+    AddConsumable("arrow",0);
+    AddConsumable("arrow",2);
+    AddConsumable("arrow",0);
     AddItem("cardboard",0.1,1,0);
+
     AddConsumable("apple",1);
+    AddContainer("backpack",10,2,1);
 }
 
+
+
+void wumpus_game::GameMaster::AddContainer(std::string new_container_name, double new_cont_wei_cap,
+                                           double new_cont_vol_cap, int dest) {
+    container* container_item = new container(new_container_name,new_cont_wei_cap,new_cont_vol_cap);
+    Item* air_bubble = new Item("bubble_wrap",0.00001,1);
+    Item* bow = new Item("Bow",0.3,0.2);
+    container_item->AddItem(air_bubble);
+    container_item->AddItem(bow);
+    AddItem(container_item,dest);
+}
 
 void wumpus_game::GameMaster::AddConsumable(std::string item_name, int dest){
     if(!item_name.compare("apple")){
         AddConsumable("apple",0.1,0.08,20,1,dest);
+    } else if(!item_name.compare("arrow")){
+        AddConsumable("arrow",0.4,0.1,0,0,dest);
     }
 }
 
