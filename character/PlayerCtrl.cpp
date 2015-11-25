@@ -7,7 +7,7 @@
 #include <iostream>
 
 bool wumpus_game::PlayerCtrl::PickUpItem(std::vector<std::string> arguments) {
-    //expect: pick -/up %item -/with %pos
+    //expect: pick -/up %Item -/with %pos
     if(arguments.size()<3){
         std::cout << "not enough arguments\n";
         return false;
@@ -29,14 +29,14 @@ bool wumpus_game::PlayerCtrl::PickUpItem(std::vector<std::string> arguments) {
     }
     std::string put_in_loc = arguments[2+shift_constant];
 
-    item* *mem_value_ptr;
+    Item * *mem_value_ptr;
     if(put_in_loc == "right"){
         if(right_hand_ == nullptr)
         mem_value_ptr = &right_hand_;
     } else if(put_in_loc =="left"){
         mem_value_ptr = &left_hand_;
     } else{
-        std::cout << "can only pick up  item with you right or left hand and not with "<<put_in_loc<<"\n";
+        std::cout << "can only pick up  Item with you right or left hand and not with "<<put_in_loc<<"\n";
         return false;
     }
     if(*mem_value_ptr != nullptr){
@@ -48,7 +48,7 @@ bool wumpus_game::PlayerCtrl::PickUpItem(std::vector<std::string> arguments) {
         return false;
     }
     std::cout << (*mem_value_ptr)->get_name()<<"\n";
-    std::cout << "Picking up item "<<(*mem_value_ptr)->get_name() << " with "<<
+    std::cout << "Picking up Item "<<(*mem_value_ptr)->get_name() << " with "<<
               put_in_loc <<" hand \n";
     return true;
 }
@@ -72,9 +72,9 @@ bool wumpus_game::PlayerCtrl::DropItem(std::vector<std::string> arguments) {
         std::cout <<"target location "<< drop_from_location << " does not seem to exist \n";
         return false;
     }
-    item* item_ptr = (*(mem_value_itr->second))->get_item(drop_item_name);
+    Item * item_ptr = (*(mem_value_itr->second))->get_item(drop_item_name);
     if (item_ptr == nullptr){
-        std::cout << "cannot find item";
+        std::cout << "cannot find Item";
         return false;
     }
     *(mem_value_itr->second) = nullptr;
@@ -92,9 +92,9 @@ wumpus_game::PlayerCtrl::PlayerCtrl(std::string name, std::weak_ptr<BaseTile> bs
 }
 
 bool wumpus_game::PlayerCtrl::MoveItem(std::vector<std::string> arguments) {
-    //move item from backpack   to      right   hand
-    //move item from right      hand    to      backpack
-    //move item from right      hand    to      left     hand
+    //move Item from backpack   to      right   hand
+    //move Item from right      hand    to      backpack
+    //move Item from right      hand    to      left     hand
     if (arguments.size() < 7){
         return false;
     }
@@ -108,7 +108,7 @@ bool wumpus_game::PlayerCtrl::MoveItem(std::vector<std::string> arguments) {
     map_of_item_slot_type::iterator from_itr = map_of_item_slot_.find(from_loc);
     map_of_item_slot_type::iterator to_itr   = map_of_item_slot_.find(to_loc);
     if (from_itr == map_of_item_slot_.end() ||  to_itr == map_of_item_slot_.end()){
-        std::cout << "bad input, expect move $item from $position to $position \n";
+        std::cout << "bad input, expect move $Item from $position to $position \n";
         return false;
     }
 
@@ -116,14 +116,14 @@ bool wumpus_game::PlayerCtrl::MoveItem(std::vector<std::string> arguments) {
         std::cout << "desitination is not empty \n";
         return false;
     }
-    item* item_ptr = (*(from_itr->second))->get_item(item_name);
+    Item * item_ptr = (*(from_itr->second))->get_item(item_name);
     if (item_ptr == nullptr){
-        std::cout << "cannot find item\n";
+        std::cout << "cannot find Item\n";
         return false;
     }
     *(from_itr->second) = nullptr;
     *(to_itr->second)  = item_ptr;
-    std::cout << "you move item "<< item_ptr->get_name() <<" \n";
+    std::cout << "you move Item "<< item_ptr->get_name() <<" \n";
     return true;
 }
 
@@ -136,7 +136,7 @@ bool wumpus_game::PlayerCtrl::DisplayWield(std::vector<std::string> arguments) {
             }
         }else{
             if (container_ptr != nullptr) {
-                std::cout << container_ptr->get_name() << "containers the item";
+                std::cout << container_ptr->get_name() << "containers the Item";
                 container_ptr->Display_contents();
             }
         }

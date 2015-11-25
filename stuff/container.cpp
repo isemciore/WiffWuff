@@ -6,20 +6,20 @@
 #include "container.h"
 
 wumpus_game::container::container(std::string name, double holdWeight, double holdVolume)
-    : item(name, 0.0,0.0)
+    : Item(name, 0.0,0.0)
     , k_capacity_hold_weight_(holdWeight)
     , k_capacity_hold_volume_(holdVolume)
 {
 
 }
 
-bool wumpus_game::container::AddItem(wumpus_game::item *item) {
+bool wumpus_game::container::AddItem(wumpus_game::Item *item) {
     weight_ += item->get_weight();
     volume_ += item->get_volume();
     item_container.insert(std::make_pair(item->get_name(), item));
 
     if(weight_ > k_capacity_hold_volume_){
-        std::cout << "Backpack breaks due to too big item \n";
+        std::cout << "Backpack breaks due to too big Item \n";
         return false;
     }
     if(volume_>k_capacity_hold_volume_){
@@ -29,16 +29,16 @@ bool wumpus_game::container::AddItem(wumpus_game::item *item) {
     return true;
 }
 
-wumpus_game::item *wumpus_game::container::GetItem(std::string item_name) {
+wumpus_game::Item *wumpus_game::container::GetItem(std::string item_name) {
     if (item_name == item_name_){
         return this;
     }
-    std::map<std::string,item*>::iterator item_iterator = item_container.find(item_name);
+    std::map<std::string, Item *>::iterator item_iterator = item_container.find(item_name);
     if(item_iterator == item_container.end()){
-        std::cout << "cannot find item in backpack \n";
+        std::cout << "cannot find Item in backpack \n";
         return nullptr;
     }
-    item* ptr_to_item = item_iterator->second;
+    Item * ptr_to_item = item_iterator->second;
     item_container.erase(item_iterator);
     return ptr_to_item;
 }
@@ -61,8 +61,8 @@ void wumpus_game::container::Display_contents() {
 }
 
 wumpus_game::container::~container() {
-    std::map<std::string,item*>::iterator itr_begin = item_container.begin();
-    std::map<std::string,item*>::iterator itr_end = item_container.end();
+    std::map<std::string, Item *>::iterator itr_begin = item_container.begin();
+    std::map<std::string, Item *>::iterator itr_end = item_container.end();
     while(itr_begin != itr_end){
         if (itr_begin->second != nullptr) {
             delete itr_begin->second;

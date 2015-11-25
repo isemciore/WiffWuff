@@ -7,22 +7,22 @@
 #include <string>
 
 namespace wumpus_game {
-    class item {
+    class Item {
     protected:
         std::string item_name_;
         double weight_;
         double volume_;
     public:
-        item(std::string item_name, double weight, double volume);
-        item(const item&) = delete;
-        ~item();
+        Item(std::string item_name, double weight, double volume);
+        Item(const Item &) = delete;
+        ~Item();
 
         std::string get_name();
 
         int get_weight();
         int get_volume();
 
-        virtual item* get_item(std::string item_name);
+        virtual Item * get_item(std::string item_name);
     };
 }
 

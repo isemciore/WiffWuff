@@ -1,6 +1,6 @@
-done - Drop item
-done mayby - Move - item
-DESTRUCTOR for item
+done - Drop Item
+done mayby - Move - Item
+DESTRUCTOR for Item
 
 
 
@@ -22,7 +22,7 @@ event spawn
 event delete
 
 
-item: - SHOW LOCATION DISPLAYED
+Item: - SHOW LOCATION DISPLAYED
 apple
 mango
 bow

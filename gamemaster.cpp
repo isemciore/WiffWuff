@@ -9,6 +9,7 @@
 #include "character/turtle.h"
 #include "enviroment/tile_mountain_ridge.h"
 #include "enviroment/tile_dark_room.h"
+#include "stuff/Consumable.h"
 
 wumpus_game::GameMaster::GameMaster() {
     turn_number_ = 0;
@@ -59,7 +60,7 @@ void wumpus_game::GameMaster::GameStart() {
             wumpus_tile_ptr.lock()->exit("Wumpus");
             //wumpus_ptr_.second.lock()->GetUnitLocation().lock()->map_of_char_in_tile_.erase("wumpus");
             AddItem("nightvision_googles",0.01,0.1,wumpus_id_loc);
-            //Add item to the ground
+            //Add Item to the ground
         }
 
 
@@ -253,13 +254,26 @@ void wumpus_game::GameMaster::SetMapSquare(const std::size_t &num_tile_width) {
 }
 
 void wumpus_game::GameMaster::InitialItemDrop() {
-    //item* item_ptr = new item("cardboard_box",0.1,1);
+    //Item* item_ptr = new Item("cardboard_box",0.1,1);
     //vector_of_tileptr_[0]->AddItem(item_ptr);
     AddItem("cardboard",0.1,1,0);
+    AddConsumable("apple",1);
+}
+
+
+void wumpus_game::GameMaster::AddConsumable(std::string item_name, int dest){
+    if(!item_name.compare("apple")){
+        AddConsumable("apple",0.1,0.08,20,1,dest);
+    }
+}
+
+void wumpus_game::GameMaster::AddConsumable(std::string item_name, double new_item_weight,double new_item_volume,double delta_hp, double delta_mana, int dest){
+    Item* consumable = new Consumable(item_name,new_item_weight,new_item_volume,delta_hp,delta_mana);
+    AddItem(consumable,dest);
 }
 
 void wumpus_game::GameMaster::AddItem(std::string new_item_name, double new_item_weight, double new_item_volume, int dest) {
-    item* item_ptr = new item(new_item_name,new_item_weight, new_item_volume);
+    Item * item_ptr = new Item(new_item_name,new_item_weight, new_item_volume);
     if (map_int_to_tileptr_.find(dest) != map_int_to_tileptr_.end()){
         map_tileptr_type::iterator tile_ptr_itr = map_int_to_tileptr_.find(dest);
         tile_ptr_itr->second->AddItem(item_ptr);
@@ -269,7 +283,7 @@ void wumpus_game::GameMaster::AddItem(std::string new_item_name, double new_item
     //vector_of_tileptr_[dest]->AddItem(item_ptr);
 }
 
-void wumpus_game::GameMaster::AddItem(item* item_ptr, int dest) {
+void wumpus_game::GameMaster::AddItem(Item * item_ptr, int dest) {
     if (map_int_to_tileptr_.find(dest) != map_int_to_tileptr_.end()){
         map_tileptr_type::iterator tile_ptr_itr = map_int_to_tileptr_.find(dest);
         tile_ptr_itr->second->AddItem(item_ptr);

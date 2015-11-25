@@ -60,7 +60,10 @@ namespace wumpus_game {
         void AddItem(std::string new_item_name, double new_item_weight, double new_item_volume, int dest);
         void AddContainer(std::string new_container_name, double new_cont_vol_cap, double new_cont_wei_cap, int dest);
 
-        void InitPrintStoryAndQuestion();
+        void AddConsumable(std::string item_name, int destination_id);
+        void AddConsumable(std::string item_name, double new_item_weight,double new_item_volume,double delta_hp, double delta_mana, int dest);
+
+            void InitPrintStoryAndQuestion();
         void InitTurnMessages(std::size_t turn_no);
         void EndGameMessage();
 
@@ -69,7 +72,7 @@ namespace wumpus_game {
 
         void InitialItemDrop();
 
-        void AddItem(item *item_type_ptr, int dest);
+        void AddItem(Item *item_type_ptr, int dest);
     };//
 
 }

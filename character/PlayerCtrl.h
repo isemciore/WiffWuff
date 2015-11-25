@@ -11,12 +11,12 @@
 namespace wumpus_game {
     class PlayerCtrl : public BaseUnit {
     protected:
-        item* head_slot_ = nullptr;
-        item* right_hand_ = nullptr;
-        item* left_hand_ = nullptr;
-        item* back_ = nullptr;
+        Item * head_slot_ = nullptr;
+        Item * right_hand_ = nullptr;
+        Item * left_hand_ = nullptr;
+        Item * back_ = nullptr;
 
-        typedef std::map<std::string, item**> map_of_item_slot_type;
+        typedef std::map<std::string, Item **> map_of_item_slot_type;
         map_of_item_slot_type map_of_item_slot_;
 
 

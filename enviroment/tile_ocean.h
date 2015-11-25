@@ -17,7 +17,7 @@ namespace wumpus_game {
 
         virtual void PrintTileDependentInformation();
 
-        virtual bool AddItem(item *item1) override;
+        virtual bool AddItem(Item *item1) override;
 
         virtual bool attack_action(std::string attacker, std::string attacked) override;
     };

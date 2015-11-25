@@ -137,19 +137,19 @@ bool wumpus_game::BaseTile::attack_action(std::string attacker, std::string defe
     return true;
 }
 
-wumpus_game::item *wumpus_game::BaseTile::GetItemPointer(const std::string & item_name) {
+wumpus_game::Item *wumpus_game::BaseTile::GetItemPointer(const std::string & item_name) {
     auto item_it =  map_of_items_in_tile_.find(item_name);
     if(item_it == map_of_items_in_tile_.end()){
-        std::cout << "Cannot find item \n";
+        std::cout << "Cannot find Item \n";
         return nullptr;
     }
-    item* item_return = item_it->second;
+    Item * item_return = item_it->second;
     map_of_items_in_tile_.erase(item_it);
 
     return item_return;
 }
 
-bool wumpus_game::BaseTile::AddItem(wumpus_game::item* item) {
+bool wumpus_game::BaseTile::AddItem(wumpus_game::Item * item) {
     map_of_items_in_tile_.insert(std::make_pair(item->get_name(),item));
     return true;
 }
