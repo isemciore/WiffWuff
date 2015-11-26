@@ -28,7 +28,10 @@ namespace wumpus_game {
         std::size_t turn_number_;
         std::size_t tile_counter_ = 0;
         std::size_t unit_counter_ = 0;
-
+        int desutrction_order_ [25] = {24,23,22,21,20,15,10,5,0,1,2,3,4,9,14,
+                                          19,18,17,16,11,6,7,8,13};
+        std::size_t tile_destruction_number_ = 0;
+        const std::size_t tile_max_destruction_num = 23;
 
     public:
         typedef std::map<std::size_t, std::shared_ptr<BaseTile>> map_tileptr_type;
@@ -46,7 +49,7 @@ namespace wumpus_game {
     private:
         void EventDay0();
         void EventNewSpawns();
-        void EventDestroyTile();
+        bool EventDestroyTile();
 
 
         void SaveGame();
@@ -55,7 +58,7 @@ namespace wumpus_game {
 
         void AddUnit(const std::string& unit_type_name, const std::size_t location_id);
         void AddTile(const std::string& tile_type_name);
-        void RemoveTile(const std::size_t& tile_id);
+        void RemoveTile(const int & tile_id);
 
         void AddItem(std::string new_item_name, double new_item_weight, double new_item_volume, int dest);
         void AddContainer(std::string new_container_name, double new_cont_wei_cap, double new_cont_vol_cap, int dest);

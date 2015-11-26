@@ -116,38 +116,61 @@ bool wumpus_game::PlayerCtrl::MoveItem(std::vector<std::string> arguments) {
         return false;
     }
 
+    container* from_cont_ptr = dynamic_cast<container*>(*(from_itr->second));
     container* container_ptr = dynamic_cast<container*>(*(to_itr->second));
     //pointerpointer points to some item that is not a backpack
     if ( *(to_itr->second) != nullptr && container_ptr== nullptr){
         std::cout << "desitination is not empty \n";
         return false;
     }
+    Item* item_ptr = nullptr;
+    if(*(from_itr->second) == nullptr){
+        std::cout << " cannot find from location \n";
+        return false;
+    }else if(from_cont_ptr == nullptr){ //item
+        item_ptr = *(from_itr->second);
+        *(from_itr->second) = nullptr;
+    }else{
+        item_ptr = (*(from_itr->second))->get_item(item_name);
+    }
 
-    Item * item_ptr = (*(from_itr->second))->get_item(item_name);
+
     /*
     container* from_fest_cont_ptr = dynamic_cast<container*>(*(from_itr->second));
     if(from_fest_cont_ptr!= nullptr) {
         from_fest_cont_ptr->Display_contents();
     }*/
-
     if (item_ptr == nullptr){
         std::cout << "cannot find Item\n";
         return false;
     }
-    *(from_itr->second) = nullptr;
+
+    if(item_ptr->get_name() == "nightvision_googles" && !(from_itr->first.compare("head")) ){
+        std::cout <<" you try to pull off your googles, but they are stuck \n";
+        return false;
+    }
+
 
     //if destination is a cointer
     std::cout << "you move Item "<< item_ptr->get_name() <<" \n";
     if(container_ptr!= nullptr){
         container_ptr->AddItem(item_ptr);
-        std::cout << "into a container\n";
+        std::cout << "into a container ";
     }else {
         *(to_itr->second) = item_ptr;
     }
+    std::cout << "in/on "<< to_itr->first << "\n";
+
+    if(!item_ptr->get_name().compare("nightvision_googles") && to_itr->first.compare("head")){
+        std::cout << " and you now you can see your surrounding clearly\n";
+        game_continue = std::make_pair(true,"googles_on");
+    }
+
     return true;
 }
 
 bool wumpus_game::PlayerCtrl::DisplayWield(std::vector<std::string> arguments) {
+    /*
     if(right_hand_ != nullptr){
         container* container_ptr = dynamic_cast<container*>(right_hand_);
         std::cout << "In your right hand you have a ";
@@ -193,24 +216,25 @@ bool wumpus_game::PlayerCtrl::DisplayWield(std::vector<std::string> arguments) {
         }
         std::cout << "\n";
     }
-/*
+     */
+
     for(auto & item_itr  : map_of_item_slot_){
         container* container_ptr = dynamic_cast<container*>(*(item_itr.second));
-        if (nullptr ==container_ptr){
+        if (nullptr ==container_ptr){ //regular item in location
             if (*(item_itr.second) != nullptr) {
-
+                std::cout << "In your "<< item_itr.first << " you have ";
                 std::cout << (*(item_itr.second))->get_name() << ", ";
             }
-        }else{
+        }else{//a backpack at location
             if (container_ptr != nullptr) {
-                std::cout << container_ptr->get_name() << " contains the item";
+                std::cout << "In your "<<item_itr.first<< " you have a ";
+                std::cout << container_ptr->get_name() << " which contains the item(s) ";
                 container_ptr->Display_contents();
+                std::cout << " ";
             }
         }
     }
     std::cout << "\n";
-*/
-
     return false;
 }
 

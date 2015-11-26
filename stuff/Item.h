@@ -22,7 +22,7 @@ namespace wumpus_game {
         int get_weight();
         int get_volume();
 
-        virtual Item * get_item(std::string item_name);
+        virtual Item * get_item(std::string item_name); //delete denna
     };
 }
 

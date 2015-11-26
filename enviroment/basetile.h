@@ -46,7 +46,7 @@ namespace wumpus_game {
         bool is_wumpus_here(){ return wumpus_is_here;}
         virtual bool attack_action(std::string attacker, std::string defendent);
         virtual bool enter(std::shared_ptr<BaseUnit>);//Check if unit is sallowed
-        bool move_char(std::string name, std::string direction);
+        virtual bool move_char(std::string name, std::string direction);
         virtual bool exit(const std::string & name);
 
         Item * GetItemPointer(const std::string & item_name);

@@ -19,6 +19,18 @@ wumpus_game::BaseTile::~BaseTile() {
         }
         begin_itr = map_of_items_in_tile_.erase(begin_itr);
     }
+    character_map_type::iterator begin_character_itr = map_of_char_in_tile_.begin();
+    character_map_type::iterator end_character_itr = map_of_char_in_tile_.end();
+    while(begin_character_itr!=end_character_itr){
+        /* //sharedpointer dont need delete
+        if(begin_character_itr->second!= nullptr){
+            delete begin_character_itr->second;
+        }*/
+        begin_character_itr = map_of_char_in_tile_.erase(begin_character_itr);
+    }
+
+
+
 }
 
 

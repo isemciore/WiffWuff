@@ -27,11 +27,14 @@ void wumpus_game::GameMaster::GameStart() {
         turn_number_++;
         }
         InitTurnMessages(turn_number_);
-        if (turn_number_%3){
+        if ((turn_number_+1)%3){
             EventNewSpawns();
         }
-        if (turn_number_%4){
-            EventDestroyTile();//if player is in tile, break loop
+        if ((turn_number_+1)%4){
+            bool player_in_tile = EventDestroyTile();//if player is in tile, break loop
+            if(!player_in_tile){
+                break;
+            }
         }
         unit_it_begin = map_str_to_unitptr_.begin();
         unit_it_end = map_str_to_unitptr_.end();
@@ -68,9 +71,12 @@ void wumpus_game::GameMaster::GameStart() {
             std::cout << player_ptr_->game_continue.first << " with the next line rror msg " << player_ptr_->game_continue.second << "\n";
             break;
         }
-
+        /*
         if(wumpus_ptr_.second.expired() && wumpus_ptr_.first== true){
             wumpus_ptr_.first = false;
+            EventSwapGoalTile();
+        }*/
+        if(!player_ptr_->game_continue.second.compare("googles_on")){
             EventSwapGoalTile();
         }
     }
@@ -156,9 +162,33 @@ void wumpus_game::GameMaster::EventNewSpawns() {
     //Create 3 turtle, put them randomly
 }
 
-void wumpus_game::GameMaster::EventDestroyTile() {
+bool wumpus_game::GameMaster::EventDestroyTile() {
+    if(tile_destruction_number_ >=23){
+        return true;
+    }
+    RemoveTile(desutrction_order_[tile_destruction_number_]);
+    tile_destruction_number_++;
+    return true;
+    //bool = player is in tile
+}
+
+void wumpus_game::GameMaster::EventSwapGoalTile() {
+    BaseTile::neighbour_map_type neighbour_map =
+            map_int_to_tileptr_.find(12)->second->get_neigbour_map();
+    //check east, west north south, etc for them replace with new tile and replace
+
+
     //
 }
+
+void wumpus_game::GameMaster::RemoveTile(const int &tile_id) {
+    map_tileptr_type::iterator target_tile_itr = map_int_to_tileptr_.find((int)tile_id);
+    if(target_tile_itr!= map_int_to_tileptr_.end()){
+        map_int_to_tileptr_.erase(target_tile_itr);
+    }
+}
+
+
 
 void wumpus_game::GameMaster::EndGameMessage() {
     std::cout << player_ptr_->game_continue.second << "\n";
@@ -200,9 +230,6 @@ void wumpus_game::GameMaster::AddUnit(const std::string &unit_type_name, const s
     map_str_to_unitptr_.insert(std::make_pair(unit_name,unit_sp));
 }
 
-void wumpus_game::GameMaster::EventSwapGoalTile() {
-
-}
 
 void wumpus_game::GameMaster::SetMapSquare(const std::size_t &num_tile_width) {
     std::size_t tile_id_num;
@@ -260,7 +287,7 @@ void wumpus_game::GameMaster::InitialItemDrop() {
     AddConsumable("arrow",2);
     AddConsumable("arrow",0);
     AddItem("cardboard",0.1,1,0);
-
+    AddItem("staff",0.2,0.3,10);
     AddConsumable("apple",1);
     AddContainer("backpack",10,2,1);
 }
@@ -271,7 +298,7 @@ void wumpus_game::GameMaster::AddContainer(std::string new_container_name, doubl
                                            double new_cont_vol_cap, int dest) {
     container* container_item = new container(new_container_name,new_cont_wei_cap,new_cont_vol_cap);
     Item* air_bubble = new Item("bubble_wrap",0.00001,1);
-    Item* bow = new Item("Bow",0.3,0.2);
+    Item* bow = new Item("bow",0.3,0.2);
     container_item->AddItem(air_bubble);
     container_item->AddItem(bow);
     AddItem(container_item,dest);
@@ -282,6 +309,8 @@ void wumpus_game::GameMaster::AddConsumable(std::string item_name, int dest){
         AddConsumable("apple",0.1,0.08,20,1,dest);
     } else if(!item_name.compare("arrow")){
         AddConsumable("arrow",0.4,0.1,0,0,dest);
+    } else if(!item_name.compare("mango")){
+        AddConsumable("mango",0.1,0.07,1,40,dest);
     }
 }
 
@@ -310,3 +339,4 @@ void wumpus_game::GameMaster::AddItem(Item * item_ptr, int dest) {
     }
     //vector_of_tileptr_[dest]->AddItem(item_ptr);
 }
+
