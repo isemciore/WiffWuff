@@ -19,7 +19,7 @@ namespace wumpus_game {
         Paladin(std::string name, std::weak_ptr<BaseTile> init_pos);
 
 
-        virtual void PerformAction();
+        virtual void PerformAction() override;
 
         bool Shoot(std::vector<std::string> input_cmds);
 

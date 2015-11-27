@@ -1,21 +1,21 @@
 //
-// Created by ezhang on 2015-11-14.
+// Created by ezhang on 2015-11-27.
 //
 
-#include "paladin.h"
 #include <iostream>
 #include <sstream>
 #include <iterator>
+#include "sorcerer.h"
 
-wumpus_game::Paladin::Paladin(std::string name, std::weak_ptr<BaseTile> init_pos)
-    : PlayerCtrl(name, init_pos){
+wumpus_game::Sorcerer::Sorcerer(std::string name, std::weak_ptr<BaseTile> init_pos)
+    : PlayerCtrl(name,init_pos){
     map_of_member_action_.insert(std::make_pair("Travel", &BaseUnit::Travel));
     map_of_member_action_.insert(std::make_pair("Attack", &BaseUnit::Attack));
     map_of_member_action_.insert(std::make_pair("Pick"  , &PlayerCtrl::PickUpItem));
     map_of_member_action_.insert(std::make_pair("Display",&PlayerCtrl::DisplayWield));
     map_of_member_action_.insert(std::make_pair("Move",   &PlayerCtrl::MoveItem));
     map_of_member_action_.insert(std::make_pair("Drop",   &PlayerCtrl::DropItem));
-    map_of_member_action_.insert(std::make_pair("Shoot",  &Paladin::Shoot));
+    map_of_member_action_.insert(std::make_pair("Cast",  &Sorcerer::Cast_spell));
     map_of_member_action_.insert(std::make_pair("Climb",  &PlayerCtrl::ClimbLadder));
 
 
@@ -25,21 +25,16 @@ wumpus_game::Paladin::Paladin(std::string name, std::weak_ptr<BaseTile> init_pos
     map_of_member_action_.insert(std::make_pair("display",&PlayerCtrl::DisplayWield));
     map_of_member_action_.insert(std::make_pair("move",   &PlayerCtrl::MoveItem));
     map_of_member_action_.insert(std::make_pair("drop",   &PlayerCtrl::DropItem));
-    map_of_member_action_.insert(std::make_pair("shoot",  &Paladin::Shoot));
+    map_of_member_action_.insert(std::make_pair("cast",  &Sorcerer::Cast_spell));
     map_of_member_action_.insert(std::make_pair("climb",  &PlayerCtrl::ClimbLadder));
-
-
 }
 
-void wumpus_game::Paladin::PerformAction() {
+void wumpus_game::Sorcerer::PerformAction() {
     std::string user_input_args;
-//http://stackoverflow.com/questions/5607589/right-way-to-split-an-stdstring-into-a-vectorstring
     bool event_success;//
 
     location_tile_pointer_.lock()->PrintPlayerOptionAndInformation();
-    //INIT TEXT AVAILABLE ACTION
-    //AVAILABLE WALKING DIRECTION
-    //INCASE SMELL OF WUMPUS
+
     while(true){
         event_success = false;
         getline(std::cin,user_input_args);
@@ -78,30 +73,18 @@ void wumpus_game::Paladin::PerformAction() {
     }
 }
 
-bool wumpus_game::Paladin::Shoot(std::vector<std::string> input_cmds) {
-    //have arrow check
-    if (input_cmds.size() < 4){
-        std::cout << "no enough input\n";
-    }
-    if(right_hand_ == nullptr || right_hand_->get_name().compare("bow")){
-        std::cout << "cannot shoot, no bow in your right hand" << "\n";
+bool wumpus_game::Sorcerer::Cast_spell(std::vector<std::string> input_cmds) {
+    if (current_mana < 40){
+        std::cout << "you do not have enough mana to cast a firball \n";
+        return false;
+    } else if(right_hand_== nullptr|| right_hand_->get_name().compare("wizard_staff")){
+        std::cout << "missing a wizard_staff in your right ahnd \n";
         return false;
     }
-    std::vector<std::string> dummy;//simulate "consume arrow" input
-    dummy.push_back("dummy");
-    dummy.push_back("arrow");
+
+    current_mana-=40;
+
     std::weak_ptr<BaseTile> current_inspected_tile = location_tile_pointer_.lock();
-    if(!location_tile_pointer_.lock()->shoot_able_from_room()){
-        std::cout << "you cannot draw your bow in this room";
-        return false;
-    }
-
-    bool haveArrow = this->ConsumeItem(dummy);
-    if(!haveArrow){
-        std::cout << "there is no arrow in your left hand cannot shoot";
-        return false;
-    }
-
     BaseTile::neighbour_map_type neighbour_map;
     BaseTile::neighbour_map_type::iterator neib_itr;
     for(int i = 1; i < 4;i++){
@@ -110,7 +93,8 @@ bool wumpus_game::Paladin::Shoot(std::vector<std::string> input_cmds) {
         if (neib_itr  != neighbour_map.end()){
             current_inspected_tile = neib_itr->second;
             if (current_inspected_tile.lock()->is_wumpus_here()){
-                std::cout << "You here something wimpering in the distance, and are confident you got a big game\n";
+                std::cout << "You hear an explosion and smell burned meat"
+                                     ", and are confident you got a big game\n";
                 game_continue = std::make_pair(true,"headshot");
                 return true;
             } else if (current_inspected_tile.lock() == location_tile_pointer_.lock()){
@@ -119,10 +103,6 @@ bool wumpus_game::Paladin::Shoot(std::vector<std::string> input_cmds) {
             }
         }
     }
+
     return false;
-
-
-
-    return false; //True if hit wumpus or player //Need to check afterwards who got it
-    //If player get hit return true, game continue false, reason suicide in
 }

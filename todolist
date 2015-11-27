@@ -6,12 +6,12 @@ DESTRUCTOR for Item
 
 REPLACE TILE
 tile:
-winning tile
-    linking
-commands climb ladder
-delete tile // replace with "Sunken tile";
-must check neibourgs tiles. or set weak ptr
-ALL FIND TILES CHECK FOR EXPIRATION TOO
+-winning tile
+-    linking
+-commands climb ladder
+-delete tile // replace with "Sunken tile";
+-must check neibourgs tiles. or set weak ptr
+-ALL FIND TILES CHECK FOR EXPIRATION TOO
 
 
 mage class

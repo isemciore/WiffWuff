@@ -312,7 +312,7 @@ void wumpus_game::GameMaster::InitialItemDrop() {
     AddConsumable("arrow",2);
     AddConsumable("arrow",0);
     AddItem("cardboard",0.1,1,0);
-    AddItem("staff",0.2,0.3,10);
+    AddItem("wizard_staff",0.2,0.3,10);
     AddConsumable("apple",1);
     AddContainer("backpack",10,2,1);
 }

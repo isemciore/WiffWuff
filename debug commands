@@ -37,6 +37,8 @@ travel east
 travel north
 climb
 
+
+//Kill by sunken tile
 travel north
 travel north
 travel north

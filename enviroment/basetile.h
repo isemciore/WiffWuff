@@ -52,6 +52,9 @@ namespace wumpus_game {
         Item * GetItemPointer(const std::string & item_name);
         virtual bool AddItem(Item *);
 
+
+        virtual bool shoot_able_from_room(){return true;};
+
     };
 
 }
