@@ -72,7 +72,7 @@ namespace wumpus_game {
 
         void EventSwapGoalTile();
 
-
+        void AttachNeighbour(map_tileptr_type::iterator room_ptr,const std::size_t &num_tile_width);
         void InitialItemDrop();
 
         void AddItem(Item *item_type_ptr, int dest);

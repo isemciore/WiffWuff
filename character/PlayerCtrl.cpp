@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <iostream>
 #include "../stuff/Consumable.h"
+#include "../enviroment/tile_dark_room.h"
+#include "../enviroment/tile_escape_win.h"
 
 bool wumpus_game::PlayerCtrl::PickUpItem(std::vector<std::string> arguments) {
     //expect: pick -/up %Item -/with %pos
@@ -132,6 +134,10 @@ bool wumpus_game::PlayerCtrl::MoveItem(std::vector<std::string> arguments) {
         *(from_itr->second) = nullptr;
     }else{
         item_ptr = (*(from_itr->second))->get_item(item_name);
+        if(item_name == (*(from_itr->second))->get_name()){
+            //moving backpack
+            *(from_itr->second) = nullptr;
+        }
     }
 
 
@@ -161,7 +167,7 @@ bool wumpus_game::PlayerCtrl::MoveItem(std::vector<std::string> arguments) {
     }
     std::cout << "in/on "<< to_itr->first << "\n";
 
-    if(!item_ptr->get_name().compare("nightvision_googles") && to_itr->first.compare("head")){
+    if(!item_ptr->get_name().compare("nightvision_googles") && !to_itr->first.compare("head")){
         std::cout << " and you now you can see your surrounding clearly\n";
         game_continue = std::make_pair(true,"googles_on");
     }
@@ -255,7 +261,6 @@ bool wumpus_game::PlayerCtrl::ConsumeItem(std::vector<std::string> arguments) {
     if(left_hand_!= nullptr && left_hand_->get_name() == item_name_to_be_consumed){
         Consumable* item_to_be_constumed = dynamic_cast<Consumable*> (left_hand_);
         if(item_to_be_constumed != nullptr){
-            right_hand_ = nullptr;
             if(item_to_be_constumed->get_delta_hp() != 0){
                 current_health += item_to_be_constumed->get_delta_hp();
                 std::cout << "you gain health\n";
@@ -265,7 +270,8 @@ bool wumpus_game::PlayerCtrl::ConsumeItem(std::vector<std::string> arguments) {
                 std::cout << "you gain mana\n";
             }
             std::cout << "you used up "<< item_name_to_be_consumed << "\n";
-            delete item_to_be_constumed;
+            delete left_hand_;
+            left_hand_ = nullptr;
             return true;
         }
         else{
@@ -279,5 +285,17 @@ bool wumpus_game::PlayerCtrl::ConsumeItem(std::vector<std::string> arguments) {
         //Continue game false
     }
 
+    return false;
+}
+
+bool wumpus_game::PlayerCtrl::ClimbLadder(std::vector<std::string> arguments) {
+
+    std::shared_ptr<Tile_escape_win> sp_t_win =
+            std::dynamic_pointer_cast<Tile_escape_win> (location_tile_pointer_.lock());
+    if(sp_t_win!= nullptr){
+        game_continue = std::make_pair(false,"escape");
+        return true;
+    }
+    std::cout << "you scratch the walls.. nothing happens \n";
     return false;
 }

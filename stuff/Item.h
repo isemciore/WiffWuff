@@ -15,7 +15,7 @@ namespace wumpus_game {
     public:
         Item(std::string item_name, double weight, double volume);
         Item(const Item &) = delete;
-        ~Item();
+        virtual ~Item();
 
         std::string get_name();
 

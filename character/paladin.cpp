@@ -16,6 +16,7 @@ wumpus_game::Paladin::Paladin(std::string name, std::weak_ptr<BaseTile> init_pos
     map_of_member_action_.insert(std::make_pair("Move",   &PlayerCtrl::MoveItem));
     map_of_member_action_.insert(std::make_pair("Drop",   &PlayerCtrl::DropItem));
     map_of_member_action_.insert(std::make_pair("Shoot",  &Paladin::Shoot));
+    map_of_member_action_.insert(std::make_pair("Climb",  &PlayerCtrl::ClimbLadder));
 
 
     map_of_member_action_.insert(std::make_pair("travel", &BaseUnit::Travel));
@@ -25,6 +26,9 @@ wumpus_game::Paladin::Paladin(std::string name, std::weak_ptr<BaseTile> init_pos
     map_of_member_action_.insert(std::make_pair("move",   &PlayerCtrl::MoveItem));
     map_of_member_action_.insert(std::make_pair("drop",   &PlayerCtrl::DropItem));
     map_of_member_action_.insert(std::make_pair("shoot",  &Paladin::Shoot));
+    map_of_member_action_.insert(std::make_pair("climb",  &PlayerCtrl::ClimbLadder));
+
+
 }
 
 void wumpus_game::Paladin::PerformAction() {
@@ -67,6 +71,10 @@ void wumpus_game::Paladin::PerformAction() {
             game_continue = std::make_pair(false,"win");
             break;
         }
+
+        if(game_continue.first==false){
+            break;
+        }
     }
 }
 
@@ -75,11 +83,11 @@ bool wumpus_game::Paladin::Shoot(std::vector<std::string> input_cmds) {
     if (input_cmds.size() < 4){
         std::cout << "no enough input\n";
     }
-    if(right_hand_ != nullptr && !right_hand_->get_name().compare("bow")){
+    if(right_hand_ == nullptr || right_hand_->get_name().compare("bow")){
         std::cout << "cannot shoot, no bow in your right hand" << "\n";
         return false;
     }
-    std::vector<std::string> dummy;
+    std::vector<std::string> dummy;//simulate "consume arrow" input
     dummy.push_back("dummy");
     dummy.push_back("arrow");
     bool haveArrow = this->ConsumeItem(dummy);

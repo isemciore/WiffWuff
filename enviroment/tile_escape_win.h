@@ -10,6 +10,8 @@
 
 namespace wumpus_game {
     class Tile_escape_win : public BaseTile{
+    public:
+
         using BaseTile::BaseTile;
         Tile_escape_win(std::size_t tile_id);
         virtual bool enter(std::shared_ptr<BaseUnit> ptr) override;
@@ -17,6 +19,8 @@ namespace wumpus_game {
         virtual void PrintTileDependentInformation() override;
 
         void finish_game();
+
+
 
     };
 }

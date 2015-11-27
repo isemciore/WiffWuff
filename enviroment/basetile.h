@@ -18,7 +18,7 @@ namespace wumpus_game {
         std::size_t tile_id_;
         std::map<std::string,std::shared_ptr<BaseUnit>> map_of_char_in_tile_;
         std::map<std::string,std::weak_ptr<BaseTile>> map_of_neighbour_tile_;
-        std::map<std::string, Item *> map_of_items_in_tile_;
+        std::multimap<std::string, Item *> map_of_items_in_tile_;
 
         //debugging purp
         //NORTH EAST SOUTH WEST ORDER
@@ -30,7 +30,7 @@ namespace wumpus_game {
         friend class GameMaster;
         typedef std::map<std::string,std::weak_ptr<BaseTile>> neighbour_map_type;
         typedef std::map<std::string,std::shared_ptr<BaseUnit>> character_map_type;
-        typedef std::map<std::string, Item *> item_map_type;
+        typedef std::multimap<std::string, Item *> item_map_type;
         BaseTile(std::size_t);
         BaseTile(const BaseTile &);
         ~BaseTile();

@@ -10,6 +10,7 @@
 #include "enviroment/tile_mountain_ridge.h"
 #include "enviroment/tile_dark_room.h"
 #include "stuff/Consumable.h"
+#include "enviroment/tile_escape_win.h"
 
 wumpus_game::GameMaster::GameMaster() {
     turn_number_ = 0;
@@ -19,18 +20,18 @@ void wumpus_game::GameMaster::GameStart() {
 
     unit_iterator_type unit_it_begin;
     unit_iterator_type unit_it_end;
-
+    bool add_googles_once = false;
     bool run_once_wumpus = false;
-    for(turn_number_; turn_number_<10;turn_number_++){
+    for(turn_number_; turn_number_<50;turn_number_++){
         if (turn_number_==0){
             EventDay0();
         turn_number_++;
         }
         InitTurnMessages(turn_number_);
-        if ((turn_number_+1)%3){
+        if ((turn_number_+1)%3 == 0){
             EventNewSpawns();
         }
-        if ((turn_number_+1)%4){
+        if ((turn_number_+1)%4 == 0){
             bool player_in_tile = EventDestroyTile();//if player is in tile, break loop
             if(!player_in_tile){
                 break;
@@ -43,6 +44,7 @@ void wumpus_game::GameMaster::GameStart() {
             unit_it_begin = map_str_to_unitptr_.erase(unit_it_begin);
         }
         while((unit_it_begin != unit_it_end) && (player_ptr_->game_continue.first)){
+            std::cout << unit_it_begin->second.lock()->get_unit_name()<<"\n";
             unit_it_begin->second.lock()->PerformAction();
             unit_it_begin++;
             while (unit_it_begin->second.expired() && unit_it_begin!=unit_it_end){
@@ -76,9 +78,13 @@ void wumpus_game::GameMaster::GameStart() {
             wumpus_ptr_.first = false;
             EventSwapGoalTile();
         }*/
-        if(!player_ptr_->game_continue.second.compare("googles_on")){
+        if(!player_ptr_->game_continue.second.compare("googles_on") && add_googles_once == false){
+            add_googles_once = true;
             EventSwapGoalTile();
         }
+
+
+
     }
     EndGameMessage();
 
@@ -146,8 +152,11 @@ void wumpus_game::GameMaster::AddTile(const std::string &tile_type_name) {
         tile_sp.reset(new TileMountainRidge(tile_counter_));
     } else if(tile_type_name == "dark_tile"){
         tile_sp.reset(new TileDarkRoom(tile_counter_));
-    }
-    else{
+    } else if(tile_type_name == "win_tile"){
+        tile_sp.reset(new Tile_escape_win(12));
+        map_int_to_tileptr_.insert(std::make_pair(12,tile_sp));
+        return;
+    } else{
         throw std::runtime_error("tile does not exist or something picnic\n");
     }
     map_int_to_tileptr_.insert(std::make_pair(tile_counter_,tile_sp));
@@ -173,15 +182,19 @@ bool wumpus_game::GameMaster::EventDestroyTile() {
 }
 
 void wumpus_game::GameMaster::EventSwapGoalTile() {
-    BaseTile::neighbour_map_type neighbour_map =
-            map_int_to_tileptr_.find(12)->second->get_neigbour_map();
+    map_tileptr_type::iterator remove_target = map_int_to_tileptr_.find(12);
+    map_int_to_tileptr_.erase(remove_target);
+    AddTile("win_tile");
+    SetMapSquare(5);//repair connections
     //check east, west north south, etc for them replace with new tile and replace
+    //s11 n13 w7 e17
 
 
     //
 }
 
 void wumpus_game::GameMaster::RemoveTile(const int &tile_id) {
+    std::cout << tile_id << "\n";
     map_tileptr_type::iterator target_tile_itr = map_int_to_tileptr_.find((int)tile_id);
     if(target_tile_itr!= map_int_to_tileptr_.end()){
         map_int_to_tileptr_.erase(target_tile_itr);
@@ -232,53 +245,60 @@ void wumpus_game::GameMaster::AddUnit(const std::string &unit_type_name, const s
 
 
 void wumpus_game::GameMaster::SetMapSquare(const std::size_t &num_tile_width) {
-    std::size_t tile_id_num;
-    std::shared_ptr<BaseTile> tile;
+
 
     //for(std::shared_ptr<BaseTile>& tile: vector_of_tileptr_){
     map_tileptr_type::iterator first_elt = map_int_to_tileptr_.begin();
     map_tileptr_type::iterator last_elt = map_int_to_tileptr_.end();
     while(first_elt!= last_elt){
-        tile = first_elt->second;
-        tile_id_num = tile->tile_id_;
-
-        //adding tile id, with certain reference name dir attached to tile.
-        //
-        auto AttachRoom = [&tile, this](int roomID,std::string dir){
-            map_tileptr_type::iterator tile_itr = map_int_to_tileptr_.find((std::size_t) roomID);
-            if (tile_itr!=map_int_to_tileptr_.end()) {
-                std::weak_ptr<BaseTile> baseTilePtr = tile_itr->second;
-                tile->map_of_neighbour_tile_.insert(std::make_pair(dir,baseTilePtr));
-
-            }
-        };
-            /*
-            tile->map_of_neighbour_tile_.insert(
-                    std::make_pair(dir,(std::weak_ptr<BaseTile>)vector_of_tileptr_[roomID]));
-            */
-        //Attach north room
-        if((tile_id_num+1)%num_tile_width && tile->feaseable_direction[0]){
-            AttachRoom(tile_id_num+1,"north");
-            //BaseTile::neighbour_map_type::iterator tilePair =  tile->map_of_neighbour_tile_.find("north");
-            //std::cout << tilePair->second.lock()->get_tile_id()<<"\n";
-        }
-        //Attach room to east
-        if(tile_id_num < 20 && tile->feaseable_direction[1]){
-            AttachRoom(tile_id_num+num_tile_width,"east");
-        }
-        //Attach to south
-        if(tile_id_num%num_tile_width && tile->feaseable_direction[2]){
-            AttachRoom(tile_id_num-1,"south");
-        }
-        if(tile_id_num > (num_tile_width-1) && tile->feaseable_direction[3]){
-            AttachRoom(tile_id_num-num_tile_width,"west");
-        }
-
-
+        AttachNeighbour(first_elt,num_tile_width);
         first_elt++;
+    }
+}
+
+void wumpus_game::GameMaster::AttachNeighbour(
+        std::map<unsigned long, std::shared_ptr<wumpus_game::BaseTile>>::iterator room_ptr,
+        const std::size_t &num_tile_width) {
+    std::size_t tile_id_num;
+    std::shared_ptr<BaseTile> tile;
+    tile = room_ptr->second;
+    tile_id_num = tile->tile_id_;
+    //adding tile id, with certain reference name dir attached to tile.
+    //
+    auto AttachRoom = [&tile, this](int roomID,std::string dir){
+        map_tileptr_type::iterator tile_itr = map_int_to_tileptr_.find((std::size_t) roomID);
+        if (tile_itr!=map_int_to_tileptr_.end()) {
+            std::weak_ptr<BaseTile> baseTilePtr = tile_itr->second;
+            tile->map_of_neighbour_tile_.erase(dir);
+            tile->map_of_neighbour_tile_.insert(std::make_pair(dir,baseTilePtr));
+
+        }
+    };
+    /*
+    tile->map_of_neighbour_tile_.insert(
+            std::make_pair(dir,(std::weak_ptr<BaseTile>)vector_of_tileptr_[roomID]));
+    */
+    //Attach north room
+    if((tile_id_num+1)%num_tile_width && tile->feaseable_direction[0]){
+        AttachRoom(tile_id_num+1,"north");
+        //BaseTile::neighbour_map_type::iterator tilePair =  tile->map_of_neighbour_tile_.find("north");
+        //std::cout << tilePair->second.lock()->get_tile_id()<<"\n";
+    }
+    //Attach room to east
+    if(tile_id_num < 20 && tile->feaseable_direction[1]){
+        AttachRoom(tile_id_num+num_tile_width,"east");
+    }
+    //Attach to south
+    if(tile_id_num%num_tile_width && tile->feaseable_direction[2]){
+        AttachRoom(tile_id_num-1,"south");
+    }
+    if(tile_id_num > (num_tile_width-1) && tile->feaseable_direction[3]){
+        AttachRoom(tile_id_num-num_tile_width,"west");
     }
 
 }
+
+
 
 void wumpus_game::GameMaster::InitialItemDrop() {
     //Item* item_ptr = new Item("cardboard_box",0.1,1);
@@ -296,11 +316,13 @@ void wumpus_game::GameMaster::InitialItemDrop() {
 
 void wumpus_game::GameMaster::AddContainer(std::string new_container_name, double new_cont_wei_cap,
                                            double new_cont_vol_cap, int dest) {
-    container* container_item = new container(new_container_name,new_cont_wei_cap,new_cont_vol_cap);
-    Item* air_bubble = new Item("bubble_wrap",0.00001,1);
-    Item* bow = new Item("bow",0.3,0.2);
-    container_item->AddItem(air_bubble);
-    container_item->AddItem(bow);
+    container *container_item = new container(new_container_name, new_cont_wei_cap, new_cont_vol_cap);
+    if (!new_container_name.compare("backpack")) {
+        Item *air_bubble = new Item("bubble_wrap", 0.00001, 1);
+        Item *bow = new Item("bow", 0.3, 0.2);
+        container_item->AddItem(air_bubble);
+        container_item->AddItem(bow);
+    }
     AddItem(container_item,dest);
 }
 
@@ -339,4 +361,3 @@ void wumpus_game::GameMaster::AddItem(Item * item_ptr, int dest) {
     }
     //vector_of_tileptr_[dest]->AddItem(item_ptr);
 }
-
