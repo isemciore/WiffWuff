@@ -175,9 +175,9 @@ bool wumpus_game::GameMaster::EventDestroyTile() {
     if(tile_destruction_number_ >=23){
         return true;
     }
-    RemoveTile(desutrction_order_[tile_destruction_number_]);
+    bool playerWasInTile = RemoveTile(desutrction_order_[tile_destruction_number_]);
     tile_destruction_number_++;
-    return true;
+    return playerWasInTile;
     //bool = player is in tile
 }
 
@@ -193,12 +193,17 @@ void wumpus_game::GameMaster::EventSwapGoalTile() {
     //
 }
 
-void wumpus_game::GameMaster::RemoveTile(const int &tile_id) {
+bool wumpus_game::GameMaster::RemoveTile(const int &tile_id) {
     std::cout << tile_id << "\n";
     map_tileptr_type::iterator target_tile_itr = map_int_to_tileptr_.find((int)tile_id);
+    int target_id = player_ptr_->GetUnitLocation().lock()->get_tile_id();
     if(target_tile_itr!= map_int_to_tileptr_.end()){
         map_int_to_tileptr_.erase(target_tile_itr);
     }
+    if(tile_id == target_id){
+        return false;
+    }
+    return true;
 }
 
 

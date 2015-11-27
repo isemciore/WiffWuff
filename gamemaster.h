@@ -58,7 +58,7 @@ namespace wumpus_game {
 
         void AddUnit(const std::string& unit_type_name, const std::size_t location_id);
         void AddTile(const std::string& tile_type_name);
-        void RemoveTile(const int & tile_id);
+        bool RemoveTile(const int & tile_id);
 
         void AddItem(std::string new_item_name, double new_item_weight, double new_item_volume, int dest);
         void AddContainer(std::string new_container_name, double new_cont_wei_cap, double new_cont_vol_cap, int dest);
