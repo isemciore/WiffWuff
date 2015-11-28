@@ -15,7 +15,7 @@ void wumpus_game::BaseUnit::SetTilePointer(std::weak_ptr<BaseTile> baseTp) {
     location_tile_pointer_ = baseTp;
 }
 
-wumpus_game::BaseUnit::BaseUnit(std::string name, std::weak_ptr<BaseTile> initPosition)
+wumpus_game::BaseUnit::BaseUnit(const std::string name,const std::weak_ptr<BaseTile> initPosition)
     : location_tile_pointer_(initPosition)
     , unit_name_(name){
 }
@@ -25,12 +25,12 @@ void wumpus_game::BaseUnit::PerformAction() {
 
 }
 
-bool wumpus_game::BaseUnit::Travel(std::vector<std::string> direction) {
+bool wumpus_game::BaseUnit::Travel(const std::vector<std::string> &direction) {
     return location_tile_pointer_.lock()->move_char(unit_name_,direction[1]);
 
 }
 
-bool wumpus_game::BaseUnit::Attack(std::vector<std::string> vec_command_argument) {
+bool wumpus_game::BaseUnit::Attack(const std::vector<std::string> &vec_command_argument) {
     //attack turtle1, ie target in elt 1
     return location_tile_pointer_.lock()->attack_action(unit_name_,vec_command_argument[1]);
     //return false;

@@ -12,7 +12,7 @@ namespace wumpus_game {
     protected:
         bool aggresive_unit = false;
     public:
-        Npc(std::string name, std::weak_ptr<BaseTile> initPosition);
+        Npc(const std::string name,const std::weak_ptr<BaseTile> initPosition);
         using BaseUnit::BaseUnit;
 
         virtual void PerformAction();

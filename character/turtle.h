@@ -11,7 +11,7 @@
 namespace wumpus_game {
     class Turtle :public Npc {
     public:
-        Turtle(std::string name, std::weak_ptr<BaseTile> initPosition);
+        Turtle(const std::string name,const std::weak_ptr<BaseTile> initPosition);
         using Npc::Npc;
         using Npc::BaseUnit;
 

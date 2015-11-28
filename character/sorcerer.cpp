@@ -7,7 +7,7 @@
 #include <iterator>
 #include "sorcerer.h"
 
-wumpus_game::Sorcerer::Sorcerer(std::string name, std::weak_ptr<BaseTile> init_pos)
+wumpus_game::Sorcerer::Sorcerer(const std::string name,const std::weak_ptr<BaseTile> init_pos)
     : PlayerCtrl(name,init_pos){
     map_of_member_action_.insert(std::make_pair("Travel", &BaseUnit::Travel));
     map_of_member_action_.insert(std::make_pair("Attack", &BaseUnit::Attack));
@@ -79,7 +79,7 @@ void wumpus_game::Sorcerer::PerformAction() {
     }
 }
 
-bool wumpus_game::Sorcerer::Cast_spell(std::vector<std::string> input_cmds) {
+bool wumpus_game::Sorcerer::Cast_spell(const std::vector<std::string> &input_cmds) {
     if (current_mana < 40){
         std::cout << "you do not have enough mana to cast a firball \n";
         return false;

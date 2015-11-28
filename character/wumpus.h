@@ -11,7 +11,7 @@
 namespace wumpus_game {
     class Wumpus : public Npc {
     public:
-        Wumpus(std::string name, std::weak_ptr<BaseTile> initPosition);
+        Wumpus(const std::string name,const std::weak_ptr<BaseTile> initPosition);
         using Npc::Npc;
         using Npc::BaseUnit;
 

@@ -7,7 +7,7 @@
 #include <sstream>
 #include <iterator>
 
-wumpus_game::Paladin::Paladin(std::string name, std::weak_ptr<BaseTile> init_pos)
+wumpus_game::Paladin::Paladin(const std::string name,const std::weak_ptr<BaseTile> init_pos)
     : PlayerCtrl(name, init_pos){
     map_of_member_action_.insert(std::make_pair("Travel", &BaseUnit::Travel));
     map_of_member_action_.insert(std::make_pair("Attack", &BaseUnit::Attack));
@@ -86,7 +86,7 @@ void wumpus_game::Paladin::PerformAction() {
     }
 }
 
-bool wumpus_game::Paladin::Shoot(std::vector<std::string> input_cmds) {
+bool wumpus_game::Paladin::Shoot(const std::vector<std::string> &input_cmds) {
     //have arrow check
     if (input_cmds.size() < 4){
         std::cout << "no enough input\n";

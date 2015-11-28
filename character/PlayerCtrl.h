@@ -25,16 +25,16 @@ namespace wumpus_game {
         virtual ~PlayerCtrl();
 
         using BaseUnit::BaseUnit;
-        PlayerCtrl(std::string name, std::weak_ptr<BaseTile> bstile);
+        PlayerCtrl(const std::string name,const std::weak_ptr<BaseTile> bstile);
         std::pair<bool,std::string> game_continue = std::make_pair(true,"empty");
         virtual void PerformAction() = 0;
 
-        bool PickUpItem(std::vector<std::string> arguments);
-        bool DropItem(std::vector<std::string> arguments);
-        bool MoveItem(std::vector<std::string> arguments);//Check han d is free
-        bool ClimbLadder(std::vector<std::string> arguments);
-        bool ConsumeItem(std::vector<std::string> arguments);
-        bool DisplayWield(std::vector<std::string> arguments);
+        bool PickUpItem(const std::vector<std::string> &arguments);
+        bool DropItem(const std::vector<std::string> &arguments);
+        bool MoveItem(const std::vector<std::string> &arguments);//Check han d is free
+        bool ClimbLadder(const std::vector<std::string> &arguments);
+        bool ConsumeItem(const std::vector<std::string> &arguments);
+        bool DisplayWield(const std::vector<std::string> &arguments);
     };
 }
 

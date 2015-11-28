@@ -8,7 +8,7 @@
 #include "../stuff/Consumable.h"
 #include "../enviroment/tile_escape_win.h"
 
-bool wumpus_game::PlayerCtrl::PickUpItem(std::vector<std::string> arguments) {
+bool wumpus_game::PlayerCtrl::PickUpItem(const std::vector<std::string>& arguments) {
     //expect: pick -/up %Item -/with %pos
     if(arguments.size()<3){
         std::cout << "not enough arguments\n";
@@ -54,7 +54,7 @@ bool wumpus_game::PlayerCtrl::PickUpItem(std::vector<std::string> arguments) {
     return true;
 }
 
-bool wumpus_game::PlayerCtrl::DropItem(std::vector<std::string> arguments) {
+bool wumpus_game::PlayerCtrl::DropItem(const std::vector<std::string> &arguments) {
     //Drop %Item from %RightHand
     int dummy_text=0;
     if (arguments.size()<3) {
@@ -83,7 +83,7 @@ bool wumpus_game::PlayerCtrl::DropItem(std::vector<std::string> arguments) {
     return true;
 }
 
-wumpus_game::PlayerCtrl::PlayerCtrl(std::string name, std::weak_ptr<BaseTile> bstile)
+wumpus_game::PlayerCtrl::PlayerCtrl(const std::string name,const std::weak_ptr<BaseTile> bstile)
     : BaseUnit(name, bstile){
     map_of_item_slot_.insert(std::make_pair("right",&right_hand_));
     map_of_item_slot_.insert(std::make_pair("back",&back_));
@@ -91,7 +91,7 @@ wumpus_game::PlayerCtrl::PlayerCtrl(std::string name, std::weak_ptr<BaseTile> bs
     map_of_item_slot_.insert(std::make_pair("head",&head_slot_));
 }
 
-bool wumpus_game::PlayerCtrl::MoveItem(std::vector<std::string> arguments) {
+bool wumpus_game::PlayerCtrl::MoveItem(const std::vector<std::string> &arguments) {
     //move item from backpack   to      right   hand
     //move item from right      hand    to      backpack
     //move item from right      hand    to      left     hand
@@ -172,7 +172,7 @@ bool wumpus_game::PlayerCtrl::MoveItem(std::vector<std::string> arguments) {
     return true;
 }
 
-bool wumpus_game::PlayerCtrl::DisplayWield(std::vector<std::string> arguments) {
+bool wumpus_game::PlayerCtrl::DisplayWield(const std::vector<std::string> &arguments) {
     /*
     if(right_hand_ != nullptr){
         container* container_ptr = dynamic_cast<container*>(right_hand_);
@@ -250,7 +250,7 @@ wumpus_game::PlayerCtrl::~PlayerCtrl() {
     }
 }
 
-bool wumpus_game::PlayerCtrl::ConsumeItem(std::vector<std::string> arguments) {
+bool wumpus_game::PlayerCtrl::ConsumeItem(const std::vector<std::string> &arguments) {
     if(arguments.size()<2){
         return false;
     }
@@ -287,7 +287,7 @@ bool wumpus_game::PlayerCtrl::ConsumeItem(std::vector<std::string> arguments) {
     return false;
 }
 
-bool wumpus_game::PlayerCtrl::ClimbLadder(std::vector<std::string> arguments) {
+bool wumpus_game::PlayerCtrl::ClimbLadder(const std::vector<std::string> &arguments) {
 
     std::shared_ptr<Tile_escape_win> sp_t_win =
             std::dynamic_pointer_cast<Tile_escape_win> (location_tile_pointer_.lock());

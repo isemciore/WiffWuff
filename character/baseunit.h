@@ -27,7 +27,7 @@ namespace wumpus_game {
         std::map<std::string, MFP> mapofMFP;*/
 
     public:
-        BaseUnit(std::string name, std::weak_ptr<BaseTile> initPosition);
+        BaseUnit(const std::string name,const std::weak_ptr<BaseTile> initPosition);
         BaseUnit(const BaseUnit &) = delete; //No copy of unit, due too unique name
         ~BaseUnit();
 
@@ -38,8 +38,8 @@ namespace wumpus_game {
         int get_attack_damage();
         virtual bool RecieveDamage(int damage_taken_b4_reduction);
 
-        bool Travel(std::vector<std::string> vec_direction);
-        bool Attack(std::vector<std::string> vec_command_argument);
+        bool Travel(const std::vector<std::string> &vec_direction);
+        bool Attack(const std::vector<std::string> &vec_command_argument);
         std::string get_unit_name();
         int get_current_unit_hp(){return current_health;}
         int get_current_unit_mana(){return current_mana;}
