@@ -5,8 +5,6 @@
 #include "PlayerCtrl.h"
 #include <algorithm>
 #include <iostream>
-#include "../stuff/Consumable.h"
-#include "../enviroment/tile_dark_room.h"
 #include "../enviroment/tile_escape_win.h"
 
 bool wumpus_game::PlayerCtrl::PickUpItem(const std::vector<std::string>& arguments) {
@@ -261,6 +259,7 @@ bool wumpus_game::PlayerCtrl::ConsumeItem(const std::vector<std::string> &argume
     if(left_hand_!= nullptr && left_hand_->get_name() == item_name_to_be_consumed){
         Consumable* item_to_be_constumed = dynamic_cast<Consumable*> (left_hand_);
         if(item_to_be_constumed != nullptr){
+            item_to_be_constumed->Consume(this);/*
             if(item_to_be_constumed->get_delta_hp() != 0){
                 current_health += item_to_be_constumed->get_delta_hp();
                 std::cout << "you gain health\n";
@@ -268,7 +267,7 @@ bool wumpus_game::PlayerCtrl::ConsumeItem(const std::vector<std::string> &argume
             if(item_to_be_constumed->get_delta_mana() != 0){
                 current_mana += item_to_be_constumed->get_delta_mana();
                 std::cout << "you gain mana\n";
-            }
+            }*/
             std::cout << "you used up "<< item_name_to_be_consumed << "\n";
             delete left_hand_;
             left_hand_ = nullptr;

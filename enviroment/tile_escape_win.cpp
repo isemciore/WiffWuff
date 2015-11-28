@@ -5,12 +5,12 @@
 #include <iostream>
 #include "tile_escape_win.h"
 
-wumpus_game::Tile_escape_win::Tile_escape_win(std::size_t tile_id)
+wumpus_game::Tile_escape_win::Tile_escape_win(const std::size_t &tile_id)
         : BaseTile(tile_id){
 
 }
 
-bool wumpus_game::Tile_escape_win::enter(std::shared_ptr<BaseUnit> ptr){
+bool wumpus_game::Tile_escape_win::EnterCharacter(std::shared_ptr<BaseUnit> ptr) {
     if(ptr->get_unit_name()!="Meep"){
         return false;
     }
@@ -21,7 +21,7 @@ bool wumpus_game::Tile_escape_win::enter(std::shared_ptr<BaseUnit> ptr){
     return true;
 }
 
-bool wumpus_game::Tile_escape_win::move_char(const std::string &name, const std::string &direction) {
+bool wumpus_game::Tile_escape_win::MoveCharacter(const std::string &name, const std::string &direction) {
     std::cout << "you dont want to dive deeper into the mess \n";
     return false;
 }

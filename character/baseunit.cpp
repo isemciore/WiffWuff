@@ -26,13 +26,13 @@ void wumpus_game::BaseUnit::PerformAction() {
 }
 
 bool wumpus_game::BaseUnit::Travel(const std::vector<std::string> &direction) {
-    return location_tile_pointer_.lock()->move_char(unit_name_,direction[1]);
+    return location_tile_pointer_.lock()->MoveCharacter(unit_name_, direction[1]);
 
 }
 
 bool wumpus_game::BaseUnit::Attack(const std::vector<std::string> &vec_command_argument) {
     //attack turtle1, ie target in elt 1
-    location_tile_pointer_.lock()->attack_action(unit_name_,vec_command_argument[1]);
+    location_tile_pointer_.lock()->AttackAction(unit_name_, vec_command_argument[1]);
     return false;
 }
 

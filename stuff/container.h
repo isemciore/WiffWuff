@@ -27,18 +27,20 @@ namespace wumpus_game {
     public:
         virtual ~container();
 
-        container(std::string name, double holdWeight, double holdVolume);
+        container(const std::string &name, const double &holdWeight, const double &holdVolume);
 
         bool AddItem(Item *);//If false, backpack broke
 
 
         void DropItemToTile(std::weak_ptr<BaseTile> tile_pointer);
-        Item* get_item(std::string item_name) override;
+
+        Item *get_item(const std::string &item_name) override;
 
         void Display_contents();
 
-        virtual int get_weight() override;
-        virtual int get_volume() override;
+        virtual double get_weight() override;
+
+        virtual double get_volume() override;
     };
 }
 

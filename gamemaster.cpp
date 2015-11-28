@@ -9,7 +9,6 @@
 #include "character/turtle.h"
 #include "enviroment/tile_mountain_ridge.h"
 #include "enviroment/tile_dark_room.h"
-#include "stuff/Consumable.h"
 #include "enviroment/tile_escape_win.h"
 #include "character/sorcerer.h"
 
@@ -59,7 +58,7 @@ void wumpus_game::GameMaster::GameStart() {
             //int wumpus_id_loc = wumpus_ptr_.second.lock()->GetUnitLocation().lock()->tile_id_;
             std::weak_ptr<BaseTile> wumpus_tile_ptr = wumpus_ptr_.second.lock()->GetUnitLocation();
             std::size_t wumpus_id_loc = wumpus_tile_ptr.lock()->get_tile_id();
-            wumpus_tile_ptr.lock()->exit("Wumpus");
+            wumpus_tile_ptr.lock()->Exit("Wumpus");
             //wumpus_ptr_.second.lock()->GetUnitLocation().lock()->map_of_char_in_tile_.erase("wumpus");
             AddItem("nightvision_googles",0.01,0.1,wumpus_id_loc);
             //Add Item to the ground
@@ -134,7 +133,7 @@ void wumpus_game::GameMaster::EventDay0() {
 
 void wumpus_game::GameMaster::InitPrintStoryAndQuestion() {
     std::string dummy;
-    std::cout << "You see a dark dungeon and decides its a good ide to enter" << "\n";
+    std::cout << "You see a dark dungeon and decides its a good ide to EnterCharacter" << "\n";
     std::cout << "as soon as you step in you blackout..." << "\n";
     std::cout << "more story," << "\n";
     std::cout << "All you know, you have to find a ladder to climb out of this hole" << "\n";
@@ -156,7 +155,7 @@ void wumpus_game::GameMaster::InitPrintStoryAndQuestion() {
 
 }
 
-void wumpus_game::GameMaster::InitTurnMessages(std::size_t turn_no) {
+void wumpus_game::GameMaster::InitTurnMessages(const std::size_t &turn_no) {
     std::cout << "Today is "<<turn_no<<"\n";
 }
 
@@ -188,7 +187,7 @@ void wumpus_game::GameMaster::EventNewSpawns() {
 }
 
 bool wumpus_game::GameMaster::EventDestroyTile() {
-    if(tile_destruction_number_ >=23){
+    if (tile_destruction_number_ >= k_tile_max_destruction_num) {
         return true;
     }
     bool playerWasInTile = RemoveTile(desutrction_order_[tile_destruction_number_]);
@@ -211,8 +210,8 @@ void wumpus_game::GameMaster::EventSwapGoalTile() {
 
 bool wumpus_game::GameMaster::RemoveTile(const int &tile_id) {
     std::cout << tile_id << "\n";
-    map_tileptr_type::iterator target_tile_itr = map_int_to_tileptr_.find((int)tile_id);
-    int target_id = player_ptr_->GetUnitLocation().lock()->get_tile_id();
+    map_tileptr_type::iterator target_tile_itr = map_int_to_tileptr_.find((std::size_t) tile_id);
+    int target_id = (int) player_ptr_->GetUnitLocation().lock()->get_tile_id();
     if(target_tile_itr!= map_int_to_tileptr_.end()){
         map_int_to_tileptr_.erase(target_tile_itr);
     }
@@ -354,9 +353,8 @@ void wumpus_game::GameMaster::InitialItemDrop() {
 }
 
 
-
-void wumpus_game::GameMaster::AddContainer(std::string new_container_name, double new_cont_wei_cap,
-                                           double new_cont_vol_cap, int dest) {
+void wumpus_game::GameMaster::AddContainer(const std::string &new_container_name, const double &new_cont_wei_cap,
+                                           const double &new_cont_vol_cap, const int &dest) {
     container *container_item = new container(new_container_name, new_cont_wei_cap, new_cont_vol_cap);
     if (!new_container_name.compare("backpack")) {
         Item *air_bubble = new Item("bubble_wrap", 0.00001, 1);
@@ -367,22 +365,26 @@ void wumpus_game::GameMaster::AddContainer(std::string new_container_name, doubl
     AddItem(container_item,dest);
 }
 
-void wumpus_game::GameMaster::AddConsumable(std::string item_name, int dest){
+void wumpus_game::GameMaster::AddConsumable(const std::string &item_name, const int &dest) {
     if(!item_name.compare("apple")){
-        AddConsumable("apple",0.1,0.08,20,1,dest);
+        AddConsumable("apple", 0.06, 0.08, 20, 1, dest);
     } else if(!item_name.compare("arrow")){
-        AddConsumable("arrow",0.4,0.1,0,0,dest);
+        AddConsumable("arrow", 0.005, 0.01, 0, 0, dest);
     } else if(!item_name.compare("mango")){
-        AddConsumable("mango",0.1,0.07,1,40,dest);
+        AddConsumable("mango", 0.6, 0.1, 1, 40, dest);
     }
 }
 
-void wumpus_game::GameMaster::AddConsumable(std::string item_name, double new_item_weight,double new_item_volume,double delta_hp, double delta_mana, int dest){
+void wumpus_game::GameMaster::AddConsumable(const std::string &item_name, const double &new_item_weight,
+                                            const double &new_item_volume, const double &delta_hp,
+                                            const double &delta_mana,
+                                            const int &dest) {
     Item* consumable = new Consumable(item_name,new_item_weight,new_item_volume,delta_hp,delta_mana);
     AddItem(consumable,dest);
 }
 
-void wumpus_game::GameMaster::AddItem(std::string new_item_name, double new_item_weight, double new_item_volume, int dest) {
+void wumpus_game::GameMaster::AddItem(const std::string &new_item_name, const double &new_item_weight,
+                                      const double &new_item_volume, const int &dest) {
     Item * item_ptr = new Item(new_item_name,new_item_weight, new_item_volume);
     if (map_int_to_tileptr_.find(dest) != map_int_to_tileptr_.end()){
         map_tileptr_type::iterator tile_ptr_itr = map_int_to_tileptr_.find(dest);
@@ -393,7 +395,7 @@ void wumpus_game::GameMaster::AddItem(std::string new_item_name, double new_item
     //vector_of_tileptr_[dest]->AddItem(item_ptr);
 }
 
-void wumpus_game::GameMaster::AddItem(Item * item_ptr, int dest) {
+void wumpus_game::GameMaster::AddItem(Item *item_ptr, const int &dest) {
     if (map_int_to_tileptr_.find(dest) != map_int_to_tileptr_.end()){
         map_tileptr_type::iterator tile_ptr_itr = map_int_to_tileptr_.find(dest);
         tile_ptr_itr->second->AddItem(item_ptr);

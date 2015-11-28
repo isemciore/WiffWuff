@@ -6,8 +6,7 @@
 #include "tile_ocean.h"
 
 
-
-wumpus_game::TileOcean::TileOcean(std::size_t tile_id)
+wumpus_game::TileOcean::TileOcean(const std::size_t &tile_id)
     : BaseTile(tile_id){
     feaseable_direction[0] = true;
     feaseable_direction[1] = true;
@@ -16,7 +15,7 @@ wumpus_game::TileOcean::TileOcean(std::size_t tile_id)
 
 }
 
-bool wumpus_game::TileOcean::attack_action(std::string attacker, std::string defendent) {
+bool wumpus_game::TileOcean::AttackAction(const std::string &attacker, const std::string &defendent) {
     auto attacker_pair_iterator = map_of_char_in_tile_.find(attacker);
     //Fråga varför std::map<std::string,std::shared_ptr<BaseUnit>>::iterator
     //Ej fungerar, men fungerar ifall det skullev ara en map över weak_ptr
@@ -51,16 +50,20 @@ bool wumpus_game::TileOcean::attack_action(std::string attacker, std::string def
 }
 
 void wumpus_game::TileOcean::PrintTileDependentInformation() {
-    std::cout << "You enter a waterfilled room and cannot attack in this room\n";
+    std::cout << "You EnterCharacter a waterfilled room and cannot attack in this room\n";
 }
 
 bool wumpus_game::TileOcean::AddItem(wumpus_game::Item *item) {
     double item_density = ((double) item->get_weight())/((double) item->get_volume());
     if(item_density > 1){
-        std::cout << item->get_name()<<" sinks to the bottom (density > 1)\n";
+        std::cout << item->get_name() << " sinks to the bottom (density > 1), and is lost forever\n";
         delete item;
         return false;
     }
     map_of_items_in_tile_.insert(std::make_pair(item->get_name(),item));
     return true;
+}
+
+bool wumpus_game::TileOcean::shoot_able_from_room() {
+    return false;
 }

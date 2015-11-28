@@ -32,14 +32,16 @@ namespace wumpus_game {
         typedef std::map<std::string,std::weak_ptr<BaseTile>> neighbour_map_type;
         typedef std::map<std::string,std::shared_ptr<BaseUnit>> character_map_type;
         typedef std::multimap<std::string, Item *> item_map_type;
-        BaseTile(const std::size_t);
+
+        BaseTile(const std::size_t &);
         BaseTile(const BaseTile &) = delete;
         ~BaseTile();
 
-        void SetUnitPointer(std::weak_ptr<BaseUnit> baseUp);
         std::size_t get_tile_id();
-        std::map<std::string,std::weak_ptr<BaseTile>> get_neigbour_map() {return map_of_neighbour_tile_;}
-        character_map_type get_character_in_room(){return map_of_char_in_tile_;}
+
+        std::map<std::string, std::weak_ptr<BaseTile>> get_neigbour_map();
+
+        character_map_type get_character_in_room();
 
         void PrintPlayerOptionAndInformation();
         virtual void PrintTileDependentInformation() = 0;
@@ -48,10 +50,14 @@ namespace wumpus_game {
 
         bool is_player_here();
 
-        virtual bool attack_action(const std::string attacker, const std::string defendent);
-        virtual bool enter(std::shared_ptr<BaseUnit>);//Check if unit is sallowed
-        virtual bool move_char(const std::string &name, const std::string &direction);
-        virtual bool exit(const std::string & name);
+        virtual bool AttackAction(const std::string &attacker, const std::string &defendent);
+
+        virtual bool EnterCharacter(std::shared_ptr<BaseUnit>);
+
+        //Check if unit is sallowed
+        virtual bool MoveCharacter(const std::string &name, const std::string &direction);
+
+        virtual bool Exit(const std::string &name);
 
         Item * GetItemPointer(const std::string & item_name);
         virtual bool AddItem(Item *);

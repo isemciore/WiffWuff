@@ -12,7 +12,8 @@ namespace wumpus_game {
     class TileMountainRidge :public BaseTile {
     public:
         using BaseTile::BaseTile;
-        TileMountainRidge(std::size_t tile_id);
+
+        TileMountainRidge(const std::size_t &tile_id);
 
         virtual void PrintTileDependentInformation();
     };

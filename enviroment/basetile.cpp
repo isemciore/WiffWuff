@@ -31,8 +31,7 @@ wumpus_game::BaseTile::~BaseTile() {
 }
 
 
-
-wumpus_game::BaseTile::BaseTile(const size_t t)
+wumpus_game::BaseTile::BaseTile(const size_t &t)
     : tile_id_(t)
 {
 }
@@ -50,7 +49,7 @@ std::size_t wumpus_game::BaseTile::get_tile_id() {
     return tile_id_;
 }
 
-bool wumpus_game::BaseTile::move_char(const std::string &name, const std::string &direction) {
+bool wumpus_game::BaseTile::MoveCharacter(const std::string &name, const std::string &direction) {
     std::shared_ptr<BaseUnit> src_ptr = map_of_char_in_tile_.find(name)->second;
 
     neighbour_map_type::iterator target_pair_it = map_of_neighbour_tile_.find(direction);
@@ -61,10 +60,10 @@ bool wumpus_game::BaseTile::move_char(const std::string &name, const std::string
     }
 
 
-    bool enter_success =   target_pair_it->second.lock()->enter(src_ptr);
+    bool enter_success = target_pair_it->second.lock()->EnterCharacter(src_ptr);
     if(!enter_success){
         if(name=="Meep") {
-            std::cout << "could not enter\n";
+            std::cout << "could not EnterCharacter\n";
         }
         return false;
     }
@@ -72,13 +71,13 @@ bool wumpus_game::BaseTile::move_char(const std::string &name, const std::string
         std::cout << "entering next room\n";
     }
     src_ptr->SetTilePointer(target_pair_it->second);
-    this->exit(name);
+    this->Exit(name);
 
 
     return true;
 }
 
-bool wumpus_game::BaseTile::exit(const std::string & name) {
+bool wumpus_game::BaseTile::Exit(const std::string &name) {
     if(name=="Wumpus"){
         wumpus_is_here = false;
     }
@@ -89,7 +88,7 @@ bool wumpus_game::BaseTile::exit(const std::string & name) {
     return true;
 }
 
-bool wumpus_game::BaseTile::enter(std::shared_ptr<wumpus_game::BaseUnit> ptr) {
+bool wumpus_game::BaseTile::EnterCharacter(std::shared_ptr<wumpus_game::BaseUnit> ptr) {
     if(ptr->get_unit_name() == "Meep"){
         player_is_here = true;
     }
@@ -134,7 +133,7 @@ void wumpus_game::BaseTile::PrintPlayerOptionAndInformation() {
 
 }
 
-bool wumpus_game::BaseTile::attack_action(const std::string attacker, const std::string defendent) {
+bool wumpus_game::BaseTile::AttackAction(const std::string &attacker, const std::string &defendent) {
     auto attacker_pair_iterator = map_of_char_in_tile_.find(attacker);
     //Fråga varför std::map<std::string,std::shared_ptr<BaseUnit>>::iterator
     //Ej fungerar, men fungerar ifall det skullev ara en map över weak_ptr
@@ -192,4 +191,12 @@ bool wumpus_game::BaseTile::is_player_here() {
 
 bool wumpus_game::BaseTile::shoot_able_from_room() {
     return true;
+}
+
+wumpus_game::BaseTile::character_map_type wumpus_game::BaseTile::get_character_in_room() {
+    return map_of_char_in_tile_;
+}
+
+typename wumpus_game::BaseTile::neighbour_map_type wumpus_game::BaseTile::get_neigbour_map() {
+    return map_of_neighbour_tile_;
 }

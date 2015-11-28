@@ -13,15 +13,16 @@ namespace wumpus_game {
 
     public:
         using BaseTile::BaseTile;
-        TileOcean(std::size_t tile_id);
+
+        TileOcean(const std::size_t &tile_id);
 
         virtual void PrintTileDependentInformation();
 
         virtual bool AddItem(Item *item1) override;
 
-        virtual bool attack_action(std::string attacker, std::string attacked) override;
+        virtual bool AttackAction(const std::string &attacker, const std::string &attacked) override;
 
-        virtual bool shoot_able_from_room(){return false;};
+        virtual bool shoot_able_from_room();
     };
 
 }

@@ -5,7 +5,7 @@
 #include <iostream>
 #include "container.h"
 
-wumpus_game::container::container(std::string name, double holdWeight, double holdVolume)
+wumpus_game::container::container(const std::string &name, const double &holdWeight, const double &holdVolume)
     : Item(name, 0.0,0.0)
     , k_capacity_hold_weight_(holdWeight)
     , k_capacity_hold_volume_(holdVolume)
@@ -29,7 +29,7 @@ bool wumpus_game::container::AddItem(wumpus_game::Item *item) {
     return true;
 }
 
-wumpus_game::Item *wumpus_game::container::get_item(std::string item_name) {
+wumpus_game::Item *wumpus_game::container::get_item(const std::string &item_name) {
     if (item_name == item_name_){
         return this;
     }
@@ -71,10 +71,10 @@ wumpus_game::container::~container() {
     }
 }
 
-int wumpus_game::container::get_weight() {
+double wumpus_game::container::get_weight() {
     return weight_+internal_extra_weight;
 }
 
-int wumpus_game::container::get_volume() {
+double wumpus_game::container::get_volume() {
     return volume_+internal_extra_volume;
 }

@@ -13,8 +13,10 @@ namespace wumpus_game {
 
     public:
         using BaseTile::BaseTile;
-        TileDarkRoom(std::size_t tile_id);
-        virtual bool enter(std::shared_ptr<BaseUnit> ptr) override;
+
+        TileDarkRoom(const std::size_t &tile_id);
+
+        virtual bool EnterCharacter(std::shared_ptr<BaseUnit> ptr) override;
 
         virtual void PrintTileDependentInformation() override;
     };

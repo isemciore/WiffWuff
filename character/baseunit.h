@@ -7,12 +7,14 @@
 
 #include <memory>
 #include "../enviroment/basetile.h"
+#include "../stuff/Consumable.h"
 #include <vector>
 
 namespace wumpus_game {
     class BaseTile;
 
     class BaseUnit {
+        friend class Consumable;
     protected:
         std::weak_ptr<BaseTile> location_tile_pointer_;
         std::string unit_name_;

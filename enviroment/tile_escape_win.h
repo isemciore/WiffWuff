@@ -13,10 +13,12 @@ namespace wumpus_game {
     public:
 
         using BaseTile::BaseTile;
-        Tile_escape_win(std::size_t tile_id);
-        virtual bool enter(std::shared_ptr<BaseUnit> ptr) override;
 
-        virtual bool move_char(const std::string &name, const std::string &direction) override;
+        Tile_escape_win(const std::size_t &tile_id);
+
+        virtual bool EnterCharacter(std::shared_ptr<BaseUnit> ptr) override;
+
+        virtual bool MoveCharacter(const std::string &name, const std::string &direction) override;
         virtual void PrintTileDependentInformation() override;
 
         void finish_game();
