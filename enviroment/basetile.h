@@ -44,18 +44,20 @@ namespace wumpus_game {
         void PrintPlayerOptionAndInformation();
         virtual void PrintTileDependentInformation() = 0;
 
-        bool is_wumpus_here(){ return wumpus_is_here;}
-        bool is_player_here(){ return player_is_here;}
-        virtual bool attack_action(std::string attacker, std::string defendent);
+        bool is_wumpus_here();
+
+        bool is_player_here();
+
+        virtual bool attack_action(const std::string attacker, const std::string defendent);
         virtual bool enter(std::shared_ptr<BaseUnit>);//Check if unit is sallowed
-        virtual bool move_char(std::string name, std::string direction);
+        virtual bool move_char(const std::string &name, const std::string &direction);
         virtual bool exit(const std::string & name);
 
         Item * GetItemPointer(const std::string & item_name);
         virtual bool AddItem(Item *);
 
 
-        virtual bool shoot_able_from_room(){return true;};
+        virtual bool shoot_able_from_room();
 
     };
 

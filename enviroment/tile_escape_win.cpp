@@ -21,7 +21,7 @@ bool wumpus_game::Tile_escape_win::enter(std::shared_ptr<BaseUnit> ptr){
     return true;
 }
 
-bool wumpus_game::Tile_escape_win::move_char(std::string name, std::string direction) {
+bool wumpus_game::Tile_escape_win::move_char(const std::string &name, const std::string &direction) {
     std::cout << "you dont want to dive deeper into the mess \n";
     return false;
 }

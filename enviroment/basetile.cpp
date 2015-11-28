@@ -50,7 +50,7 @@ std::size_t wumpus_game::BaseTile::get_tile_id() {
     return tile_id_;
 }
 
-bool wumpus_game::BaseTile::move_char(std::string name, std::string direction) {
+bool wumpus_game::BaseTile::move_char(const std::string &name, const std::string &direction) {
     std::shared_ptr<BaseUnit> src_ptr = map_of_char_in_tile_.find(name)->second;
 
     neighbour_map_type::iterator target_pair_it = map_of_neighbour_tile_.find(direction);
@@ -134,7 +134,7 @@ void wumpus_game::BaseTile::PrintPlayerOptionAndInformation() {
 
 }
 
-bool wumpus_game::BaseTile::attack_action(std::string attacker, std::string defendent) {
+bool wumpus_game::BaseTile::attack_action(const std::string attacker, const std::string defendent) {
     auto attacker_pair_iterator = map_of_char_in_tile_.find(attacker);
     //Fråga varför std::map<std::string,std::shared_ptr<BaseUnit>>::iterator
     //Ej fungerar, men fungerar ifall det skullev ara en map över weak_ptr
@@ -146,9 +146,10 @@ bool wumpus_game::BaseTile::attack_action(std::string attacker, std::string defe
         return false;
     }
 
-    if(attacker == defendent){
+    if (!attacker.compare(defendent)) {
         std::cout << "Stop hitting you self\n";
         attacker_pair_iterator->second->RecieveDamage(10);
+        return true;
     }
     int atk_damage = attacker_pair_iterator->second->get_attack_damage();
     int def_damage = defendent_pair_iterator->second->get_attack_damage();
@@ -178,5 +179,17 @@ wumpus_game::Item *wumpus_game::BaseTile::GetItemPointer(const std::string & ite
 
 bool wumpus_game::BaseTile::AddItem(wumpus_game::Item * item) {
     map_of_items_in_tile_.insert(std::make_pair(item->get_name(),item));
+    return true;
+}
+
+bool wumpus_game::BaseTile::is_wumpus_here() {
+    return wumpus_is_here;
+}
+
+bool wumpus_game::BaseTile::is_player_here() {
+    return player_is_here;
+}
+
+bool wumpus_game::BaseTile::shoot_able_from_room() {
     return true;
 }
