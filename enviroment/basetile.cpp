@@ -6,9 +6,6 @@
 #include "basetile.h"
 
 
-wumpus_game::BaseTile::BaseTile(const wumpus_game::BaseTile &tile) {
-
-}
 
 wumpus_game::BaseTile::~BaseTile() {
     item_map_type::iterator begin_itr = map_of_items_in_tile_.begin();
@@ -35,7 +32,7 @@ wumpus_game::BaseTile::~BaseTile() {
 
 
 
-wumpus_game::BaseTile::BaseTile(size_t t)
+wumpus_game::BaseTile::BaseTile(const size_t t)
     : tile_id_(t)
 {
 }

@@ -32,8 +32,8 @@ namespace wumpus_game {
         typedef std::map<std::string,std::weak_ptr<BaseTile>> neighbour_map_type;
         typedef std::map<std::string,std::shared_ptr<BaseUnit>> character_map_type;
         typedef std::multimap<std::string, Item *> item_map_type;
-        BaseTile(std::size_t);
-        BaseTile(const BaseTile &);
+        BaseTile(const std::size_t);
+        BaseTile(const BaseTile &) = delete;
         ~BaseTile();
 
         void SetUnitPointer(std::weak_ptr<BaseUnit> baseUp);

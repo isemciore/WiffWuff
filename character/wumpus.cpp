@@ -8,7 +8,7 @@ void wumpus_game::Wumpus::PerformAction() {
 
 }
 
-wumpus_game::Wumpus::Wumpus(std::string name, std::weak_ptr<BaseTile> initPosition)
+wumpus_game::Wumpus::Wumpus(const std::string name,const std::weak_ptr<BaseTile> initPosition)
     : Npc(name,initPosition){
     aggresive_unit = true;
 }

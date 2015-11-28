@@ -5,16 +5,13 @@
 #include <iostream>
 #include "npc.h"
 
-wumpus_game::Npc::Npc(std::string name, std::weak_ptr<BaseTile> initPosition)
+wumpus_game::Npc::Npc(const std::string name,const std::weak_ptr<BaseTile> initPosition)
     : BaseUnit(name,initPosition){
 
 }
 
 void wumpus_game::Npc::PerformAction() {
-    if(unit_name_ == "mean_turtle3"){
-        std::cout << "mean turtle turn\n";
-        std::cout << location_tile_pointer_.lock()->get_tile_id() << "\n";
-    }
+
 
     if(location_tile_pointer_.lock()->is_player_here() && aggresive_unit){
         location_tile_pointer_.lock()->attack_action(unit_name_,"Meep");
@@ -30,8 +27,4 @@ void wumpus_game::Npc::PerformAction() {
         }
     }
 
-    if(unit_name_ == "mean_turtle3"){
-        std::cout << "mean turtle turn\n";
-        std::cout << location_tile_pointer_.lock()->get_tile_id() << "\n";
-    }
 }
