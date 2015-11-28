@@ -1,11 +1,11 @@
 done - Drop Item
 done mayby - Move - Item
-DESTRUCTOR for Item
+-DESTRUCTOR for Item
 
 
 
-REPLACE TILE
-tile:
+-REPLACE TILE
+-tile:
 -winning tile
 -    linking
 -commands climb ladder
@@ -14,21 +14,23 @@ tile:
 -ALL FIND TILES CHECK FOR EXPIRATION TOO
 
 
-mage class
+-mage class
 -done-shoot paladin
-cast
+-cast
+-agressive turtles
 
 event spawn
-event delete
+
+
+-event delete
 
 
 --Item: - SHOW LOCATION DISPLAYED
 -apple
 -mango
 -bow
-staff - usage
+-staff - usage
 -arrow
 -backpack
-
 
 

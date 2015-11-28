@@ -9,18 +9,18 @@
 namespace wumpus_game {
     class Item {
     protected:
-        std::string item_name_;
-        double weight_;
-        double volume_;
+        const std::string item_name_;
+        const double weight_;
+        const double volume_;
     public:
-        Item(std::string item_name, double weight, double volume);
+        Item(const std::string &item_name, const double &weight,const double &volume);
         Item(const Item &) = delete;
         virtual ~Item();
 
         std::string get_name();
 
-        int get_weight();
-        int get_volume();
+        virtual int get_weight();
+        virtual int get_volume();
 
         virtual Item * get_item(std::string item_name); //delete denna
     };

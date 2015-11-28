@@ -15,7 +15,7 @@ namespace wumpus_game {
         using Npc::Npc;
         using Npc::BaseUnit;
 
-        virtual void PerformAction();
+        //virtual void PerformAction();
     };
 }
 

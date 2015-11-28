@@ -18,8 +18,8 @@ namespace wumpus_game {
     class container : public Item {
         const double k_capacity_hold_weight_;
         const double k_capacity_hold_volume_;
-        double currentWeight = 0;
-        double currentVolume = 0;
+        double internal_extra_weight = 0;
+        double internal_extra_volume = 0;
         std::map<std::string, Item *> item_container;
 
 
@@ -36,6 +36,9 @@ namespace wumpus_game {
         Item* get_item(std::string item_name) override;
 
         void Display_contents();
+
+        virtual int get_weight() override;
+        virtual int get_volume() override;
     };
 }
 

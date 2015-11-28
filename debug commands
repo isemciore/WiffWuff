@@ -1,3 +1,6 @@
+s
+s
+Paladin
 pick up arrow with left hand
 travel north
 pick up backpack with right hand
@@ -7,6 +10,25 @@ travel north
 shoot south east north
 travel south
 travel east
+travel north
+pick up nightvision_googles with left hand
+move nightvision_googles from left hand to head
+travel south
+travel east
+travel north
+climb
+
+
+
+Sorcerer
+travel north
+travel east
+travel east
+travel south
+pick up wizard_staff with right hand
+cast north west north
+travel north
+travel west
 travel north
 pick up nightvision_googles with left hand
 move nightvision_googles from left hand to head

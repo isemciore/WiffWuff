@@ -33,16 +33,14 @@ namespace wumpus_game {
 
         void SetTilePointer(std::weak_ptr<BaseTile> baseTp);
         virtual void PerformAction() = 0;
-        std::weak_ptr<BaseTile> GetUnitLocation() {
-            return location_tile_pointer_;
-        }
+        std::weak_ptr<BaseTile> GetUnitLocation(){return location_tile_pointer_;};
 
-        int get_attack_damage(){return attack_damage;};
+        int get_attack_damage();
         virtual bool RecieveDamage(int damage_taken_b4_reduction);
 
         bool Travel(std::vector<std::string> vec_direction);
         bool Attack(std::vector<std::string> vec_command_argument);
-        std::string get_unit_name(){return unit_name_;};
+        std::string get_unit_name();
 
         bool attack_in_water();
 

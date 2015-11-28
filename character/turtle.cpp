@@ -4,9 +4,6 @@
 
 #include "turtle.h"
 
-void wumpus_game::Turtle::PerformAction() {
-
-}
 
 wumpus_game::Turtle::Turtle(std::string name, std::weak_ptr<BaseTile> initPosition)
     : Npc(name,initPosition){

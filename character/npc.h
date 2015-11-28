@@ -15,7 +15,8 @@ namespace wumpus_game {
         Npc(std::string name, std::weak_ptr<BaseTile> initPosition);
         using BaseUnit::BaseUnit;
 
-        virtual void PerformAction() = 0;
+        virtual void PerformAction();
+        void setAggresiveMode(bool aggresive){aggresive_unit = aggresive;}
     };
 }
 

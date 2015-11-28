@@ -58,17 +58,22 @@ bool wumpus_game::BaseTile::move_char(std::string name, std::string direction) {
 
     neighbour_map_type::iterator target_pair_it = map_of_neighbour_tile_.find(direction);
     if(target_pair_it == map_of_neighbour_tile_.end() || target_pair_it->second.expired() ){
-        std::cout << "direction does not exist\n";
+        if(name=="Meep"){
+        std::cout << "direction does not exist\n";}
         return false;
     }
 
 
     bool enter_success =   target_pair_it->second.lock()->enter(src_ptr);
     if(!enter_success){
-        std::cout << "could not enter\n";
+        if(name=="Meep") {
+            std::cout << "could not enter\n";
+        }
         return false;
     }
-    std::cout << "entering next room\n";
+    if(name=="Meep") {
+        std::cout << "entering next room\n";
+    }
     src_ptr->SetTilePointer(target_pair_it->second);
     this->exit(name);
 
@@ -80,11 +85,20 @@ bool wumpus_game::BaseTile::exit(const std::string & name) {
     if(name=="Wumpus"){
         wumpus_is_here = false;
     }
+    if(name=="Meep"){
+        wumpus_is_here = false;
+    }
     map_of_char_in_tile_.erase(name);
     return true;
 }
 
 bool wumpus_game::BaseTile::enter(std::shared_ptr<wumpus_game::BaseUnit> ptr) {
+    if(ptr->get_unit_name() == "Meep"){
+        player_is_here = true;
+    }
+    if(ptr->get_unit_name() == "Wumpus"){
+        wumpus_is_here = true;
+    }
     AddCharToTile(ptr);
     return true;
 }

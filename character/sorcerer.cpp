@@ -83,7 +83,7 @@ bool wumpus_game::Sorcerer::Cast_spell(std::vector<std::string> input_cmds) {
     }
 
     current_mana-=40;
-
+    std::cout << "you have "<<current_mana << "left \n";
     std::weak_ptr<BaseTile> current_inspected_tile = location_tile_pointer_.lock();
     BaseTile::neighbour_map_type neighbour_map;
     BaseTile::neighbour_map_type::iterator neib_itr;

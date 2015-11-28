@@ -24,6 +24,7 @@ namespace wumpus_game {
         //NORTH EAST SOUTH WEST ORDER
         bool feaseable_direction[4] = {false};
         bool wumpus_is_here = false;
+        bool player_is_here = false;
         bool AddCharToTile(std::shared_ptr<BaseUnit>);//"Force add unit"
 
     public:
@@ -44,6 +45,7 @@ namespace wumpus_game {
         virtual void PrintTileDependentInformation() = 0;
 
         bool is_wumpus_here(){ return wumpus_is_here;}
+        bool is_player_here(){ return player_is_here;}
         virtual bool attack_action(std::string attacker, std::string defendent);
         virtual bool enter(std::shared_ptr<BaseUnit>);//Check if unit is sallowed
         virtual bool move_char(std::string name, std::string direction);

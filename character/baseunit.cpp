@@ -48,3 +48,13 @@ bool wumpus_game::BaseUnit::RecieveDamage(int damage_taken_b4_reduction) {
     }
     return true;
 }
+
+
+
+int wumpus_game::BaseUnit::get_attack_damage() {
+    return attack_damage;
+}
+
+std::string wumpus_game::BaseUnit::get_unit_name() {
+    return unit_name_;
+}

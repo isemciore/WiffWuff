@@ -11,6 +11,7 @@
 #include "enviroment/tile_dark_room.h"
 #include "stuff/Consumable.h"
 #include "enviroment/tile_escape_win.h"
+#include "character/sorcerer.h"
 
 wumpus_game::GameMaster::GameMaster() {
     turn_number_ = 0;
@@ -44,7 +45,6 @@ void wumpus_game::GameMaster::GameStart() {
             unit_it_begin = map_str_to_unitptr_.erase(unit_it_begin);
         }
         while((unit_it_begin != unit_it_end) && (player_ptr_->game_continue.first)){
-            std::cout << unit_it_begin->second.lock()->get_unit_name()<<"\n";
             unit_it_begin->second.lock()->PerformAction();
             unit_it_begin++;
             while (unit_it_begin->second.expired() && unit_it_begin!=unit_it_end){
@@ -55,9 +55,6 @@ void wumpus_game::GameMaster::GameStart() {
         if (!player_ptr_->game_continue.second.compare("headshot") && run_once_wumpus == false){
             run_once_wumpus = true;
             //WUMPUS NULL SHARED MEMroy some reason
-
-
-
             //lock wumpus pointer, then check where it "was" shoot is special event and is erased from here
             //int wumpus_id_loc = wumpus_ptr_.second.lock()->GetUnitLocation().lock()->tile_id_;
             std::weak_ptr<BaseTile> wumpus_tile_ptr = wumpus_ptr_.second.lock()->GetUnitLocation();
@@ -95,6 +92,7 @@ wumpus_game::GameMaster::~GameMaster() {
 }
 
 void wumpus_game::GameMaster::EventDay0() {
+    InitPrintStoryAndQuestion();
     for(int num = 0 ; num <25; num++){
         if(num == 0){
             AddTile("ocean_tile");
@@ -122,8 +120,7 @@ void wumpus_game::GameMaster::EventDay0() {
     AddUnit("turtle",1);
     AddUnit("turtle",5);
     AddUnit("turtle", 20);
-    InitPrintStoryAndQuestion();
-
+    AddUnit("mean_turtle",4);
     //std::shared_ptr<Wumpus> wumpus_sp_ptr;
     //wumpus_sp_ptr.reset(new Wumpus("Wumpus",(std::weak_ptr<BaseTile>) vector_of_tileptr_[7]));
     //wumpus_ptr_ = std::make_pair(true, wumpus_sp_ptr);
@@ -136,8 +133,27 @@ void wumpus_game::GameMaster::EventDay0() {
 }
 
 void wumpus_game::GameMaster::InitPrintStoryAndQuestion() {
-    std::cout << "story" << "\n";
-    std::cout << "more story\n";
+    std::string dummy;
+    std::cout << "You see a dark dungeon and decides its a good ide to enter" << "\n";
+    std::cout << "as soon as you step in you blackout..." << "\n";
+    std::cout << "more story," << "\n";
+    std::cout << "All you know, you have to find a ladder to climb out of this hole" << "\n";
+    std::cout << "Input anything to continue" << "\n";
+    std::cin >> dummy;
+    std::cout << "\n\n\n\n\n\n";
+    std::cout << "Here is the action you can do:\n";
+    std::cout << "'Travel %direction' example travel north to move you character north" <<"\n";
+    std::cout << "'Attack %target_name' example attack turtle" <<"\n";
+    std::cout << "'Pick up %item_name with %hand' example Pick up apple with right hand" <<"\n";
+    std::cout << "'Move %item_name from %position to %position', example: move apple from right hand to back\n";
+    std::cout << "'Drop %item_name from %position' example: Drop apple from back \n";
+    std::cout << "'Display' displays current item you are wielding\n";
+
+    std::cout << "Input anything to continue" << "\n";
+    std::cin >> dummy;
+    std::cout << "'shoot %dir %dir %dir' which Paladin can do and require bow in right hand arrow in left\n";
+    std::cout << "'cast %dir %dir %dir' which Sorcerer can do, and require a staff and mana\n";
+
 }
 
 void wumpus_game::GameMaster::InitTurnMessages(std::size_t turn_no) {
@@ -230,17 +246,37 @@ void wumpus_game::GameMaster::AddUnit(const std::string &unit_type_name, const s
         unit_sp.reset(new Turtle(unit_name,tile_target_weak));
         //unit_sp.reset(new Turtle(unit_name,(std::weak_ptr<BaseTile>) vector_of_tileptr_[location_id]));
     } else if (unit_type_name == "Meep"){
+        std::cout << "What kind of hero are you?, a Paladin or a Sorcerer?\n";
         unit_name = "Meep";
-        unit_sp.reset(new Paladin("Meep", tile_target_weak));
-        player_ptr_ = std::dynamic_pointer_cast<PlayerCtrl> (unit_sp);
+        std::string hero_type;
+        while(true){
+            std::cin>>hero_type;
+            if(hero_type =="Paladin"){
+                unit_sp.reset(new Paladin("Meep", tile_target_weak));
+                player_ptr_ = std::dynamic_pointer_cast<PlayerCtrl> (unit_sp);
+                break;
+            } else if(hero_type == "Sorcerer"){
+                unit_sp.reset(new Sorcerer("Meep", tile_target_weak));
+                player_ptr_ = std::dynamic_pointer_cast<PlayerCtrl> (unit_sp);
+                break;
+            }
+            std::cout << "You can only choose 'Paladin' or 'Sorcerer'" << "\n";
+        }
+        std::cin.clear();
     } else if (unit_type_name == "Wumpus"){
         unit_name = "Wumpus";
         unit_sp.reset(new Wumpus("Wumpus",tile_target_weak));
         std::weak_ptr<Wumpus> temp = std::dynamic_pointer_cast<Wumpus>(unit_sp);
         wumpus_ptr_ = std::make_pair(true,temp);
-    }
-
-    else{std::cout << "PICNIC NO UNIT NAMED \n";}
+    } else if (unit_type_name == "mean_turtle"){
+        unit_name = unit_type_name;
+        unit_name.append(std::to_string(unit_counter_));
+        unit_counter_++;
+        unit_sp.reset(new Turtle(unit_name,tile_target_weak));
+        std::shared_ptr<Turtle> temp_turtle_ptr = std::dynamic_pointer_cast<Turtle>(unit_sp);
+        temp_turtle_ptr->setAggresiveMode(true);
+        //unit_sp.reset(new Turtle(unit_name,(std::weak_ptr<BaseTile>) vector_of_tileptr_[location_id]));
+    } else {std::cout << "PICNIC NO UNIT NAMED \n";}
 
 
     tile_target_weak.lock()->AddCharToTile(unit_sp);
@@ -310,7 +346,7 @@ void wumpus_game::GameMaster::InitialItemDrop() {
     //vector_of_tileptr_[0]->AddItem(item_ptr);
     AddConsumable("arrow",0);
     AddConsumable("arrow",2);
-    AddConsumable("arrow",0);
+    AddConsumable("arrow",14);
     AddItem("cardboard",0.1,1,0);
     AddItem("wizard_staff",0.2,0.3,10);
     AddConsumable("apple",1);

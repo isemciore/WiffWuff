@@ -8,7 +8,7 @@ wumpus_game::Item::~Item() {
 
 }
 
-wumpus_game::Item::Item(std::string item_name, double weight, double volume)
+wumpus_game::Item::Item(const std::string &item_name,const double &weight,const double &volume)
     : item_name_(item_name)
     , weight_(weight)
     , volume_(volume){

@@ -14,8 +14,8 @@ wumpus_game::container::container(std::string name, double holdWeight, double ho
 }
 
 bool wumpus_game::container::AddItem(wumpus_game::Item *item) {
-    weight_ += item->get_weight();
-    volume_ += item->get_volume();
+    internal_extra_weight += item->get_weight();
+    internal_extra_volume += item->get_volume();
     item_container.insert(std::make_pair(item->get_name(), item));
 
     if(weight_ > k_capacity_hold_volume_){
@@ -69,4 +69,12 @@ wumpus_game::container::~container() {
         }
         itr_begin = item_container.erase(itr_begin);
     }
+}
+
+int wumpus_game::container::get_weight() {
+    return weight_+internal_extra_weight;
+}
+
+int wumpus_game::container::get_volume() {
+    return volume_+internal_extra_volume;
 }
