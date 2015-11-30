@@ -342,7 +342,7 @@ void wumpus_game::GameMaster::AttachNeighbour(
 
 
 void wumpus_game::GameMaster::InitialItemDrop() {
-    //Item* item_ptr = new Item("cardboard_box",0.1,1);
+    //Item* item_ptr = new Item("cardboard_box",0.1,1);/
     //vector_of_tileptr_[0]->AddItem(item_ptr);
     AddConsumable("arrow",0);
     AddConsumable("arrow",2);
