@@ -19,13 +19,14 @@ namespace wumpus_game {
         std::map<std::string,std::shared_ptr<BaseUnit>> map_of_char_in_tile_;
         std::map<std::string,std::weak_ptr<BaseTile>> map_of_neighbour_tile_;
         std::multimap<std::string, Item *> map_of_items_in_tile_;
-
+        const double damage_reduction_fct_ = 0.1;
         //debugging purp
         //NORTH EAST SOUTH WEST ORDER
         bool feaseable_direction[4] = {false};
         bool wumpus_is_here = false;
         bool player_is_here = false;
         bool AddCharToTile(std::shared_ptr<BaseUnit>);//"Force add unit"
+
 
     public:
         friend class GameMaster;
@@ -43,6 +44,8 @@ namespace wumpus_game {
 
         void PrintPlayerOptionAndInformation();
         virtual void PrintTileDependentInformation() = 0;
+
+        virtual bool unit_can_attack_here(std::string unit_name) = 0;
 
         bool is_wumpus_here(){ return wumpus_is_here;}
         bool is_player_here(){ return player_is_here;}

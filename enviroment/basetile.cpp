@@ -86,7 +86,7 @@ bool wumpus_game::BaseTile::exit(const std::string & name) {
         wumpus_is_here = false;
     }
     if(name=="Meep"){
-        wumpus_is_here = false;
+        player_is_here = false;
     }
     map_of_char_in_tile_.erase(name);
     return true;
@@ -104,7 +104,6 @@ bool wumpus_game::BaseTile::enter(std::shared_ptr<wumpus_game::BaseUnit> ptr) {
 }
 
 void wumpus_game::BaseTile::PrintPlayerOptionAndInformation() {
-
     for(auto neighbour_tile_pair: map_of_neighbour_tile_){
         if(neighbour_tile_pair.second.expired()){
             map_of_neighbour_tile_.erase(neighbour_tile_pair.first);
@@ -116,7 +115,9 @@ void wumpus_game::BaseTile::PrintPlayerOptionAndInformation() {
 
     for(auto &character : map_of_char_in_tile_){
         if(character.first != "Meep"){
-            std::cout << character.first << " is here\n";
+            std::cout << character.first << " is here with "<< character.second->get_current_unit_hp() <<" health\n";
+        }else if (character.first == "Meep"){
+            std::cout << "you have " << character.second->get_current_unit_hp() << " health\n";
         }
     }
     std::cout << "Direction you can move is:\n";
@@ -141,8 +142,11 @@ bool wumpus_game::BaseTile::attack_action(std::string attacker, std::string defe
     auto attacker_pair_iterator = map_of_char_in_tile_.find(attacker);
     //Fråga varför std::map<std::string,std::shared_ptr<BaseUnit>>::iterator
     //Ej fungerar, men fungerar ifall det skullev ara en map över weak_ptr
-
     auto defendent_pair_iterator = map_of_char_in_tile_.find(defendent);
+
+    if (!unit_can_attack_here(attacker)){
+        return false;
+    }
 
     if(defendent_pair_iterator == map_of_char_in_tile_.end()){
         std::cout << "couldn't find target \n";
@@ -152,17 +156,27 @@ bool wumpus_game::BaseTile::attack_action(std::string attacker, std::string defe
     if(attacker == defendent){
         std::cout << "Stop hitting you self\n";
         attacker_pair_iterator->second->RecieveDamage(10);
+        return false;
     }
     int atk_damage = attacker_pair_iterator->second->get_attack_damage();
     int def_damage = defendent_pair_iterator->second->get_attack_damage();
 
     std::cout << attacker << " attack with " << atk_damage << " damage ";
+
     bool defendent_alive = defendent_pair_iterator->second->RecieveDamage(atk_damage);
-    if(defendent_alive){
-        std::cout << defendent << " retaliates with "<< def_damage<<" damage";
-        attacker_pair_iterator->second->RecieveDamage(def_damage);
-    } else{
-        map_of_char_in_tile_.erase(defendent_pair_iterator);
+    bool attacker_alive = true;
+    if(defendent_alive && unit_can_attack_here(defendent)){
+        std::cout << defendent << " retaliates with "<< def_damage<<" damage ";
+        attacker_alive = attacker_pair_iterator->second->RecieveDamage(def_damage);
+    } else if (!defendent_alive){
+        exit(defendent);
+        //map_of_char_in_tile_.erase(defendent_pair_iterator);
+        std::cout << defendent << " just died :( \n";
+    }
+    if (!attacker_alive){
+        exit(defendent);
+        //map_of_char_in_tile_.erase(attacker_pair_iterator);
+        std::cout << attacker << " just died :/ \n";
     }
     return true;
 }

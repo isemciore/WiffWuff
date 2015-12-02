@@ -16,6 +16,18 @@ wumpus_game::TileOcean::TileOcean(std::size_t tile_id)
 
 }
 
+bool wumpus_game::TileOcean::unit_can_attack_here(std::string unit_name) {
+    auto unit_pair_iterator = map_of_char_in_tile_.find(unit_name);
+    if (!unit_pair_iterator->second->attack_in_water()){
+        if (unit_name=="Meep"){
+            std::cout << " cannot attack while in water"<<"\n";
+        }
+        return false;
+    }
+    return true;
+}
+
+/*
 bool wumpus_game::TileOcean::attack_action(std::string attacker, std::string defendent) {
     auto attacker_pair_iterator = map_of_char_in_tile_.find(attacker);
     //Fråga varför std::map<std::string,std::shared_ptr<BaseUnit>>::iterator
@@ -48,7 +60,7 @@ bool wumpus_game::TileOcean::attack_action(std::string attacker, std::string def
         map_of_char_in_tile_.erase(defendent_pair_iterator);
     }
     return true;
-}
+}*/
 
 void wumpus_game::TileOcean::PrintTileDependentInformation() {
     std::cout << "You enter a waterfilled room and cannot attack in this room\n";

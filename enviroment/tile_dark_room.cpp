@@ -19,3 +19,7 @@ wumpus_game::TileDarkRoom::TileDarkRoom(std::size_t tile_id)
 
 void wumpus_game::TileDarkRoom::PrintTileDependentInformation() {
 }
+
+bool wumpus_game::TileDarkRoom::unit_can_attack_here(std::string unit_name) {
+    return true;
+}

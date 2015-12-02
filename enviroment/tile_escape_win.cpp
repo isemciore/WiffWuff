@@ -2,8 +2,12 @@
 // Created by ezhang on 2015-11-26.
 //
 
+
 #include <iostream>
 #include "tile_escape_win.h"
+bool wumpus_game::Tile_escape_win::unit_can_attack_here(std::string unit_name) {
+    return true;
+}
 
 wumpus_game::Tile_escape_win::Tile_escape_win(std::size_t tile_id)
         : BaseTile(tile_id){

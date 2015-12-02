@@ -23,7 +23,8 @@ void wumpus_game::GameMaster::GameStart() {
     unit_iterator_type unit_it_end;
     bool add_googles_once = false;
     bool run_once_wumpus = false;
-    for(turn_number_; turn_number_<50;turn_number_++){
+    for(turn_number_; true;turn_number_++){
+        std::cout << "\n\n";
         if (turn_number_==0){
             EventDay0();
         turn_number_++;
@@ -35,6 +36,7 @@ void wumpus_game::GameMaster::GameStart() {
         if ((turn_number_+1)%4 == 0){
             bool player_in_tile = EventDestroyTile();//if player is in tile, break loop
             if(!player_in_tile){
+                player_ptr_->game_continue = std::make_pair(false,"lava");
                 break;
             }
         }
@@ -67,7 +69,6 @@ void wumpus_game::GameMaster::GameStart() {
 
 
         if (!player_ptr_->game_continue.first){
-            std::cout << player_ptr_->game_continue.first << " with the next line rror msg " << player_ptr_->game_continue.second << "\n";
             break;
         }
         /*
@@ -80,11 +81,12 @@ void wumpus_game::GameMaster::GameStart() {
             EventSwapGoalTile();
         }
 
-
-
+        if (player_ptr_->get_current_unit_hp() <=0){
+            player_ptr_->game_continue = std::make_pair(false,"lowhp");
+            break;
+        }
     }
     EndGameMessage();
-
 }
 
 wumpus_game::GameMaster::~GameMaster() {
@@ -113,14 +115,32 @@ void wumpus_game::GameMaster::EventDay0() {
     //player_ptr_.reset(new Paladin("Meep",(std::weak_ptr<BaseTile>) vector_of_tileptr_[0]));
     //vector_of_tileptr_[0]->AddCharToTile(player_ptr_);
     //map_str_to_unitptr_.insert(std::make_pair("Meep",player_ptr_));
-    AddUnit("Meep",0);
+    std::cout << "What kind of hero are you?, a Paladin or a Sorcerer?\n";
+    std::string hero_type;
+    while(true){
+        std::cin >> hero_type;
+        if(hero_type =="Paladin"){
+            AddUnit("Paladin",0);
+            break;
+        } else if(hero_type == "Sorcerer"){
+            AddUnit("Sorcerer",0);
+            break;
+        }
+        std::cout << "You can only choose 'Paladin' or 'Sorcerer'" << "\n";
+    }
+    std::string dummy;//Force flush
+    getline(std::cin,dummy);
+
     AddUnit("Wumpus",7);
 
     //Blabla default mode
+    AddUnit("turtle",0);
     AddUnit("turtle",1);
     AddUnit("turtle",5);
     AddUnit("turtle", 20);
-    AddUnit("mean_turtle",4);
+    AddUnit("mean_turtle",5);
+    AddUnit("mean_turtle",10);
+
     //std::shared_ptr<Wumpus> wumpus_sp_ptr;
     //wumpus_sp_ptr.reset(new Wumpus("Wumpus",(std::weak_ptr<BaseTile>) vector_of_tileptr_[7]));
     //wumpus_ptr_ = std::make_pair(true, wumpus_sp_ptr);
@@ -210,13 +230,15 @@ void wumpus_game::GameMaster::EventSwapGoalTile() {
 }
 
 bool wumpus_game::GameMaster::RemoveTile(const int &tile_id) {
-    std::cout << tile_id << "\n";
     map_tileptr_type::iterator target_tile_itr = map_int_to_tileptr_.find((int)tile_id);
     int target_id = player_ptr_->GetUnitLocation().lock()->get_tile_id();
     if(target_tile_itr!= map_int_to_tileptr_.end()){
         map_int_to_tileptr_.erase(target_tile_itr);
+
+        std::cout << "The ground is shaking" << "\n";
     }
     if(tile_id == target_id){
+        std::cout << "The ground is shaking and you think you stand at the source" << "\n";
         return false;
     }
     return true;
@@ -225,7 +247,23 @@ bool wumpus_game::GameMaster::RemoveTile(const int &tile_id) {
 
 
 void wumpus_game::GameMaster::EndGameMessage() {
-    std::cout << player_ptr_->game_continue.second << "\n";
+    std::cout << "\n\n\n";
+    if (player_ptr_->game_continue.second == "escape"){
+        std::cout << "You begin slowly taking one step at a time towards the light\n";
+        std::cout << "..."<<"\n";
+    }else if (player_ptr_->game_continue.second == "eaten"){
+        std::cout << "no more\n";
+        std::cout << "Game Over\n";
+    }else if (player_ptr_->game_continue.second== "lava"){
+        std::cout << "room breaks up at you fell into the lava\n";
+        std::cout << "Game Over\n";
+    }else if (player_ptr_->game_continue.second== "lowhp"){
+        std::cout << "you are hurt and cannot move and feel lifeless\n";
+        std::cout << "Game Over\n";
+    }
+    else{
+        std::cout << "story for this end condition " << player_ptr_->game_continue.second << "\n";
+    }
 }
 
 void wumpus_game::GameMaster::AddUnit(const std::string &unit_type_name, const std::size_t location_id) {
@@ -245,24 +283,12 @@ void wumpus_game::GameMaster::AddUnit(const std::string &unit_type_name, const s
         unit_counter_++;
         unit_sp.reset(new Turtle(unit_name,tile_target_weak));
         //unit_sp.reset(new Turtle(unit_name,(std::weak_ptr<BaseTile>) vector_of_tileptr_[location_id]));
-    } else if (unit_type_name == "Meep"){
-        std::cout << "What kind of hero are you?, a Paladin or a Sorcerer?\n";
-        unit_name = "Meep";
-        std::string hero_type;
-        while(true){
-            std::cin>>hero_type;
-            if(hero_type =="Paladin"){
-                unit_sp.reset(new Paladin("Meep", tile_target_weak));
-                player_ptr_ = std::dynamic_pointer_cast<PlayerCtrl> (unit_sp);
-                break;
-            } else if(hero_type == "Sorcerer"){
-                unit_sp.reset(new Sorcerer("Meep", tile_target_weak));
-                player_ptr_ = std::dynamic_pointer_cast<PlayerCtrl> (unit_sp);
-                break;
-            }
-            std::cout << "You can only choose 'Paladin' or 'Sorcerer'" << "\n";
-        }
-        std::cin.clear();
+    } else if(unit_type_name == "Paladin"){
+        unit_sp.reset(new Paladin("Meep", tile_target_weak));
+        player_ptr_ = std::dynamic_pointer_cast<PlayerCtrl> (unit_sp);
+    } else if (unit_type_name == "Sorcerer"){
+        unit_sp.reset(new Sorcerer("Meep", tile_target_weak));
+        player_ptr_ = std::dynamic_pointer_cast<PlayerCtrl> (unit_sp);
     } else if (unit_type_name == "Wumpus"){
         unit_name = "Wumpus";
         unit_sp.reset(new Wumpus("Wumpus",tile_target_weak));

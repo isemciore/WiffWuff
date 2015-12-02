@@ -19,7 +19,8 @@ travel north
 climb
 
 
-
+s
+s
 Sorcerer
 travel north
 travel east
@@ -38,11 +39,12 @@ travel north
 climb
 
 
+s
+s
+Paladin
 travel north
 travel east
-travel east
 travel north
-climb
 
 
 
@@ -61,6 +63,9 @@ climb
 
 
 //Kill by sunken tile
+s
+s
+Paladin
 travel north
 travel north
 travel north
@@ -71,3 +76,14 @@ travel south
 travel south
 travel east
 travel north
+
+
+
+
+s
+s
+Paladin
+travel east
+attack turtle2
+attack mean_turtle4
+attack mean_turtle4

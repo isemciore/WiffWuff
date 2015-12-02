@@ -55,13 +55,19 @@ void wumpus_game::Sorcerer::PerformAction() {
         }
 
         if(event_success && (vectorize_user_input[0]=="Travel" || vectorize_user_input[0] == "travel")){
+            location_tile_pointer_.lock()->PrintTileDependentInformation();
             if(location_tile_pointer_.lock()->is_wumpus_here()){
                 std::cout << "oh noo you walked into Wumpus\n";
                 game_continue = std::make_pair(false,"eaten");
             }
-            location_tile_pointer_.lock()->PrintTileDependentInformation();
             break;
         }
+
+        if (event_success && (vectorize_user_input[0]=="Attack" || vectorize_user_input[0] == "attack")){
+            break;
+        }
+
+
         if(event_success && vectorize_user_input[0]=="Climb"){
             game_continue = std::make_pair(false,"win");
             break;

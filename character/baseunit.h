@@ -41,7 +41,8 @@ namespace wumpus_game {
         bool Travel(std::vector<std::string> vec_direction);
         bool Attack(std::vector<std::string> vec_command_argument);
         std::string get_unit_name();
-
+        int get_current_unit_hp(){return current_health;}
+        int get_current_unit_mana(){return current_mana;}
         bool attack_in_water();
 
     };

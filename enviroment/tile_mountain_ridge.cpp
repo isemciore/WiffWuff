@@ -16,3 +16,7 @@ wumpus_game::TileMountainRidge::TileMountainRidge(std::size_t tile_id)
 void wumpus_game::TileMountainRidge::PrintTileDependentInformation() {
     std::cout << "You climb into a mountain ridge which restrict which direction you can travel\n";
 }
+
+bool wumpus_game::TileMountainRidge::unit_can_attack_here(std::string unit_name) {
+    return true;
+}

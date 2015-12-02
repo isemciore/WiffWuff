@@ -50,7 +50,6 @@ bool wumpus_game::PlayerCtrl::PickUpItem(std::vector<std::string> arguments) {
     if(*mem_value_ptr == nullptr){
         return false;
     }
-    std::cout << (*mem_value_ptr)->get_name()<<"\n";
     std::cout << "Picking up Item "<<(*mem_value_ptr)->get_name() << " with "<<
               put_in_loc <<" hand \n";
     return true;

@@ -21,7 +21,7 @@ namespace wumpus_game {
         void finish_game();
 
 
-
+        virtual bool unit_can_attack_here(std::string unit_name);
     };
 }
 

@@ -19,7 +19,9 @@ namespace wumpus_game {
 
         virtual bool AddItem(Item *item1) override;
 
-        virtual bool attack_action(std::string attacker, std::string attacked) override;
+        //virtual bool attack_action(std::string attacker, std::string attacked) override;
+
+        virtual bool unit_can_attack_here(std::string unit_name);
 
         virtual bool shoot_able_from_room(){return false;};
     };
