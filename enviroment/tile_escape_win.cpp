@@ -37,3 +37,8 @@ void wumpus_game::Tile_escape_win::PrintTileDependentInformation() {
 void wumpus_game::Tile_escape_win::finish_game() {
 
 }
+
+void wumpus_game::Tile_escape_win::PrintPlayerOptionAndInformation() {
+    std::cout << "You can smell escape, perhaps you should follow the light?\n";
+    std::cout << "hint*, climb ladder\n";
+}

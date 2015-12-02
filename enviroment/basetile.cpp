@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "basetile.h"
-
+#include "tile_escape_win.h"
 
 wumpus_game::BaseTile::BaseTile(const wumpus_game::BaseTile &tile) {
 
@@ -124,6 +124,7 @@ void wumpus_game::BaseTile::PrintPlayerOptionAndInformation() {
     for(auto neighbour_tile_pair: map_of_neighbour_tile_){
         std::cout << neighbour_tile_pair.first << " ";
     }
+
     std::cout << "\n";
     if(map_of_items_in_tile_.size()>0){
         std::cout << "In this room you can find \n";

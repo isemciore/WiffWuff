@@ -17,6 +17,7 @@ wumpus_game::Paladin::Paladin(std::string name, std::weak_ptr<BaseTile> init_pos
     map_of_member_action_.insert(std::make_pair("Drop",   &PlayerCtrl::DropItem));
     map_of_member_action_.insert(std::make_pair("Shoot",  &Paladin::Shoot));
     map_of_member_action_.insert(std::make_pair("Climb",  &PlayerCtrl::ClimbLadder));
+    map_of_member_action_.insert(std::make_pair("Consume", &PlayerCtrl::ConsumeItem));
 
 
     map_of_member_action_.insert(std::make_pair("travel", &BaseUnit::Travel));
@@ -27,6 +28,7 @@ wumpus_game::Paladin::Paladin(std::string name, std::weak_ptr<BaseTile> init_pos
     map_of_member_action_.insert(std::make_pair("drop",   &PlayerCtrl::DropItem));
     map_of_member_action_.insert(std::make_pair("shoot",  &Paladin::Shoot));
     map_of_member_action_.insert(std::make_pair("climb",  &PlayerCtrl::ClimbLadder));
+    map_of_member_action_.insert(std::make_pair("consume", &PlayerCtrl::ConsumeItem));
 
 
 }

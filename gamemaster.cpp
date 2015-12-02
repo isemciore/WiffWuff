@@ -43,15 +43,23 @@ void wumpus_game::GameMaster::GameStart() {
         unit_it_begin = map_str_to_unitptr_.begin();
         unit_it_end = map_str_to_unitptr_.end();
 
-        while ((unit_it_begin != unit_it_end) && unit_it_begin->second.expired()){
+
+/*        while ((unit_it_begin != unit_it_end) && unit_it_begin->second.expired()){
             unit_it_begin = map_str_to_unitptr_.erase(unit_it_begin);
+        }*/
+        player_ptr_->PerformAction();
+        if (!player_ptr_->game_continue.first) {
+            break;
         }
+        std::cout << "Computer turn:\n";
         while((unit_it_begin != unit_it_end) && (player_ptr_->game_continue.first)){
-            unit_it_begin->second.lock()->PerformAction();
-            unit_it_begin++;
             while (unit_it_begin->second.expired() && unit_it_begin!=unit_it_end){
                 unit_it_begin = map_str_to_unitptr_.erase(unit_it_begin);
             }
+            if (unit_it_begin->second.lock() != player_ptr_) {
+                unit_it_begin->second.lock()->PerformAction();
+            }
+            unit_it_begin++;
         }
 
         if (!player_ptr_->game_continue.second.compare("headshot") && run_once_wumpus == false){
@@ -249,7 +257,8 @@ bool wumpus_game::GameMaster::RemoveTile(const int &tile_id) {
 void wumpus_game::GameMaster::EndGameMessage() {
     std::cout << "\n\n\n";
     if (player_ptr_->game_continue.second == "escape"){
-        std::cout << "You begin slowly taking one step at a time towards the light\n";
+        std::cout << "You begin slowly climbing the ladder,"
+                " one step at a time towards the light\n";
         std::cout << "..."<<"\n";
     }else if (player_ptr_->game_continue.second == "eaten"){
         std::cout << "no more\n";

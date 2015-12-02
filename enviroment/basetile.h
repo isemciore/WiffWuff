@@ -42,7 +42,7 @@ namespace wumpus_game {
         std::map<std::string,std::weak_ptr<BaseTile>> get_neigbour_map() {return map_of_neighbour_tile_;}
         character_map_type get_character_in_room(){return map_of_char_in_tile_;}
 
-        void PrintPlayerOptionAndInformation();
+        virtual void PrintPlayerOptionAndInformation();
         virtual void PrintTileDependentInformation() = 0;
 
         virtual bool unit_can_attack_here(std::string unit_name) = 0;

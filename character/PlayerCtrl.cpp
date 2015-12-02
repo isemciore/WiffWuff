@@ -6,7 +6,6 @@
 #include <algorithm>
 #include <iostream>
 #include "../stuff/Consumable.h"
-#include "../enviroment/tile_dark_room.h"
 #include "../enviroment/tile_escape_win.h"
 
 bool wumpus_game::PlayerCtrl::PickUpItem(std::vector<std::string> arguments) {
@@ -39,7 +38,7 @@ bool wumpus_game::PlayerCtrl::PickUpItem(std::vector<std::string> arguments) {
     } else if(put_in_loc =="left"){
         mem_value_ptr = &left_hand_;
     } else{
-        std::cout << "can only pick up  Item with you right or left hand and not with "<<put_in_loc<<"\n";
+        std::cout << "can only pick up  Item with you right or left hand\n";
         return false;
     }
     if(*mem_value_ptr != nullptr){
@@ -90,7 +89,6 @@ wumpus_game::PlayerCtrl::PlayerCtrl(std::string name, std::weak_ptr<BaseTile> bs
     map_of_item_slot_.insert(std::make_pair("back",&back_));
     map_of_item_slot_.insert(std::make_pair("left",&left_hand_));
     map_of_item_slot_.insert(std::make_pair("head",&head_slot_));
-
 }
 
 bool wumpus_game::PlayerCtrl::MoveItem(std::vector<std::string> arguments) {
@@ -261,12 +259,14 @@ bool wumpus_game::PlayerCtrl::ConsumeItem(std::vector<std::string> arguments) {
         Consumable* item_to_be_constumed = dynamic_cast<Consumable*> (left_hand_);
         if(item_to_be_constumed != nullptr){
             if(item_to_be_constumed->get_delta_hp() != 0){
+                std::cout << "you gain health, from " << current_health;
                 current_health += item_to_be_constumed->get_delta_hp();
-                std::cout << "you gain health\n";
+                std::cout << " to " << current_health << "\n";
             }
             if(item_to_be_constumed->get_delta_mana() != 0){
+                std::cout << "you gain mana, from " << current_mana;
                 current_mana += item_to_be_constumed->get_delta_mana();
-                std::cout << "you gain mana\n";
+                std::cout << " to " << current_mana << "\n";
             }
             std::cout << "you used up "<< item_name_to_be_consumed << "\n";
             delete left_hand_;

@@ -1,5 +1,5 @@
-done - Drop Item
-done mayby - Move - Item
+-done - Drop Item
+-done mayby - Move - Item
 -DESTRUCTOR for Item
 
 
@@ -19,7 +19,7 @@ done mayby - Move - Item
 -cast
 -agressive turtles
 
-event spawn
+-event spawn
 
 
 -event delete
