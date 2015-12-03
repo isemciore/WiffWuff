@@ -22,8 +22,8 @@ void wumpus_game::GameMaster::GameStart() {
     unit_iterator_type unit_it_end;
     bool add_googles_once = false;
     bool run_once_wumpus = false;
-    for(turn_number_; true;turn_number_++){
-        std::cout << "\n\n";
+    for (turn_number_; true; turn_number_++) { //Iterate each turn
+        std::cout << "\n\n"; //Special events
         if (turn_number_==0){
             EventDay0();
         turn_number_++;
@@ -39,24 +39,29 @@ void wumpus_game::GameMaster::GameStart() {
                 break;
             }
         }
+
         unit_it_begin = map_str_to_unitptr_.begin();
         unit_it_end = map_str_to_unitptr_.end();
-
+        //Let player perform action first
         player_ptr_->PerformAction();
         if (!player_ptr_->game_continue.first) {
             break;
         }
         std::cout << "Computer turn:\n";
         while((unit_it_begin != unit_it_end) && (player_ptr_->game_continue.first)){
+            //if something 'dies' during computer turn it make sure to clean it up here
             while (unit_it_begin->second.expired() && unit_it_begin!=unit_it_end){
                 unit_it_begin = map_str_to_unitptr_.erase(unit_it_begin);
             }
+            //if it is a computer perform action
             if (unit_it_begin->second.lock() != player_ptr_) {
                 unit_it_begin->second.lock()->PerformAction();
             }
             unit_it_begin++;
         }
 
+
+        //check of different end game condition
         if (!player_ptr_->game_continue.second.compare("headshot") && run_once_wumpus == false){
             run_once_wumpus = true;
             std::weak_ptr<BaseTile> wumpus_tile_ptr = wumpus_ptr_.second.lock()->GetUnitLocation();
@@ -86,6 +91,7 @@ wumpus_game::GameMaster::~GameMaster() {
 
 }
 
+//Adds stuff to map initially
 void wumpus_game::GameMaster::EventDay0() {
     InitPrintStoryAndQuestion();
     for(int num = 0 ; num <25; num++){
@@ -362,6 +368,16 @@ void wumpus_game::GameMaster::InitialItemDrop() {
     AddItem("carbattery", 0.1, 100, 1);
 }
 
+void wumpus_game::GameMaster::AddItem(const std::string &itemname, const int &dest) {
+    if (itemname == "cardboard") {
+        AddItem("cardboard", 0.1, 1, dest);
+    }//default "template" item
+
+    else {
+        AddItem(itemname, 1, 1.1, dest);
+    }
+
+}
 
 void wumpus_game::GameMaster::AddContainer(const std::string &new_container_name, const double &new_cont_wei_cap,
                                            const double &new_cont_vol_cap, const int &dest) {
@@ -375,13 +391,15 @@ void wumpus_game::GameMaster::AddContainer(const std::string &new_container_name
     AddItem(container_item,dest);
 }
 
-void wumpus_game::GameMaster::AddConsumable(const std::string &item_name, const int &dest) {
-    if(!item_name.compare("apple")){
+void wumpus_game::GameMaster::AddConsumable(const std::string &consumable_name, const int &dest) {
+    if (!consumable_name.compare("apple")) {
         AddConsumable("apple", 0.06, 0.08, 20, 1, dest);
-    } else if(!item_name.compare("arrow")){
+    } else if (!consumable_name.compare("arrow")) {
         AddConsumable("arrow", 0.005, 0.01, 0, 0, dest);
-    } else if(!item_name.compare("mango")){
+    } else if (!consumable_name.compare("mango")) {
         AddConsumable("mango", 0.6, 0.1, 1, 40, dest);
+    } else {
+        AddConsumable(consumable_name, 1, 1.1, 0, 0, dest);
     }
 }
 

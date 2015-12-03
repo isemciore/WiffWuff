@@ -82,6 +82,8 @@ namespace wumpus_game {
         void InitialItemDrop();
 
         void AddItem(Item *item_type_ptr, const int &dest);
+
+        void AddItem(const std::string &itemname, const int &dest);
     };//
 
 }
