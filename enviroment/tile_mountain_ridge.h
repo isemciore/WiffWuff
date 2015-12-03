@@ -14,7 +14,7 @@ namespace wumpus_game {
         using BaseTile::BaseTile;
         TileMountainRidge(std::size_t tile_id);
 
-        virtual bool unit_can_attack_here(std::string unit_name);
+        virtual std::pair<bool, std::string> unit_can_attack_here(std::string unit_name);
 
         virtual void PrintTileDependentInformation();
     };

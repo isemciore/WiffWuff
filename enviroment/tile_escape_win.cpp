@@ -5,8 +5,9 @@
 
 #include <iostream>
 #include "tile_escape_win.h"
-bool wumpus_game::Tile_escape_win::unit_can_attack_here(std::string unit_name) {
-    return true;
+
+std::pair<bool, std::string> wumpus_game::Tile_escape_win::unit_can_attack_here(std::string unit_name) {
+    return std::make_pair(true, "-");
 }
 
 wumpus_game::Tile_escape_win::Tile_escape_win(std::size_t tile_id)

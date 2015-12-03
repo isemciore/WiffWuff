@@ -22,7 +22,7 @@ namespace wumpus_game {
 
         virtual void PrintPlayerOptionAndInformation() override;
 
-        virtual bool unit_can_attack_here(std::string unit_name);
+        virtual std::pair<bool, std::string> unit_can_attack_here(std::string unit_name);
     };
 }
 

@@ -17,6 +17,7 @@ wumpus_game::Sorcerer::Sorcerer(const std::string name,const std::weak_ptr<BaseT
     map_of_member_action_.insert(std::make_pair("Drop",   &PlayerCtrl::DropItem));
     map_of_member_action_.insert(std::make_pair("Cast",  &Sorcerer::Cast_spell));
     map_of_member_action_.insert(std::make_pair("Climb",  &PlayerCtrl::ClimbLadder));
+    map_of_member_action_.insert(std::make_pair("Consume", &PlayerCtrl::ConsumeItem));
 
 
     map_of_member_action_.insert(std::make_pair("travel", &BaseUnit::Travel));
@@ -27,6 +28,7 @@ wumpus_game::Sorcerer::Sorcerer(const std::string name,const std::weak_ptr<BaseT
     map_of_member_action_.insert(std::make_pair("drop",   &PlayerCtrl::DropItem));
     map_of_member_action_.insert(std::make_pair("cast",  &Sorcerer::Cast_spell));
     map_of_member_action_.insert(std::make_pair("climb",  &PlayerCtrl::ClimbLadder));
+    map_of_member_action_.insert(std::make_pair("consume", &PlayerCtrl::ConsumeItem));
 }
 
 void wumpus_game::Sorcerer::PerformAction() {

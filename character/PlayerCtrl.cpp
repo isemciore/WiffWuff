@@ -18,7 +18,7 @@ bool wumpus_game::PlayerCtrl::PickUpItem(const std::vector<std::string>& argumen
     if(!arguments[1].compare("up")){
         shift_constant++;
     }
-    if(arguments.size()<(3+shift_constant)){
+    if (arguments.size() < (unsigned) (3 + shift_constant)) {
         std::cout << "not enough arguments\n";
         return false;
     }
@@ -26,7 +26,7 @@ bool wumpus_game::PlayerCtrl::PickUpItem(const std::vector<std::string>& argumen
     if(!arguments[2+shift_constant].compare("with")){
         shift_constant++;
     }
-    if(arguments.size()<(3+shift_constant)){
+    if (arguments.size() < (unsigned) (3 + shift_constant)) {
         return false;
     }
     std::string put_in_loc = arguments[2+shift_constant];

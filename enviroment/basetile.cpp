@@ -131,8 +131,6 @@ void wumpus_game::BaseTile::PrintPlayerOptionAndInformation() {
         std::cout << "\n";
     }
 
-    std::cout << "\n";
-
 
 }
 
@@ -142,7 +140,10 @@ bool wumpus_game::BaseTile::attack_action(std::string attacker, std::string defe
     //Ej fungerar, men fungerar ifall det skullev ara en map över weak_ptr
     auto defendent_pair_iterator = map_of_char_in_tile_.find(defendent);
 
-    if (!unit_can_attack_here(attacker)){
+    if (!(unit_can_attack_here(attacker)).first) {
+        if (((unit_can_attack_here(attacker)).second == "water") && attacker == "Meep") {
+            std::cout << "You cannot attack while swimming \n";
+        }
         return false;
     }
 
@@ -163,13 +164,15 @@ bool wumpus_game::BaseTile::attack_action(std::string attacker, std::string defe
 
     bool defendent_alive = defendent_pair_iterator->second->RecieveDamage(atk_damage);
     bool attacker_alive = true;
-    if(defendent_alive && unit_can_attack_here(defendent)){
+    if (defendent_alive && unit_can_attack_here(defendent).first) {
         std::cout << defendent << " retaliates with "<< def_damage<<" damage ";
         attacker_alive = attacker_pair_iterator->second->RecieveDamage(def_damage);
     } else if (!defendent_alive){
         exit(defendent);
         //map_of_char_in_tile_.erase(defendent_pair_iterator);
         std::cout << defendent << " just died :( \n";
+    } else if (defendent_alive) {
+        std::cout << defendent << " cannot retaliate here \n";
     }
     if (!attacker_alive){
         exit(defendent);

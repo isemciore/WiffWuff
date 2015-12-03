@@ -17,6 +17,6 @@ void wumpus_game::TileMountainRidge::PrintTileDependentInformation() {
     std::cout << "You climb into a mountain ridge which restrict which direction you can travel\n";
 }
 
-bool wumpus_game::TileMountainRidge::unit_can_attack_here(std::string unit_name) {
-    return true;
+std::pair<bool, std::string> wumpus_game::TileMountainRidge::unit_can_attack_here(std::string unit_name) {
+    return std::make_pair(true, "-");
 }

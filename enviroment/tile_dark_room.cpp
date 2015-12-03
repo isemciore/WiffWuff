@@ -20,6 +20,6 @@ wumpus_game::TileDarkRoom::TileDarkRoom(std::size_t tile_id)
 void wumpus_game::TileDarkRoom::PrintTileDependentInformation() {
 }
 
-bool wumpus_game::TileDarkRoom::unit_can_attack_here(std::string unit_name) {
-    return true;
+std::pair<bool, std::string> wumpus_game::TileDarkRoom::unit_can_attack_here(std::string unit_name) {
+    return std::make_pair(true, "-");
 }

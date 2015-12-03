@@ -37,7 +37,6 @@ namespace wumpus_game {
         BaseTile(const BaseTile &) = delete;
         ~BaseTile();
 
-        void SetUnitPointer(std::weak_ptr<BaseUnit> baseUp);
         std::size_t get_tile_id();
         std::map<std::string,std::weak_ptr<BaseTile>> get_neigbour_map() {return map_of_neighbour_tile_;}
         character_map_type get_character_in_room(){return map_of_char_in_tile_;}
@@ -45,7 +44,7 @@ namespace wumpus_game {
         virtual void PrintPlayerOptionAndInformation();
         virtual void PrintTileDependentInformation() = 0;
 
-        virtual bool unit_can_attack_here(std::string unit_name) = 0;
+        virtual std::pair<bool, std::string> unit_can_attack_here(std::string unit_name) = 0;
 
         bool is_wumpus_here(){ return wumpus_is_here;}
         bool is_player_here(){ return player_is_here;}

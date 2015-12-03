@@ -43,10 +43,6 @@ void wumpus_game::GameMaster::GameStart() {
         unit_it_begin = map_str_to_unitptr_.begin();
         unit_it_end = map_str_to_unitptr_.end();
 
-
-/*        while ((unit_it_begin != unit_it_end) && unit_it_begin->second.expired()){
-            unit_it_begin = map_str_to_unitptr_.erase(unit_it_begin);
-        }*/
         player_ptr_->PerformAction();
         if (!player_ptr_->game_continue.first) {
             break;
@@ -64,26 +60,16 @@ void wumpus_game::GameMaster::GameStart() {
 
         if (!player_ptr_->game_continue.second.compare("headshot") && run_once_wumpus == false){
             run_once_wumpus = true;
-            //WUMPUS NULL SHARED MEMroy some reason
-            //lock wumpus pointer, then check where it "was" shoot is special event and is erased from here
-            //int wumpus_id_loc = wumpus_ptr_.second.lock()->GetUnitLocation().lock()->tile_id_;
             std::weak_ptr<BaseTile> wumpus_tile_ptr = wumpus_ptr_.second.lock()->GetUnitLocation();
             std::size_t wumpus_id_loc = wumpus_tile_ptr.lock()->get_tile_id();
             wumpus_tile_ptr.lock()->exit("Wumpus");
-            //wumpus_ptr_.second.lock()->GetUnitLocation().lock()->map_of_char_in_tile_.erase("wumpus");
             AddItem("nightvision_googles",0.01,0.1,wumpus_id_loc);
-            //Add Item to the ground
         }
 
 
         if (!player_ptr_->game_continue.first){
             break;
         }
-        /*
-        if(wumpus_ptr_.second.expired() && wumpus_ptr_.first== true){
-            wumpus_ptr_.first = false;
-            EventSwapGoalTile();
-        }*/
         if(!player_ptr_->game_continue.second.compare("googles_on") && add_googles_once == false){
             add_googles_once = true;
             EventSwapGoalTile();
@@ -119,10 +105,6 @@ void wumpus_game::GameMaster::EventDay0() {
     }
     SetMapSquare(5);
 
-    //std::shared_ptr<PlayerCtrl> player_ptr;
-    //player_ptr_.reset(new Paladin("Meep",(std::weak_ptr<BaseTile>) vector_of_tileptr_[0]));
-    //vector_of_tileptr_[0]->AddCharToTile(player_ptr_);
-    //map_str_to_unitptr_.insert(std::make_pair("Meep",player_ptr_));
     std::cout << "What kind of hero are you?, a Paladin or a Sorcerer?\n";
     std::string hero_type;
     while(true){
@@ -141,20 +123,12 @@ void wumpus_game::GameMaster::EventDay0() {
 
     AddUnit("Wumpus",7);
 
-    //Blabla default mode
     AddUnit("turtle",0);
     AddUnit("turtle",1);
     AddUnit("turtle",5);
     AddUnit("turtle", 20);
     AddUnit("mean_turtle",5);
     AddUnit("mean_turtle",10);
-
-    //std::shared_ptr<Wumpus> wumpus_sp_ptr;
-    //wumpus_sp_ptr.reset(new Wumpus("Wumpus",(std::weak_ptr<BaseTile>) vector_of_tileptr_[7]));
-    //wumpus_ptr_ = std::make_pair(true, wumpus_sp_ptr);
-    //vector_of_tileptr_[7]->AddCharToTile(wumpus_sp_ptr);
-    //map_str_to_unitptr_.insert(std::make_pair("Wumpus",wumpus_sp_ptr));
-
 
     InitialItemDrop();
 
@@ -357,8 +331,6 @@ void wumpus_game::GameMaster::AttachNeighbour(
     //Attach north room
     if((tile_id_num+1)%num_tile_width && tile->feaseable_direction[0]){
         AttachRoom(tile_id_num+1,"north");
-        //BaseTile::neighbour_map_type::iterator tilePair =  tile->map_of_neighbour_tile_.find("north");
-        //std::cout << tilePair->second.lock()->get_tile_id()<<"\n";
     }
     //Attach room to east
     if(tile_id_num < 20 && tile->feaseable_direction[1]){
