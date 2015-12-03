@@ -31,7 +31,7 @@ namespace wumpus_game {
         int desutrction_order_ [25] = {24,23,22,21,20,15,10,5,0,1,2,3,4,9,14,
                                           19,18,17,16,11,6,7,8,13};
         std::size_t tile_destruction_number_ = 0;
-        const std::size_t tile_max_destruction_num = 23;
+        const std::size_t k_tile_max_destruction_num = 23;
 
     public:
         typedef std::map<std::size_t, std::shared_ptr<BaseTile>> map_tileptr_type;
@@ -60,14 +60,20 @@ namespace wumpus_game {
         void AddTile(const std::string& tile_type_name);
         bool RemoveTile(const int & tile_id);
 
-        void AddItem(std::string new_item_name, double new_item_weight, double new_item_volume, int dest);
-        void AddContainer(std::string new_container_name, double new_cont_wei_cap, double new_cont_vol_cap, int dest);
+        void AddItem(const std::string &new_item_name, const double &new_item_weight,
+                     const double &new_item_volume, const int &dest);
 
-        void AddConsumable(std::string item_name, int destination_id);
-        void AddConsumable(std::string item_name, double new_item_weight,double new_item_volume,double delta_hp, double delta_mana, int dest);
+        void AddContainer(const std::string &new_container_name, const double &new_cont_wei_cap,
+                          const double &new_cont_vol_cap, const int &dest);
+
+        void AddConsumable(const std::string &item_name, const int &destination_id);
+
+        void AddConsumable(const std::string &item_name, const double &new_item_weight, const double &new_item_volume,
+                           const double &delta_hp, const double &delta_mana, const int &dest);
 
         void InitPrintStoryAndQuestion();
-        void InitTurnMessages(std::size_t turn_no);
+
+        void InitTurnMessages(const std::size_t &turn_no);
         void EndGameMessage();
 
         void EventSwapGoalTile();
@@ -75,7 +81,7 @@ namespace wumpus_game {
         void AttachNeighbour(map_tileptr_type::iterator room_ptr,const std::size_t &num_tile_width);
         void InitialItemDrop();
 
-        void AddItem(Item *item_type_ptr, int dest);
+        void AddItem(Item *item_type_ptr, const int &dest);
     };//
 
 }

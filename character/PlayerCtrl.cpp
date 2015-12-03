@@ -5,7 +5,6 @@
 #include "PlayerCtrl.h"
 #include <algorithm>
 #include <iostream>
-#include "../stuff/Consumable.h"
 #include "../enviroment/tile_escape_win.h"
 
 bool wumpus_game::PlayerCtrl::PickUpItem(const std::vector<std::string>& arguments) {
@@ -157,8 +156,15 @@ bool wumpus_game::PlayerCtrl::MoveItem(const std::vector<std::string> &arguments
     //if destination is a cointer
     std::cout << "you move Item "<< item_ptr->get_name() <<" \n";
     if(container_ptr!= nullptr){
-        container_ptr->AddItem(item_ptr);
+        //container_ptr->AddItem(item_ptr);
         std::cout << "into a container ";
+        bool container_whole = container_ptr->AddItem(item_ptr);
+        if (!container_whole) {
+            container_ptr->DropItemToTile(location_tile_pointer_);
+            delete *(to_itr->second);
+            *(to_itr->second) = nullptr;
+            return true;
+        }
     }else {
         *(to_itr->second) = item_ptr;
     }
@@ -173,54 +179,6 @@ bool wumpus_game::PlayerCtrl::MoveItem(const std::vector<std::string> &arguments
 }
 
 bool wumpus_game::PlayerCtrl::DisplayWield(const std::vector<std::string> &arguments) {
-    /*
-    if(right_hand_ != nullptr){
-        container* container_ptr = dynamic_cast<container*>(right_hand_);
-        std::cout << "In your right hand you have a ";
-        if(container_ptr!= nullptr){
-            std::cout << container_ptr->get_name() << " which contains the item";
-            container_ptr->Display_contents();
-        }else{
-            std::cout << right_hand_->get_name();
-        }
-        std::cout << "\n";
-    }
-    if(left_hand_ != nullptr){
-        container* container_ptr = dynamic_cast<container*>(left_hand_);
-        std::cout << "In your left hand you have a ";
-        if(container_ptr!= nullptr){
-            std::cout << container_ptr->get_name() << " which contains the item";
-            container_ptr->Display_contents();
-        }else{
-            std::cout << left_hand_->get_name();
-        }
-        std::cout << "\n";
-    }
-    if(head_slot_ != nullptr){
-        container* container_ptr = dynamic_cast<container*>(head_slot_);
-        std::cout << "On your head you have a ";
-        if(container_ptr!= nullptr){
-            std::cout << head_slot_->get_name() << " which contains the item";
-            container_ptr->Display_contents();
-        }else{
-            std::cout << head_slot_->get_name();
-        }
-        std::cout << "\n";
-    }
-
-    if(back_ != nullptr){
-        container* container_ptr = dynamic_cast<container*>(back_);
-        std::cout << "On your back you have a ";
-        if(container_ptr!= nullptr){
-            std::cout << container_ptr->get_name() << " which contains the item";
-            container_ptr->Display_contents();
-        }else{
-            std::cout << back_->get_name();
-        }
-        std::cout << "\n";
-    }
-     */
-
     for(auto & item_itr  : map_of_item_slot_){
         container* container_ptr = dynamic_cast<container*>(*(item_itr.second));
         if (nullptr ==container_ptr){ //regular item in location
@@ -258,6 +216,8 @@ bool wumpus_game::PlayerCtrl::ConsumeItem(const std::vector<std::string> &argume
     if(left_hand_!= nullptr && left_hand_->get_name() == item_name_to_be_consumed){
         Consumable* item_to_be_constumed = dynamic_cast<Consumable*> (left_hand_);
         if(item_to_be_constumed != nullptr){
+            item_to_be_constumed->Consume(this);
+            /*
             if(item_to_be_constumed->get_delta_hp() != 0){
                 std::cout << "you gain health, from " << current_health;
                 current_health += item_to_be_constumed->get_delta_hp();
@@ -272,6 +232,7 @@ bool wumpus_game::PlayerCtrl::ConsumeItem(const std::vector<std::string> &argume
             delete left_hand_;
             left_hand_ = nullptr;
             return true;
+            */
         }
         else{
             std::cout << "cannot eat that\n";

@@ -10,12 +10,12 @@ std::pair<bool, std::string> wumpus_game::Tile_escape_win::unit_can_attack_here(
     return std::make_pair(true, "-");
 }
 
-wumpus_game::Tile_escape_win::Tile_escape_win(std::size_t tile_id)
+wumpus_game::Tile_escape_win::Tile_escape_win(const std::size_t &tile_id)
         : BaseTile(tile_id){
 
 }
 
-bool wumpus_game::Tile_escape_win::enter(std::shared_ptr<BaseUnit> ptr){
+bool wumpus_game::Tile_escape_win::EnterCharacter(std::shared_ptr<BaseUnit> ptr) {
     if(ptr->get_unit_name()!="Meep"){
         return false;
     }
@@ -26,7 +26,7 @@ bool wumpus_game::Tile_escape_win::enter(std::shared_ptr<BaseUnit> ptr){
     return true;
 }
 
-bool wumpus_game::Tile_escape_win::move_char(std::string name, std::string direction) {
+bool wumpus_game::Tile_escape_win::MoveCharacter(const std::string &name, const std::string &direction) {
     std::cout << "you dont want to dive deeper into the mess \n";
     return false;
 }

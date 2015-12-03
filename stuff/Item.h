@@ -19,10 +19,11 @@ namespace wumpus_game {
 
         std::string get_name();
 
-        virtual int get_weight();
-        virtual int get_volume();
+        virtual double get_weight();
 
-        virtual Item * get_item(std::string item_name); //delete denna
+        virtual double get_volume();
+
+        virtual Item *get_item(const std::string &item_name); //delete denna
     };
 }
 

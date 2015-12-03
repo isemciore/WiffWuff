@@ -6,8 +6,7 @@
 #include "tile_ocean.h"
 
 
-
-wumpus_game::TileOcean::TileOcean(std::size_t tile_id)
+wumpus_game::TileOcean::TileOcean(const std::size_t &tile_id)
     : BaseTile(tile_id){
     feaseable_direction[0] = true;
     feaseable_direction[1] = true;
@@ -33,10 +32,14 @@ void wumpus_game::TileOcean::PrintTileDependentInformation() {
 bool wumpus_game::TileOcean::AddItem(wumpus_game::Item *item) {
     double item_density = ((double) item->get_weight())/((double) item->get_volume());
     if(item_density > 1){
-        std::cout << item->get_name()<<" sinks to the bottom (density > 1)\n";
+        std::cout << item->get_name() << " sinks to the bottom (density > 1), and is lost forever\n";
         delete item;
         return false;
     }
     map_of_items_in_tile_.insert(std::make_pair(item->get_name(),item));
     return true;
+}
+
+bool wumpus_game::TileOcean::shoot_able_from_room() {
+    return false;
 }

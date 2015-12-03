@@ -82,3 +82,22 @@ travel east
 attack turtle2
 attack mean_turtle4
 attack mean_turtle4
+
+s
+s
+Paladin
+travel north
+pick up carbattery with right hand
+pick up backpack with left hand
+move carbattery from right to left
+travel east
+travel north
+
+s
+s
+Paladin
+travel north
+pick up apple with left hand
+consume apple
+travel east
+travel north

@@ -33,31 +33,40 @@ namespace wumpus_game {
         typedef std::map<std::string,std::weak_ptr<BaseTile>> neighbour_map_type;
         typedef std::map<std::string,std::shared_ptr<BaseUnit>> character_map_type;
         typedef std::multimap<std::string, Item *> item_map_type;
-        BaseTile(const std::size_t);
+
+        BaseTile(const std::size_t &);
         BaseTile(const BaseTile &) = delete;
         ~BaseTile();
 
         std::size_t get_tile_id();
-        std::map<std::string,std::weak_ptr<BaseTile>> get_neigbour_map() {return map_of_neighbour_tile_;}
-        character_map_type get_character_in_room(){return map_of_char_in_tile_;}
+
+        std::map<std::string, std::weak_ptr<BaseTile>> get_neigbour_map();
+
+        character_map_type get_character_in_room();
 
         virtual void PrintPlayerOptionAndInformation();
         virtual void PrintTileDependentInformation() = 0;
 
         virtual std::pair<bool, std::string> unit_can_attack_here(std::string unit_name) = 0;
 
-        bool is_wumpus_here(){ return wumpus_is_here;}
-        bool is_player_here(){ return player_is_here;}
-        virtual bool attack_action(std::string attacker, std::string defendent);
-        virtual bool enter(std::shared_ptr<BaseUnit>);//Check if unit is sallowed
-        virtual bool move_char(std::string name, std::string direction);
-        virtual bool exit(const std::string & name);
+        bool is_wumpus_here();
+
+        bool is_player_here();
+
+        virtual bool AttackAction(const std::string &attacker, const std::string &defendent);
+
+        virtual bool EnterCharacter(std::shared_ptr<BaseUnit>);
+
+        //Check if unit is sallowed
+        virtual bool MoveCharacter(const std::string &name, const std::string &direction);
+
+        virtual bool Exit(const std::string &name);
 
         Item * GetItemPointer(const std::string & item_name);
         virtual bool AddItem(Item *);
 
 
-        virtual bool shoot_able_from_room(){return true;};
+        virtual bool shoot_able_from_room();
 
     };
 

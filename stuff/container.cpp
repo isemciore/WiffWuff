@@ -5,7 +5,7 @@
 #include <iostream>
 #include "container.h"
 
-wumpus_game::container::container(std::string name, double holdWeight, double holdVolume)
+wumpus_game::container::container(const std::string &name, const double &holdWeight, const double &holdVolume)
     : Item(name, 0.0,0.0)
     , k_capacity_hold_weight_(holdWeight)
     , k_capacity_hold_volume_(holdVolume)
@@ -18,18 +18,18 @@ bool wumpus_game::container::AddItem(wumpus_game::Item *item) {
     internal_extra_volume += item->get_volume();
     item_container.insert(std::make_pair(item->get_name(), item));
 
-    if(weight_ > k_capacity_hold_volume_){
+    if ((volume_ + internal_extra_volume) > k_capacity_hold_volume_) {
         std::cout << "Backpack breaks due to too big Item \n";
         return false;
     }
-    if(volume_>k_capacity_hold_volume_){
+    if ((weight_ + internal_extra_weight) > k_capacity_hold_weight_) {
         std::cout << "Backpack weights too much and breaks \n";
         return false;
     }
     return true;
 }
 
-wumpus_game::Item *wumpus_game::container::get_item(std::string item_name) {
+wumpus_game::Item *wumpus_game::container::get_item(const std::string &item_name) {
     if (item_name == item_name_){
         return this;
     }
@@ -52,6 +52,8 @@ void wumpus_game::container::DropItemToTile(std::weak_ptr<BaseTile> tile_pointer
         tile_pointer.lock()->AddItem(first_item->second);
         first_item = item_container.erase(first_item);
     }
+    Item *brokenbackpack = new Item("broken_backpack", 0.00001, 0.1);
+    tile_pointer.lock()->AddItem(brokenbackpack);
 }
 
 void wumpus_game::container::Display_contents() {
@@ -71,10 +73,10 @@ wumpus_game::container::~container() {
     }
 }
 
-int wumpus_game::container::get_weight() {
+double wumpus_game::container::get_weight() {
     return weight_+internal_extra_weight;
 }
 
-int wumpus_game::container::get_volume() {
+double wumpus_game::container::get_volume() {
     return volume_+internal_extra_volume;
 }

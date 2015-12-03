@@ -15,7 +15,7 @@ wumpus_game::Item::Item(const std::string &item_name,const double &weight,const 
 
 }
 
-int wumpus_game::Item::get_volume() {
+double wumpus_game::Item::get_volume() {
     return volume_;
 }
 
@@ -23,11 +23,11 @@ std::string wumpus_game::Item::get_name() {
     return item_name_;
 }
 
-int wumpus_game::Item::get_weight() {
+double wumpus_game::Item::get_weight() {
     return weight_;
 }
 
-wumpus_game::Item *wumpus_game::Item::get_item(std::string item_name) {
+wumpus_game::Item *wumpus_game::Item::get_item(const std::string &item_name) {
     if (!item_name_ .compare(item_name)){
         return this;
     }

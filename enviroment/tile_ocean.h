@@ -13,7 +13,8 @@ namespace wumpus_game {
 
     public:
         using BaseTile::BaseTile;
-        TileOcean(std::size_t tile_id);
+
+        TileOcean(const std::size_t &tile_id);
 
         virtual void PrintTileDependentInformation();
 
@@ -23,7 +24,7 @@ namespace wumpus_game {
 
         virtual std::pair<bool, std::string> unit_can_attack_here(std::string unit_name);
 
-        virtual bool shoot_able_from_room(){return false;};
+        virtual bool shoot_able_from_room();
     };
 
 }
