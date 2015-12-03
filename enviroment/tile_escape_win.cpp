@@ -43,3 +43,7 @@ void wumpus_game::Tile_escape_win::PrintPlayerOptionAndInformation() {
     std::cout << "You can smell escape, perhaps you should follow the light?\n";
     std::cout << "hint*, climb ladder\n";
 }
+
+double wumpus_game::Tile_escape_win::attack_damage_mod_tile(const std::string &unit_name) {
+    return 1;
+}

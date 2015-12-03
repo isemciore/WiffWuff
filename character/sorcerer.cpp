@@ -81,6 +81,9 @@ void wumpus_game::Sorcerer::PerformAction() {
     }
 }
 
+
+//Simple version of paladin check, check item that if it crosses path with either player or wumpus
+
 bool wumpus_game::Sorcerer::Cast_spell(const std::vector<std::string> &input_cmds) {
     if (current_mana < 40){
         std::cout << "you do not have enough mana to cast a firball \n";
@@ -91,7 +94,7 @@ bool wumpus_game::Sorcerer::Cast_spell(const std::vector<std::string> &input_cmd
     }
 
     current_mana-=40;
-    std::cout << "you have "<<current_mana << "left \n";
+    std::cout << "you have " << current_mana << " mana left \n";
     std::weak_ptr<BaseTile> current_inspected_tile = location_tile_pointer_.lock();
     BaseTile::neighbour_map_type neighbour_map;
     BaseTile::neighbour_map_type::iterator neib_itr;
@@ -106,6 +109,7 @@ bool wumpus_game::Sorcerer::Cast_spell(const std::vector<std::string> &input_cmd
                 game_continue = std::make_pair(true,"headshot");
                 return true;
             } else if (current_inspected_tile.lock() == location_tile_pointer_.lock()){
+                std::cout << "you see a big hot red ball moving towards you\n";
                 game_continue = std::make_pair(false,"arrowintheknee");
                 return true;
             }

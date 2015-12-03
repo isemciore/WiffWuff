@@ -20,3 +20,7 @@ void wumpus_game::TileMountainRidge::PrintTileDependentInformation() {
 std::pair<bool, std::string> wumpus_game::TileMountainRidge::unit_can_attack_here(std::string unit_name) {
     return std::make_pair(true, "-");
 }
+
+double wumpus_game::TileMountainRidge::attack_damage_mod_tile(const std::string &unit_name) {
+    return 1;
+}

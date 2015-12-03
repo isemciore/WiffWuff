@@ -43,3 +43,7 @@ bool wumpus_game::TileOcean::AddItem(wumpus_game::Item *item) {
 bool wumpus_game::TileOcean::shoot_able_from_room() {
     return false;
 }
+
+double wumpus_game::TileOcean::attack_damage_mod_tile(const std::string &unit_name) {
+    return 1;
+}

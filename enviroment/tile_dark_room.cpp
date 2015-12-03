@@ -23,3 +23,7 @@ void wumpus_game::TileDarkRoom::PrintTileDependentInformation() {
 std::pair<bool, std::string> wumpus_game::TileDarkRoom::unit_can_attack_here(std::string unit_name) {
     return std::make_pair(true, "-");
 }
+
+double wumpus_game::TileDarkRoom::attack_damage_mod_tile(const std::string &unit_name) {
+    return 1;
+}

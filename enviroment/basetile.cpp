@@ -155,6 +155,10 @@ bool wumpus_game::BaseTile::AttackAction(const std::string &attacker, const std:
     }
     int atk_damage = attacker_pair_iterator->second->get_attack_damage();
     int def_damage = defendent_pair_iterator->second->get_attack_damage();
+    //if enviroment modifies attack damage, add code heree
+    //double attack_mod_dmg = attack_damage_mod_tile(attacker);
+    //atk_damage = 1*attack_mod_dmg;
+    //if it is used fix terminal output
 
     std::cout << attacker << " attack with " << atk_damage << " damage ";
 

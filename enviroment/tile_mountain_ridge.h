@@ -17,6 +17,8 @@ namespace wumpus_game {
 
         virtual std::pair<bool, std::string> unit_can_attack_here(std::string unit_name);
 
+        virtual double attack_damage_mod_tile(const std::string &unit_name);
+
         virtual void PrintTileDependentInformation();
     };
 

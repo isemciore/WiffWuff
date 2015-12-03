@@ -242,9 +242,11 @@ void wumpus_game::GameMaster::EndGameMessage() {
     }else if (player_ptr_->game_continue.second== "lowhp"){
         std::cout << "you are hurt and cannot move and feel lifeless\n";
         std::cout << "Game Over\n";
+    } else if (player_ptr_->game_continue.second == "arrowintheknee") {
+        std::cout << "you accidently shoot your self \n";
     }
     else{
-        std::cout << "story for this end condition " << player_ptr_->game_continue.second << "\n";
+        std::cout << "uncoded end condition: " << player_ptr_->game_continue.second << "\n";
     }
 }
 
@@ -292,7 +294,7 @@ void wumpus_game::GameMaster::AddUnit(const std::string &unit_type_name, const s
     map_str_to_unitptr_.insert(std::make_pair(unit_name,unit_sp));
 }
 
-
+//Reconnects all connections
 void wumpus_game::GameMaster::SetMapSquare(const std::size_t &num_tile_width) {
 
 
@@ -318,7 +320,7 @@ void wumpus_game::GameMaster::AttachNeighbour(
         map_tileptr_type::iterator tile_itr = map_int_to_tileptr_.find((std::size_t) roomID);
         if (tile_itr!=map_int_to_tileptr_.end()) {
             std::weak_ptr<BaseTile> baseTilePtr = tile_itr->second;
-            tile->map_of_neighbour_tile_.erase(dir);
+            tile->map_of_neighbour_tile_.erase(dir); //REFRESHES target
             tile->map_of_neighbour_tile_.insert(std::make_pair(dir,baseTilePtr));
 
         }

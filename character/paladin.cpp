@@ -87,14 +87,16 @@ void wumpus_game::Paladin::PerformAction() {
 }
 
 bool wumpus_game::Paladin::Shoot(const std::vector<std::string> &input_cmds) {
-    //have arrow check
+    //Check if atleast 4 "words"
     if (input_cmds.size() < 4){
         std::cout << "no enough input\n";
     }
+    //check if character has a bow
     if(right_hand_ == nullptr || right_hand_->get_name().compare("bow")){
         std::cout << "cannot shoot, no bow in your right hand" << "\n";
         return false;
     }
+    //arrow is consumable, mayby strength test under consume?
     std::vector<std::string> dummy;//simulate "consume arrow" input
     dummy.push_back("dummy");
     dummy.push_back("arrow");
@@ -103,7 +105,7 @@ bool wumpus_game::Paladin::Shoot(const std::vector<std::string> &input_cmds) {
         std::cout << "you cannot draw your bow in this room";
         return false;
     }
-
+    //or add user does not have enough agility to use?
     bool haveArrow = this->ConsumeItem(dummy);
     if(!haveArrow){
         std::cout << "there is no arrow in your left hand cannot shoot";
@@ -112,6 +114,7 @@ bool wumpus_game::Paladin::Shoot(const std::vector<std::string> &input_cmds) {
 
     BaseTile::neighbour_map_type neighbour_map;
     BaseTile::neighbour_map_type::iterator neib_itr;
+    //For each word as position 2,3,4 check location, if direction is not possible, the arrow floats
     for(int i = 1; i < 4;i++){
         neighbour_map = current_inspected_tile.lock()->get_neigbour_map();
         neib_itr = neighbour_map.find(input_cmds[i]);
@@ -122,6 +125,7 @@ bool wumpus_game::Paladin::Shoot(const std::vector<std::string> &input_cmds) {
                 game_continue = std::make_pair(true,"headshot");
                 return true;
             } else if (current_inspected_tile.lock() == location_tile_pointer_.lock()){
+                std::cout << "you see a black dot coming at you\n";
                 game_continue = std::make_pair(false,"arrowintheknee");
                 return true;
             }
@@ -130,7 +134,4 @@ bool wumpus_game::Paladin::Shoot(const std::vector<std::string> &input_cmds) {
     return false;
 
 
-
-    return false; //True if hit wumpus or player //Need to check afterwards who got it
-    //If player get hit return true, game continue false, reason suicide in
 }
