@@ -1,3 +1,4 @@
+//WIN FOR PALADIN
 s
 s
 Paladin
@@ -18,7 +19,7 @@ travel east
 travel north
 climb
 
-
+//WIN WITH SORCERER
 s
 s
 Sorcerer
@@ -38,6 +39,7 @@ travel east
 travel north
 climb
 
+//CONSUME ITEM MOVE ITEM AND LOSE
 s
 s
 Paladin
@@ -45,8 +47,10 @@ Travel north
 pick up apple with right hand
 move apple from right to left hand
 consume apple
+travel east
+travel north
 
-
+//WALK INTO WUMPUS
 s
 s
 Paladin
@@ -74,7 +78,7 @@ travel north
 
 
 
-
+//KIlled by turtle
 s
 s
 Paladin
@@ -83,6 +87,7 @@ attack turtle2
 attack mean_turtle4
 attack mean_turtle4
 
+//pick up heavy item whcih breaks backpack and drop item i a ocean tile so the carybattery sinks..
 s
 s
 Paladin
@@ -90,14 +95,5 @@ travel north
 pick up carbattery with right hand
 pick up backpack with left hand
 move carbattery from right to left
-travel east
-travel north
-
-s
-s
-Paladin
-travel north
-pick up apple with left hand
-consume apple
 travel east
 travel north

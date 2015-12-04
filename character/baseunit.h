@@ -31,7 +31,7 @@ namespace wumpus_game {
     public:
         BaseUnit(const std::string name,const std::weak_ptr<BaseTile> initPosition);
         BaseUnit(const BaseUnit &) = delete; //No copy of unit, due too unique name
-        ~BaseUnit();
+        virtual ~BaseUnit();
 
         void SetTilePointer(std::weak_ptr<BaseTile> baseTp);
         virtual void PerformAction() = 0;

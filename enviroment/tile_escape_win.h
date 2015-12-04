@@ -14,7 +14,7 @@ namespace wumpus_game {
 
         using BaseTile::BaseTile;
 
-        Tile_escape_win(const std::size_t &tile_id);
+        Tile_escape_win(const int &tile_id);
 
         virtual bool EnterCharacter(std::shared_ptr<BaseUnit> ptr) override;
 

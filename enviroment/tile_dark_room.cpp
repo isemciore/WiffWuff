@@ -13,7 +13,7 @@ bool wumpus_game::TileDarkRoom::EnterCharacter(std::shared_ptr<wumpus_game::Base
     return false;
 }
 
-wumpus_game::TileDarkRoom::TileDarkRoom(const std::size_t &tile_id)
+wumpus_game::TileDarkRoom::TileDarkRoom(const int &tile_id)
     : BaseTile(tile_id){
 }
 

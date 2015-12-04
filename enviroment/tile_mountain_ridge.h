@@ -13,7 +13,7 @@ namespace wumpus_game {
     public:
         using BaseTile::BaseTile;
 
-        TileMountainRidge(const std::size_t &tile_id);
+        TileMountainRidge(const int &tile_id);
 
         virtual std::pair<bool, std::string> unit_can_attack_here(std::string unit_name);
 

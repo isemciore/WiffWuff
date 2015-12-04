@@ -21,12 +21,12 @@ namespace wumpus_game {
     private:
         std::map<std::string,std::weak_ptr<BaseUnit>> map_str_to_unitptr_;
         //std::vector<std::shared_ptr<BaseTile>> vector_of_tileptr_;
-        std::map<std::size_t, std::shared_ptr<BaseTile>> map_int_to_tileptr_;
+        std::map<int, std::shared_ptr<BaseTile>> map_int_to_tileptr_;
         std::shared_ptr<PlayerCtrl> player_ptr_;
         //else wumpus disapears?
         std::pair<bool,std::weak_ptr<Wumpus>> wumpus_ptr_;  //trigger dead wumpus event once
         std::size_t turn_number_;
-        std::size_t tile_counter_ = 0;
+        int tile_counter_ = 0;
         std::size_t unit_counter_ = 0;
         int desutrction_order_ [25] = {24,23,22,21,20,15,10,5,0,1,2,3,4,9,14,
                                           19,18,17,16,11,6,7,8,13};
@@ -34,12 +34,13 @@ namespace wumpus_game {
         const std::size_t k_tile_max_destruction_num = 23;
 
     public:
-        typedef std::map<std::size_t, std::shared_ptr<BaseTile>> map_tileptr_type;
+        typedef std::map<int, std::shared_ptr<BaseTile>> map_tileptr_type;
         typedef std::map<std::string,std::weak_ptr<BaseUnit>>::iterator unit_iterator_type;
-        typedef std::pair<std::string,std::weak_ptr<BaseUnit>> string_tile_pair;
+
 
         GameMaster();
-        GameMaster(const gameSave & saveFile);
+
+        //GameMaster(const gameSave & saveFile); //if coding for savefile, read file and add all necessary tiles etc
         ~GameMaster();
         GameMaster(const GameMaster &) = delete;
 
@@ -52,11 +53,11 @@ namespace wumpus_game {
         bool EventDestroyTile();
 
 
-        void SaveGame();
+        //void SaveGame();
 
-        void SetMapSquare(const std::size_t & num_tile_width);
+        void SetMapSquare(const int &num_tile_width);
 
-        void AddUnit(const std::string& unit_type_name, const std::size_t location_id);
+        void AddUnit(const std::string &unit_type_name, const int location_id);
         void AddTile(const std::string& tile_type_name);
         bool RemoveTile(const int & tile_id);
 
@@ -78,7 +79,7 @@ namespace wumpus_game {
 
         void EventSwapGoalTile();
 
-        void AttachNeighbour(map_tileptr_type::iterator room_ptr,const std::size_t &num_tile_width);
+        void AttachNeighbour(map_tileptr_type::iterator room_ptr, const int &num_tile_width);
         void InitialItemDrop();
 
         void AddItem(Item *item_type_ptr, const int &dest);

@@ -14,7 +14,7 @@ namespace wumpus_game {
     public:
         using BaseTile::BaseTile;
 
-        TileOcean(const std::size_t &tile_id);
+        TileOcean(const int &tile_id);
 
         virtual void PrintTileDependentInformation();
 

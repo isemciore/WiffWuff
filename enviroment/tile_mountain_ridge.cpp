@@ -5,7 +5,7 @@
 #include <iostream>
 #include "tile_mountain_ridge.h"
 
-wumpus_game::TileMountainRidge::TileMountainRidge(const std::size_t &tile_id)
+wumpus_game::TileMountainRidge::TileMountainRidge(const int &tile_id)
     : BaseTile(tile_id){
     feaseable_direction[0] = true;
     feaseable_direction[1] = false;

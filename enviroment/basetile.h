@@ -15,7 +15,7 @@ namespace wumpus_game {
     class BaseTile {
     protected:
 
-        std::size_t tile_id_;
+        int tile_id_;
         std::map<std::string,std::shared_ptr<BaseUnit>> map_of_char_in_tile_;
         std::map<std::string,std::weak_ptr<BaseTile>> map_of_neighbour_tile_;
         std::multimap<std::string, Item *> map_of_items_in_tile_;
@@ -34,11 +34,11 @@ namespace wumpus_game {
         typedef std::map<std::string,std::shared_ptr<BaseUnit>> character_map_type;
         typedef std::multimap<std::string, Item *> item_map_type;
 
-        BaseTile(const std::size_t &);
+        BaseTile(const int &);
         BaseTile(const BaseTile &) = delete;
         ~BaseTile();
 
-        std::size_t get_tile_id();
+        int get_tile_id();
 
         std::map<std::string, std::weak_ptr<BaseTile>> get_neigbour_map();
 

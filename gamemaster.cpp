@@ -62,10 +62,10 @@ void wumpus_game::GameMaster::GameStart() {
 
 
         //check of different end game condition
-        if (!player_ptr_->game_continue.second.compare("headshot") && run_once_wumpus == false){
+        if (!player_ptr_->game_continue.second.compare("headshot") && !run_once_wumpus) {
             run_once_wumpus = true;
             std::weak_ptr<BaseTile> wumpus_tile_ptr = wumpus_ptr_.second.lock()->GetUnitLocation();
-            std::size_t wumpus_id_loc = wumpus_tile_ptr.lock()->get_tile_id();
+            int wumpus_id_loc = wumpus_tile_ptr.lock()->get_tile_id();
             wumpus_tile_ptr.lock()->Exit("Wumpus");
             AddItem("nightvision_googles",0.01,0.1,wumpus_id_loc);
         }
@@ -74,7 +74,7 @@ void wumpus_game::GameMaster::GameStart() {
         if (!player_ptr_->game_continue.first){
             break;
         }
-        if(!player_ptr_->game_continue.second.compare("googles_on") && add_googles_once == false){
+        if (!player_ptr_->game_continue.second.compare("googles_on") && !add_googles_once) {
             add_googles_once = true;
             EventSwapGoalTile();
         }
@@ -217,11 +217,10 @@ void wumpus_game::GameMaster::EventSwapGoalTile() {
 }
 
 bool wumpus_game::GameMaster::RemoveTile(const int &tile_id) {
-    map_tileptr_type::iterator target_tile_itr = map_int_to_tileptr_.find((int)tile_id);
+    map_tileptr_type::iterator target_tile_itr = map_int_to_tileptr_.find(tile_id);
     int target_id = player_ptr_->GetUnitLocation().lock()->get_tile_id();
     if(target_tile_itr!= map_int_to_tileptr_.end()){
         map_int_to_tileptr_.erase(target_tile_itr);
-
         std::cout << "The ground is shaking" << "\n";
     }
     if(tile_id == target_id){
@@ -256,7 +255,7 @@ void wumpus_game::GameMaster::EndGameMessage() {
     }
 }
 
-void wumpus_game::GameMaster::AddUnit(const std::string &unit_type_name, const std::size_t location_id) {
+void wumpus_game::GameMaster::AddUnit(const std::string &unit_type_name, const int location_id) {
     std::shared_ptr<BaseUnit> unit_sp;
     std::string unit_name;
     //first check if location exist
@@ -301,8 +300,10 @@ void wumpus_game::GameMaster::AddUnit(const std::string &unit_type_name, const s
 }
 
 //Reconnects all connections
-void wumpus_game::GameMaster::SetMapSquare(const std::size_t &num_tile_width) {
-
+void wumpus_game::GameMaster::SetMapSquare(const int &num_tile_width) {
+    if (num_tile_width < 1) {
+        throw std::out_of_range("cannot have negative tile width \n");
+    }
 
     //for(std::shared_ptr<BaseTile>& tile: vector_of_tileptr_){
     map_tileptr_type::iterator first_elt = map_int_to_tileptr_.begin();
@@ -314,16 +315,16 @@ void wumpus_game::GameMaster::SetMapSquare(const std::size_t &num_tile_width) {
 }
 
 void wumpus_game::GameMaster::AttachNeighbour(
-        std::map<unsigned long, std::shared_ptr<wumpus_game::BaseTile>>::iterator room_ptr,
-        const std::size_t &num_tile_width) {
-    std::size_t tile_id_num;
+        map_tileptr_type::iterator room_ptr,
+        const int &num_tile_width) {
+    int tile_id_num;
     std::shared_ptr<BaseTile> tile;
     tile = room_ptr->second;
     tile_id_num = tile->tile_id_;
     //adding tile id, with certain reference name dir attached to tile.
     //
     auto AttachRoom = [&tile, this](int roomID,std::string dir){
-        map_tileptr_type::iterator tile_itr = map_int_to_tileptr_.find((std::size_t) roomID);
+        map_tileptr_type::iterator tile_itr = map_int_to_tileptr_.find(roomID);
         if (tile_itr!=map_int_to_tileptr_.end()) {
             std::weak_ptr<BaseTile> baseTilePtr = tile_itr->second;
             tile->map_of_neighbour_tile_.erase(dir); //REFRESHES target

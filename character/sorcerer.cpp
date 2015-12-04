@@ -75,7 +75,7 @@ void wumpus_game::Sorcerer::PerformAction() {
             break;
         }
 
-        if(game_continue.first==false){
+        if (!game_continue.first) {
             break;
         }
     }

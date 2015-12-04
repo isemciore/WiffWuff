@@ -14,7 +14,7 @@ namespace wumpus_game {
     public:
         using BaseTile::BaseTile;
 
-        TileDarkRoom(const std::size_t &tile_id);
+        TileDarkRoom(const int &tile_id);
 
         virtual bool EnterCharacter(std::shared_ptr<BaseUnit> ptr) override;
         virtual std::pair<bool, std::string> unit_can_attack_here(std::string unit_name);

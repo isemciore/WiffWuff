@@ -6,7 +6,7 @@
 #include "tile_ocean.h"
 
 
-wumpus_game::TileOcean::TileOcean(const std::size_t &tile_id)
+wumpus_game::TileOcean::TileOcean(const int &tile_id)
     : BaseTile(tile_id){
     feaseable_direction[0] = true;
     feaseable_direction[1] = true;

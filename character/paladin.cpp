@@ -35,22 +35,21 @@ wumpus_game::Paladin::Paladin(const std::string name,const std::weak_ptr<BaseTil
 
 void wumpus_game::Paladin::PerformAction() {
     std::string user_input_args;
-//http://stackoverflow.com/questions/5607589/right-way-to-split-an-stdstring-into-a-vectorstring
+
     bool event_success;//
-    //Force flush cin
     location_tile_pointer_.lock()->PrintPlayerOptionAndInformation();
-    //INIT TEXT AVAILABLE ACTION
-    //AVAILABLE WALKING DIRECTION
-    //INCASE SMELL OF WUMPUS
     while(true){
         event_success = false;
-        getline(std::cin,user_input_args);
+        //SPLITTING USER INPUT TO VECTOR OF STRINGS
+        getline(std::cin,
+                user_input_args);//http://stackoverflow.com/questions/5607589/right-way-to-split-an-stdstring-into-a-vectorstring
         std::stringstream ss(user_input_args);
         std::istream_iterator<std::string> begin(ss);
         std::istream_iterator<std::string> end;
         std::vector<std::string> vectorize_user_input(begin,end);
         vectorize_user_input.push_back("filler");
         vectorize_user_input.push_back("filler");
+        ///
 
         map_of_member_action_type::iterator member_function_pair_iterator = map_of_member_action_.find(vectorize_user_input[0]);
         if(member_function_pair_iterator == map_of_member_action_.end()){
@@ -80,7 +79,7 @@ void wumpus_game::Paladin::PerformAction() {
             break;
         }
 
-        if(game_continue.first==false){
+        if (!game_continue.first) {
             break;
         }
     }

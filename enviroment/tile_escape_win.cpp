@@ -10,7 +10,7 @@ std::pair<bool, std::string> wumpus_game::Tile_escape_win::unit_can_attack_here(
     return std::make_pair(true, "-");
 }
 
-wumpus_game::Tile_escape_win::Tile_escape_win(const std::size_t &tile_id)
+wumpus_game::Tile_escape_win::Tile_escape_win(const int &tile_id)
         : BaseTile(tile_id){
 
 }

@@ -30,7 +30,7 @@ bool wumpus_game::PlayerCtrl::PickUpItem(const std::vector<std::string>& argumen
     }
     std::string put_in_loc = arguments[2+shift_constant];
 
-    Item * *mem_value_ptr;
+    Item **mem_value_ptr = nullptr;
     if (put_in_loc == "right") { //check that with is either right or left hand
         if(right_hand_ == nullptr)
         mem_value_ptr = &right_hand_;
@@ -75,7 +75,7 @@ bool wumpus_game::PlayerCtrl::DropItem(const std::vector<std::string> &arguments
     }
     Item * item_ptr = (*(mem_value_itr->second))->get_item(drop_item_name);
     if (item_ptr == nullptr){
-        std::cout << "cannot find Item";
+        std::cout << "cannot find item";
         return false;
     }
     *(mem_value_itr->second) = nullptr;
@@ -184,13 +184,13 @@ bool wumpus_game::PlayerCtrl::DisplayWield(const std::vector<std::string> &argum
                 std::cout << "In your "<< item_itr.first << " you have ";
                 std::cout << (*(item_itr.second))->get_name() << ", ";
             }
-        }else{//a backpack at location
-            if (container_ptr != nullptr) {
+        } else { //guarateed to be a container
+            //if (container_ptr != nullptr) {
                 std::cout << "In your "<<item_itr.first<< " you have a ";
                 std::cout << container_ptr->get_name() << " which contains the item(s) ";
                 container_ptr->Display_contents();
                 std::cout << " ";
-            }
+            //}
         }
     }
     std::cout << "\n";
@@ -228,10 +228,10 @@ bool wumpus_game::PlayerCtrl::ConsumeItem(const std::vector<std::string> &argume
                 std::cout << " to " << current_mana << "\n";
             }
             std::cout << "you used up "<< item_name_to_be_consumed << "\n";
+             */
             delete left_hand_;
             left_hand_ = nullptr;
             return true;
-            */
         }
         else{
             std::cout << "cannot eat that\n";

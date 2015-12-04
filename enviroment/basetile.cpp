@@ -28,7 +28,7 @@ wumpus_game::BaseTile::~BaseTile() {
 }
 
 
-wumpus_game::BaseTile::BaseTile(const size_t &t)
+wumpus_game::BaseTile::BaseTile(const int &t)
     : tile_id_(t)
 {
 }
@@ -42,7 +42,7 @@ bool wumpus_game::BaseTile::AddCharToTile(std::shared_ptr<wumpus_game::BaseUnit>
     return true;
 }
 
-std::size_t wumpus_game::BaseTile::get_tile_id() {
+int wumpus_game::BaseTile::get_tile_id() {
     return tile_id_;
 }
 
@@ -171,7 +171,7 @@ bool wumpus_game::BaseTile::AttackAction(const std::string &attacker, const std:
         Exit(defendent);
         //map_of_char_in_tile_.erase(defendent_pair_iterator);
         std::cout << defendent << " just died :( \n";
-    } else if (defendent_alive) {
+    } else { //(defendent_alive = true
         std::cout << defendent << " cannot retaliate here \n";
     }
     if (!attacker_alive){
