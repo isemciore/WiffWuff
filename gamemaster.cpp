@@ -417,9 +417,10 @@ void wumpus_game::GameMaster::AddItem(const std::string &new_item_name, const do
     if (map_int_to_tileptr_.find(dest) != map_int_to_tileptr_.end()){
         map_tileptr_type::iterator tile_ptr_itr = map_int_to_tileptr_.find(dest);
         tile_ptr_itr->second->AddItem(item_ptr);
-    } else {//if fail to find destination, deletes the tiem
+    }else{
         delete item_ptr;
     }
+    //vector_of_tileptr_[dest]->AddItem(item_ptr);
 }
 
 void wumpus_game::GameMaster::AddItem(Item *item_ptr, const int &dest) {
@@ -429,4 +430,5 @@ void wumpus_game::GameMaster::AddItem(Item *item_ptr, const int &dest) {
     }else{
         delete item_ptr;
     }
+    //vector_of_tileptr_[dest]->AddItem(item_ptr);
 }
