@@ -32,18 +32,31 @@ bool wumpus_game::PlayerCtrl::PickUpItem(const std::vector<std::string>& argumen
 
     Item **mem_value_ptr = nullptr;
     if (put_in_loc == "right") { //check that with is either right or left hand
-        if(right_hand_ == nullptr)
-        mem_value_ptr = &right_hand_;
+        if (right_hand_ == nullptr) {
+            mem_value_ptr = &right_hand_;
+        }
+        else {
+            std::cout << "Hand is occupied \n";
+            return false;
+        }
     } else if(put_in_loc =="left"){
-        mem_value_ptr = &left_hand_;
+        if (right_hand_ == nullptr) {
+            mem_value_ptr = &left_hand_;
+        }
+        else {
+            std::cout << "Hand is occupied \n";
+            return false;
+        }
     } else{
         std::cout << "can only pick up  Item with you right or left hand\n";
         return false;
     }
+    /*
     if (*mem_value_ptr != nullptr) { //
         std::cout << "Hand is occupied \n";
         return false;
-    }
+    }*/
+
     *mem_value_ptr = location_tile_pointer_.lock()->GetItemPointer(item_name);
     if(*mem_value_ptr == nullptr){
         return false;

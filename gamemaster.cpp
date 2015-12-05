@@ -191,6 +191,8 @@ void wumpus_game::GameMaster::AddTile(const std::string &tile_type_name) {
 
 
 void wumpus_game::GameMaster::EventNewSpawns() {
+    AddUnit("turtle", 5);//demonstrate new units can be introduced "mid" game
+    //If tile id 5 does not exist, no turtle is added check is done in add unit.
     //Create 3 turtle, put them randomly
 }
 
@@ -210,23 +212,20 @@ void wumpus_game::GameMaster::EventSwapGoalTile() {
     AddTile("win_tile");
     SetMapSquare(5);//repair connections
     //check east, west north south, etc for them replace with new tile and replace
-    //s11 n13 w7 e17
-
-
     //
 }
 
 bool wumpus_game::GameMaster::RemoveTile(const int &tile_id) {
     map_tileptr_type::iterator target_tile_itr = map_int_to_tileptr_.find(tile_id);
     int target_id = player_ptr_->GetUnitLocation().lock()->get_tile_id();
-    if(target_tile_itr!= map_int_to_tileptr_.end()){
-        map_int_to_tileptr_.erase(target_tile_itr);
-        std::cout << "The ground is shaking" << "\n";
-    }
     if(tile_id == target_id){
         std::cout << "The ground is shaking and you think you stand at the source" << "\n";
         return false;
+    } else if (target_tile_itr != map_int_to_tileptr_.end()) {
+        map_int_to_tileptr_.erase(target_tile_itr);
+        std::cout << "The ground is shaking" << "\n";
     }
+
     return true;
 }
 
