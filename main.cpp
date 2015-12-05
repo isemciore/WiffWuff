@@ -11,8 +11,6 @@ int main() {
     GameMaster gameEvent;
     gameEvent.GameStart();
 
-    //std::shared_ptr<int> sharedPointer_int;
-    //sharedPointer_int.reset(new int);
 
 
     return 0;
